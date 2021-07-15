@@ -1,0 +1,18 @@
+EVENT: titre, date debut, date fin
+a, 11 PHASE, 0N EVENT
+PHASE: titre, date heure debut, date heure fin, type, lieu interne, contact regisseur, contact sur place, nb cachets, commentaire
+utilise, 0N PHASE, 0N VEHICULE
+VEHICULE: immatriculation, marque, modèle, commentaire
+
+situe, 0N ADRESSE, 11 EVENT
+cree, 11 EVENT, 0N USER
+elabore, 11 PHASE, 0N USER
+compose de, 0N USER, 0N PHASE: salaire
+
+ADRESSE: ligne principale, complement, code postal, ville
+possède, 11 USER, 01 ADRESSE
+USER: nom, prenom, tel, rôle
+definit, 0N METIER, 0N USER
+METIER: type
+
+concoit, 11 USER, 0N> USER
