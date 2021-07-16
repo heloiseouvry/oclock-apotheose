@@ -1,6 +1,7 @@
 // == Import npm
 import React from 'react';
-import Calendar from '..Calendar/'
+import MyCalendar from '../Calendar/'
+import MyComponent from '../Sidebar';
 
 // == Import
 
@@ -9,7 +10,8 @@ import './styles.css';
 // == Composant
 const App = () => (
   <div className="app">
-    <Calendar />
+    <MyComponent />
+    <MyCalendar />
   </div>
 );
 

@@ -8,11 +8,11 @@ import 'tui-time-picker/dist/tui-time-picker.css';
 
 const myTheme = {
     // Theme object to extends default dark theme.
-  };
-  
-  const Calendar = () => (
+  }; 
+
+  const MyComponent = () =>  (
     <Calendar
-      height="900px"
+      height="1900px"
       calendars={[
         {
           id: '0',
@@ -106,12 +106,14 @@ const myTheme = {
       ]}
       useDetailPopup
       useCreationPopup
-      view={selectedView} // You can also set the `defaultView` option.
+      view='month' // You can also set the `defaultView` option.
       week={{
         showTimezoneCollapseButton: true,
         timezonesCollapsed: true
       }}
     />
   );
+
+ 
   
 export default Calendar;
