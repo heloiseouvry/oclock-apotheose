@@ -12,7 +12,7 @@ const myTheme = {
 
   const MyComponent = () =>  (
     <Calendar
-      height="1900px"
+      height="900px"
       calendars={[
         {
           id: '0',
