@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+%project=kapouevent
+%uri=https://github.com/O-clock-Sinbad/project-gestion-planning/
+
+init 2021-07-15T09:42:14Z Heloise Ouvry <heloiseouvry@gmail.com> # Création des tables et domaines
+expand-tables 2021-07-19T08:06:36Z Heloise Ouvry <heloiseouvry@gmail.com> # Expand tables with more attributes
