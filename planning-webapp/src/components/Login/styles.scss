@@ -6,14 +6,14 @@
   margin-top: 5rem;
   margin-left:40rem;
   margin-right: 40rem;
-  margin-bottom: 10rem;
+  margin-bottom: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border: 2px solid rgb(44, 44, 44);
   border-radius: 15px 50px;
   box-shadow: 1px 1px 1px rgb(88, 79, 79);
-  padding: 6rem;
+  padding: 5rem;
 }
 
 .title{
@@ -21,24 +21,20 @@
   text-align: center;
 }
 
-.emailForm {
+.inputForm{
   display: flex;
-  justify-content: space-between;
-  padding-left: 3rem;
-  padding-right: 3rem;
-}
-
-.passwordForm{
-  display: flex;
-  justify-content: space-between;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem;
+  padding: 1rem;
+  padding-left: 11rem;
+  padding-right: 11rem;
 }
 
 .checkbox {
   display: flex;
   flex-direction: row;
-  padding-left: 3rem;
+  padding-left: 12rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
   justify-content: center;
@@ -46,8 +42,13 @@
 
 .connect  {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   padding-left: 3rem;
   padding-right: 3rem;
 
+}
+
+.forgottenPassword{
+  text-align: center;
+  margin-top: 1rem;
 }

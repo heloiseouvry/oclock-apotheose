@@ -13,11 +13,12 @@ import Footer from '../Footer';
 
 
 
+
 // == Composant
 const App = () => (
   <div className="app">
     <Header />
-    <LoginForm />
+    <LoginForm/>
     <Footer />
   </div>
 );
