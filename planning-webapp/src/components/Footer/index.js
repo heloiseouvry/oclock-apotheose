@@ -10,19 +10,19 @@ const Footer= () => {
             <div className="team">
                 <div className="logoEquipe">
                     <img src="https://img.icons8.com/ios-filled/100/000000/user-male-circle.png"/>
-                    <a href='https://github.com/YannSinbad'>Yann</a> 
+                    <a target="_blank" rel="noopener noreferrer" href='https://github.com/YannSinbad'>Yann</a> 
                 </div>
                 <div className="logoEquipe">
                     <img src="https://img.icons8.com/ios/100/000000/user-male-circle.png"/>
-                    <a href='https://github.com/heloiseouvry'>Heloïse</a> 
+                    <a target="_blank" rel="noopener noreferrer" href='https://github.com/heloiseouvry'>Heloïse</a> 
                 </div>
                 <div className="logoEquipe">
                     <img src="https://img.icons8.com/ios-filled/100/000000/user-male-circle.png"/>
-                    <a href='https://github.com/FredericDosSantos'>Fred</a> 
+                    <a target="_blank" rel="noopener noreferrer" href='https://github.com/FredericDosSantos'>Fred</a> 
                 </div>
                 <div className="logoEquipe">
-                    <img src="https://img.icons8.com/ios-filled/100/000000/user-male-circle.png"/>
-                    <a href='https://github.com/nadegesinbad'>Nadège</a> 
+                    <img src="https://img.icons8.com/ios/100/000000/user-male-circle.png"/>
+                    <a target="_blank" rel="noopener noreferrer" href='https://github.com/nadegesinbad'>Nadège</a> 
                 </div>       
             </div>
             

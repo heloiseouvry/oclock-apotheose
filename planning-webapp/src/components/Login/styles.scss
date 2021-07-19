@@ -1,29 +1,53 @@
-@use 'src/styles/vars';
+.LoginForm {
+  font-family: "McLaren", cursive;
+  color: rgb(0, 0, 0);
+  font-size: 1.25rem;
+  background-color: whitesmoke;
+  margin-top: 5rem;
+  margin-left:40rem;
+  margin-right: 40rem;
+  margin-bottom: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid rgb(44, 44, 44);
+  border-radius: 15px 50px;
+  box-shadow: 1px 1px 1px rgb(88, 79, 79);
+  padding: 6rem;
+}
 
-.login-form {
-  
-  &-element {
-    display: flex;
-    align-items: center;
-  }
+.title{
+  margin-bottom: 2rem;
+  text-align: center;
+}
 
-  &-message {
-    margin: .3em 1em;
-  }
+.emailForm {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
 
-  &-logged {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
+.passwordForm{
+  display: flex;
+  justify-content: space-between;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
 
-  &-button {
-    font-size: 1em;
-    color: #fff;
-    background-color: vars.$color;
-    border-radius: .3em;
-    border: 0;
-    padding: .7em;
-    height: 2.5em;
-  }
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  padding-left: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.connect  {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3rem;
+  padding-right: 3rem;
+
 }

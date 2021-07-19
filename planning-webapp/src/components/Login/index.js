@@ -1,89 +1,34 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import 'semantic-ui-css/semantic.min.css'
+import { Button, Checkbox, Form} from 'semantic-ui-react'
 
-import Field from './Field';
 
-import './style.scss';
+import './styles.scss';
 
-const LoginForm = ({
-  email,
-  password,
-  changeField,
-  handleLogin,
-  handleLogout,
-  isLogged,
-  loggedMessage,
-}) => {
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    handleLogin();
-  };
+const LoginForm = () => {
+    return(
+        <form className='LoginForm'>
+          <h1 className='title'>Connectez-vous!</h1>
 
-  return (
-    <div className="login-form">
-      {isLogged && (
-        <div className="login-form-logged">
-          <p className="login-form-message">
-            {loggedMessage}
-          </p>
-          <button
-            type="button"
-            className="login-form-button"
-            onClick={handleLogout}
-          >
-            Déconnexion
-          </button>
-        </div>
-      )}
-      {!isLogged && (
+            <Form.Field className='emailForm'>
+                <label className='labelForm'>Email</label>
+                <input className='inputForm' placeholder='email' />               
+            </Form.Field>
 
-        <form autoComplete="off" className="login-form-element" onSubmit={handleSubmit}>
-          <Field
-            name="email"
-            placeholder="Adresse Email"
-            onChange={changeField}
-            value={email}
-          />
-          <Field
-            name="password"
-            type="password"
-            placeholder="Mot de passe"
-            onChange={changeField}
-            value={password}
-          />
-          <button
-            type="submit"
-            className="login-form-button"
-          >
-            OK
-          </button>
+            <Form.Field className='passwordForm'>
+                <label className='labelForm'>Mot de Passe</label>
+                <input className='inputForm' placeholder='Mot de passe' />
+            </Form.Field>
+           
+            <Checkbox className='checkbox' label='Se souvenir de moi' />
+            
+            <div className='connect' >
+                <Button className='button' content='Se connecter' primary />
+                <a  className='forgottenPassword' href="/">Avez-vous oublié votre mot de passe?</a>
+            </div>
+
         </form>
-      )}
-    </div>
-  );
+    )
 };
-
-LoginForm.propTypes = {
-  // Valeur du champ email
-  email: PropTypes.string.isRequired,
-  // Valeur du champ password
-  password: PropTypes.string.isRequired,
-  // Fonction permettant de modifier les valeurs des champs
-  // Elle donne 2 paramètres, la valeur et le nom du champ
-  changeField: PropTypes.func.isRequired,
-  // Fonction déclenchée à la soumission du formulaire de connexion
-  handleLogin: PropTypes.func.isRequired,
-  // Fonction déclenchée au clic du bouton déconnexion
-  handleLogout: PropTypes.func.isRequired,
-  // Booléen qui représente l'état connecté/déconnecté
-  isLogged: PropTypes.bool,
-  // Message qui s'affiche quand on est connecté
-  loggedMessage: PropTypes.string,
-};
-
-LoginForm.defaultProps = {
-  isLogged: false,
-  loggedMessage: 'Connecté',
-};
-
-export default LoginForm;
+  
+  export default LoginForm;
