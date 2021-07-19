@@ -21,20 +21,25 @@
   text-align: center;
 }
 
-.inputForm{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 1rem;
-  padding: 1rem;
-  padding-left: 11rem;
-  padding-right: 11rem;
+form input {
+  border: 1px solid rgba(44, 41, 41, 0.2);
+  background-color: rgba(44, 41, 41, 0.2);
+  width: 250px;
+  border-radius: 3px;
+  font-family: "Source Sans Pro", sans-serif;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: black;
+  font-weight: 300;
 }
 
 .checkbox {
   display: flex;
   flex-direction: row;
-  padding-left: 12rem;
+  padding-left: 14rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
   justify-content: center;
@@ -50,5 +55,5 @@
 
 .forgottenPassword{
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }

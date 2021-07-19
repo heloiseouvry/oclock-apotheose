@@ -1,6 +1,6 @@
 import React from 'react';
 import 'semantic-ui-css/semantic.min.css';
-import { Button, Checkbox, Form} from 'semantic-ui-react';
+import { Button, Checkbox } from 'semantic-ui-react';
 
 
 import './styles.scss';
@@ -11,10 +11,10 @@ const LoginForm = () => {
         <form className='LoginForm'>
           <h1 className='title'>Connectez-vous!</h1>
 
-            <Form.Field className='inputForm'> 
+            <form className='inputForm'> 
                 <input type='email' placeholder='Email' /><br></br>               
                 <input type='password' placeholder='Mot de passe' />
-            </Form.Field>
+            </form>
            
             <Checkbox className='checkbox' label='Se souvenir de moi' />
             
