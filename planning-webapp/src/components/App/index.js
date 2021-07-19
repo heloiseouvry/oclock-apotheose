@@ -1,20 +1,19 @@
 // == Import npm
 import React from 'react';
 
-
-import MyCalendar from '../Calendar';
-//import MyComponent from '../Sidebar';
-
-// == Import
 import './styles.scss';
-//import Homepage from '../Homepage';
+
+//import MyCalendar from '../Calendar';
+//import MyComponent from '../Sidebar';
+//import LoginForm from '../Login'
+import Homepage from '../Homepage';
 import Footer from '../Footer';
 
 
 // == Composant
 const App = () => (
   <div className="app">
-    <MyCalendar />
+    <Homepage />
     <Footer />
   </div>
 );

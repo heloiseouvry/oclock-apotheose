@@ -7,8 +7,14 @@ footer{
    
 }
 
+.team{
+    display: flex;
+    justify-content: center;
+   
+}
 .logoEquipe{
-    margin: 2rem;
-    padding-bottom: 4.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 

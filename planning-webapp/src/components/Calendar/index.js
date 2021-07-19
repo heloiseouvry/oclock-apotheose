@@ -257,6 +257,9 @@ const MyCalendar = () => {
       console.log('time', schedule);
       return getTimeTemplate(schedule, false);
     },
+    collapseBtnTitle: function() {
+      return '<span class="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
+  },
     popupDetailDate: (details) => {
       console.log(`popupDetailDate`, details);
       return '<div>TESTDATE</div>'
