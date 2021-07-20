@@ -5,6 +5,7 @@ import './styles.scss';
 
 import Header from '../Header';
 import LoginApp from '../Login/loginApp'
+import ContactForm from '../ContactForm'
 import Homepage from '../Homepage';
 import MyCalendar from '../Calendar';
 import Footer from '../Footer';
@@ -23,6 +24,11 @@ const App = () => (
         <Route path="/login"> 
           <Header />
           <LoginApp />
+        </Route>
+
+      <Route path="/Contact"> 
+          <Header />
+          <ContactForm />
         </Route>
       </Switch> 
 

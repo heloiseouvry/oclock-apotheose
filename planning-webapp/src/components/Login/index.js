@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react/cjs/react.development';
+import { Link } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import { Button, Checkbox } from 'semantic-ui-react';
 
@@ -33,8 +34,10 @@ function LoginForm ({ Login, error}) {
                 </div>
             </form>
             <div className='demo'>
-                <p>Voullez vous essayer notre aplication?</p>   
-                <Button type='submit' content='Nous contacter' secondary /> 
+                <p>Voullez vous essayer notre aplication?</p> 
+                <Link to ="/contact">  
+                <Button content='Nous contacter' secondary /> 
+                </Link>
             </div>
         </div>
     )
