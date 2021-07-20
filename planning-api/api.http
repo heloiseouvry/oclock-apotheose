@@ -1,0 +1,9 @@
+@protocol=http://
+@host=localhost
+@port=:4000
+@prefix=/v1
+@baseUrl={{protocol}}{{host}}{{port}}{{prefix}}
+
+### Get all events
+
+GET {{baseUrl}}/events
