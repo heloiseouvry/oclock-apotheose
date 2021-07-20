@@ -6,7 +6,7 @@ import './styles.scss';
 const Footer= () => { 
     return (
         <footer>
-          <p>Qui sommes nous?</p>
+        <p>Qui sommes nous?</p>
             <div className="team">
                 <div className="logoEquipe">
                     <img src="https://img.icons8.com/ios-filled/100/000000/user-male-circle.png"/>
@@ -28,6 +28,6 @@ const Footer= () => {
             
         </footer>
     )
-     };
+};
 
 export default Footer;

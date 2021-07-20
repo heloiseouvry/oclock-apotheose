@@ -13,7 +13,8 @@ const Homepage= () => {
         <h2 className="slogan">Créez vos évènements, organisez et partagez au sein de votre équipe. </h2>
         <img className="image-exemple" src="https://cdn.pixabay.com/photo/2015/05/15/14/50/concert-768722_960_720.jpg"/> 
             <div>   
-            <Button content='Nous contacter' secondary /> 
+            <Button content='Nous contacter' secondary />
+            {/* Here we use a link to redirect the user to the /login route   */}
             <Link to ="/login">
             <Button content='Se connecter' primary />
             </Link>
