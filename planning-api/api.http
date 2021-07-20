@@ -37,8 +37,8 @@ Content-Type: application/json
   "birth_department": "89",
   "ssn": "1 62 12 89 449 491 84",
   "intermittent_registration": "1012",
-  "legal_entity": null,
-  "siret": null,
+  "legal_entity": "",
+  "siret": "",
   "emergency_contact": "Pierre Dupont",
   "emergency_phone_number": "0612121212",
   "comments": "ne s'entend pas avec Jean-Jacques"

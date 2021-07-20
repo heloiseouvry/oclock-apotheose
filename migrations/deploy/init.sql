@@ -15,9 +15,9 @@ CREATE DOMAIN zipcode AS text CHECK(
   (VALUE !~ '^20[0457-9]' OR VALUE='20000')
 );
 
-CREATE DOMAIN licence_plate_eu AS TEXT CHECK(VALUE ~ '^(?!WW|SS)[A-HJ-NP-TV-Z]{2}-\d{3}-(?!SS)[A-HJ-NP-TV-Z]{2}$');
+CREATE DOMAIN licence_plate_eu AS TEXT CHECK(VALUE ~ '^(?!WW|SS)[A-HJ-NP-TV-Z]{2}-\d{3}-(?!SS)[A-HJ-NP-TV-Z]{2}$' OR VALUE ~ '');
 
-CREATE DOMAIN phone_number_fr AS TEXT CHECK(VALUE ~ '^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$');
+CREATE DOMAIN phone_number_fr AS TEXT CHECK(VALUE ~ '^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$' OR VALUE ~ '');
 
 CREATE TABLE job (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
