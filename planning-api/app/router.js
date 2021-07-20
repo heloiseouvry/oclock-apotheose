@@ -3,6 +3,8 @@ const { Router } = require('express');
 const router = new Router();
 
 const { mainController, authController, eventController, phaseController, userController } = require('./controllers');
+const { userSchema } = require('./schemas');
+const { validateBody } = require('./middlewares/validator');
 
 // router.post('/contact', mainController);
 router.post('/login', authController.loginSubmit);
@@ -19,7 +21,7 @@ router.get('/events', eventController.getAllEvents);
 // router.delete('/phase/:id', phaseController);
 
 // router.get('/users', userController);
-// router.post('/users', userController);
+router.post('/users', validateBody(userSchema), userController.addUser);
 // router.get('/users/:id', userController);
 // router.patch('/users/:id', userController);
 // router.delete('/users/:id', userController);

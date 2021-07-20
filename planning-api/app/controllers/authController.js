@@ -9,7 +9,6 @@ const authController = {
         const password = req.body.password;
         
         const user = await User.findByEmail(email);
-        console.log("user found by email : ", user);
         
         if(!user) {
             // l'utilisateur n'existe pas
