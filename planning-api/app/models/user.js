@@ -5,6 +5,7 @@ class User extends CoreModel {
     firstname;
     phone_number;
     role;
+    email;
     password;
     status;
     birth_date;
@@ -24,6 +25,7 @@ class User extends CoreModel {
         this.firstname = data.firstname;
         this.phone_number = data.phone_number;
         this.role = data.role;
+        this.email = data.email
         this.password = data.password;
         this.status = data.status;
         this.birth_date = data.birth_date;
@@ -36,6 +38,26 @@ class User extends CoreModel {
         this.emergency_contact = data.emergency_contact;
         this.emergency_phone_number = data.emergency_phone_number;
         this.comments = data.comments;
+    };
+
+    static findBy(email, callback) {
+
+        const sqlQuery = {
+            text: `SELECT * FROM "user" WHERE email=$1;`,
+            values: [email]
+        };
+
+        client.query(sqlQuery, (err, data) => {
+            if (err) {
+                console.error(err);
+                callback(err, null);
+            } else {
+
+                const user = new User(data.rows[0]);
+
+                callback(null, user);
+            }
+        })
     }
 }
 
