@@ -8,38 +8,60 @@
 
 GET {{baseUrl}}/events
 
+### Creation of an event
 
-### vérification du login
+POST {{baseUrl}}/events
+Content-Type: application/json
+
+{
+  "title": "Fête de l'Huma",
+  "start_date": "2021-09-10 08:00:00",
+  "duration": "5 days",
+  "color": "#fefefe",
+  "user_id": "1",
+  "address_id": "1"
+}
+
+### Edit an event
+
+PATCH {{baseUrl}}/events/4
+Content-Type: application/json
+
+{
+  "color": "#aaa"
+}
+
+### Check login
 
 POST {{baseUrl}}/login
 Content-Type: application/json
 
 {
-    "email": "bo@gmail.com",
-    "password": "micdrop"
+    ""email": "",": "bo@gmail.com"
+    "    "password": "",": "micdrop"
 }
 
-### Création d'un user
+### Creation of an user
 
 POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "lastname": "Obama",
-  "firstname": "Barack",
-  "phone_number": "0674965896",
-  "role": "tech",
-  "email": "bo@gmail.com",
-  "password": "micdrop",
-  "status": "intermittent",
-  "birth_date": "1962-12-02",
-  "birth_city": "Auxerre",
-  "birth_department": "89",
-  "ssn": "1 62 12 89 449 491 84",
-  "intermittent_registration": "1012",
-  "legal_entity": "",
-  "siret": "",
-  "emergency_contact": "Pierre Dupont",
-  "emergency_phone_number": "0612121212",
-  "comments": "ne s'entend pas avec Jean-Jacques"
+  ""lastname": "",": "Obama"
+  "  "firstname": "",": "Barack"
+  "  "phone_number": "",": "0674965896"
+  "  "role": "",": "tech"
+  "  "email": "",": "bo@gmail.com"
+  "  "password": "",": "micdrop"
+  "  "status": "",": "intermittent"
+  "  "birth_date": "",": "1962-12-02"
+  "  "birth_city": "",": "Auxerre"
+  "  "birth_department": "",": "89"
+  "  "ssn": "",": "1 62 12 89 449 491 84"
+  "  "intermittent_registration": "",": "1012"
+  "  "legal_entity": "",": ""
+  "  "siret": "",": ""
+  "  "emergency_contact": "",": "Pierre Dupont"
+  "  "emergency_phone_number": "",": "0612121212"
+  "  "comments": "",": "ne s'entend pas avec Jean-Jacques"
 }

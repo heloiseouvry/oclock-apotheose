@@ -10,9 +10,9 @@ const { validateBody } = require('./middlewares/validator');
 router.post('/login', authController.loginSubmit);
 
 router.get('/events', eventController.getAllEvents);
-// router.post('/events', eventController);
+router.post('/events', eventController.addEvent);
 // router.get('/events/:id', eventController);
-// router.patch('/events/:id', eventController);
+router.patch('/events/:id', eventController.editEvent);
 // router.delete('/events/:id', eventController);
 
 // router.post('/phase', phaseController);

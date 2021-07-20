@@ -17,12 +17,14 @@ class CoreModel {
 
     static async fetch(...args) {
         const { rows } = await db.query(...args);
-
         if (rows.length === 0) {
             throw new NoDataError();
         }
-
         return rows;
+    }
+
+    static async fetchOne(...args) {
+        return (await this.fetch(...args))[0];
     }
 }
 

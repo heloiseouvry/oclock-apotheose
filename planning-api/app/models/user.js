@@ -21,7 +21,6 @@ class User extends CoreModel {
         if(this.id){
             //TODO : coder l'update d'un user
         } else {
-
             try {
                 const preparedQuery = {
                     text: 'INSERT INTO "user"(lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING id',
