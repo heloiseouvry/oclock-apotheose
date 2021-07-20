@@ -8,12 +8,14 @@ import './styles.scss';
 //import LoginForm from '../Login'
 import Homepage from '../Homepage';
 import Footer from '../Footer';
+import MyCalendar from '../Calendar';
 
 
 // == Composant
 const App = () => (
   <div className="app">
     <Homepage />
+    <MyCalendar />
     <Footer />
   </div>
 );

@@ -2,6 +2,11 @@
 import React, { useCallback, useRef } from 'react';
 import TUICalendar from '@toast-ui/react-calendar';
 
+// Import react-modal to use it instead of app's Popup
+import Modal from 'react-modal';
+
+import Form from '../Form';
+
 // import Calendar from '@toast-ui/react-calendar';
 import 'tui-calendar/dist/tui-calendar.css';
 
@@ -168,8 +173,42 @@ const calendars = [
   }
 ];
 
+// Style for the modal
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+Modal.setAppElement('#root');
+
 const MyCalendar = () => {
   const cal = useRef(null);
+
+  // variable & fonction for the modal
+  let subtitle;
+  let modalStartDate;
+  let modalEndDate;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
 
   const onClickSchedule = useCallback((e) => {
     const { calendarId, id } = e.schedule;
@@ -180,7 +219,13 @@ const MyCalendar = () => {
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
     console.log("onBeforeCreateSchedule", scheduleData);
+    // use the schedule data to use it in the modal
+    modalStartDate = scheduleData.start;
+    modalEndDate = scheduleData.end;
+    // Need to open the modal to add an event
+    openModal();
 
+    /*
     const schedule = {
       id: String(Math.random()),
       title: scheduleData.title,
@@ -197,7 +242,9 @@ const MyCalendar = () => {
     };
 
     cal.current.calendarInst.createSchedules([schedule]);
+    */
   }, []);
+
 
   const onBeforeDeleteSchedule = useCallback((res) => {
     console.log("onBeforeDeleteSchedule",res);
@@ -252,6 +299,33 @@ const MyCalendar = () => {
     return html.join("");
   }
 
+  const onSubmit = useCallback((event) => {
+    event.preventDefault(event);
+    console.log(event.target.name.value);
+    console.log(event.target.email.value);
+    console.log(modalStartDate);
+    console.log(modalEndDate);
+
+
+    var schedule = {
+      id: String(Math.random()),
+      title: event.target.name.value,
+      isAllDay: false,
+      start: modalStartDate,
+      end: modalEndDate,
+      category:  'time',
+      raw: event.target.email.value,
+      calendarId: "1",
+      body: event.target.email.value
+    };
+    /* step2. save schedule */
+    // @ts-ignore: Object is possibly 'null'.
+    cal.current.calendarInst.createSchedules([schedule]);
+
+    closeModal();
+
+  }, []);
+
   const templates = {
     time: function (schedule) {
       console.log('time', schedule);
@@ -260,7 +334,8 @@ const MyCalendar = () => {
     collapseBtnTitle: function() {
       return '<span class="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
   },
-    popupDetailDate: (details) => {
+    /*
+     popupDetailDate: (details) => {
       console.log(`popupDetailDate`, details);
       return '<div>TESTDATE</div>'
     },
@@ -293,17 +368,31 @@ const MyCalendar = () => {
       console.log(`popupEdit`, details);
       return '<div>TESTDelete</div>'
     },
+    */
   };
 
   return (
     <div className="App">
       <h1>Welcome to TOAST Ui Calendar</h1>
 
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+        <button onClick={closeModal}>close</button>
+        <Form onSubmit={onSubmit} />
+      </Modal>
+
       <TUICalendar
         ref={cal}
         height="1000px"
         view="week"
-        useCreationPopup={true}
+        // useCreationPopup={false} to use our form instead of app Popup
+        useCreationPopup={false}
         useDetailPopup={true}
         template={templates}
         calendars={calendars}
