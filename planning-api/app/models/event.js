@@ -20,8 +20,7 @@ class Event extends CoreModel {
 
     static async findAll() {
         const data = await CoreModel.fetch('SELECT * FROM event;');
-        console.log("Find all events");
-        console.log((data.map(d => new Event(d))));
+        return data.map(d => new Event(d));
     }
 }
 

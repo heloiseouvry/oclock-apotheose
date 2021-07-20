@@ -2,10 +2,10 @@ const { Router } = require('express');
 
 const router = new Router();
 
-const { mainController, eventController, phaseController } = require('./controllers');
+const { mainController, authController, eventController, phaseController, userController } = require('./controllers');
 
 // router.post('/contact', mainController);
-// router.post('/login', mainController.loginSubmit);
+router.post('/login', authController.loginSubmit);
 
 router.get('/events', eventController.getAllEvents);
 // router.post('/events', eventController);
@@ -18,6 +18,10 @@ router.get('/events', eventController.getAllEvents);
 // router.patch('/phase/:id', phaseController);
 // router.delete('/phase/:id', phaseController);
 
-// router.get('/users', mainController);
+// router.get('/users', userController);
+// router.post('/users', userController);
+// router.get('/users/:id', userController);
+// router.patch('/users/:id', userController);
+// router.delete('/users/:id', userController);
 
 module.exports = router;

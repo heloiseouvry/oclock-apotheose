@@ -1,9 +1,20 @@
 @protocol=http://
 @host=localhost
-@port=:4000
+@port=:3000
 @prefix=/v1
 @baseUrl={{protocol}}{{host}}{{port}}{{prefix}}
 
 ### Get all events
 
 GET {{baseUrl}}/events
+
+
+### vérification du login
+
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "cormier_capucine@gmail.com",
+    "password": "password"
+}

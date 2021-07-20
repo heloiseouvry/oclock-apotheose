@@ -1,4 +1,5 @@
 const CoreModel = require('./coreModel');
+const db = require('../database.js');
 
 class User extends CoreModel {
     lastname;
@@ -38,26 +39,21 @@ class User extends CoreModel {
         this.emergency_contact = data.emergency_contact;
         this.emergency_phone_number = data.emergency_phone_number;
         this.comments = data.comments;
-    };
+    }
 
-    static findBy(email, callback) {
+    static async findByEmail(email) {
 
-        const sqlQuery = {
-            text: `SELECT * FROM "user" WHERE email=$1;`,
-            values: [email]
-        };
+        try {
+            const sqlQuery = {
+                text: `SELECT * FROM "user" WHERE email=$1;`,
+                values: [email]
+            };
+            const { rows } = await db.query(sqlQuery);
+            return new User(rows[0]);
+        } catch (error) {
+            console.error(error);
+        }
 
-        client.query(sqlQuery, (err, data) => {
-            if (err) {
-                console.error(err);
-                callback(err, null);
-            } else {
-
-                const user = new User(data.rows[0]);
-
-                callback(null, user);
-            }
-        })
     }
 }
 
