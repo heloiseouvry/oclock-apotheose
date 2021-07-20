@@ -20,10 +20,10 @@ router.patch('/events/:id', eventController.editEvent);
 // router.patch('/phase/:id', phaseController);
 // router.delete('/phase/:id', phaseController);
 
-// router.get('/users', userController);
+router.get('/users', userController.getAllUsers);
 router.post('/users', validateBody(userSchema), userController.addUser);
-// router.get('/users/:id', userController);
-// router.patch('/users/:id', userController);
-// router.delete('/users/:id', userController);
+router.get('/users/:id', userController.getOneUser);
+// router.patch('/users/:id', userController.editUser);
+router.delete('/users/:id', userController.deleteUser);
 
 module.exports = router;

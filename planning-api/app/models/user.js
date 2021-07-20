@@ -5,11 +5,11 @@ class User extends CoreModel {
     static async findByEmail(email) {
 
         try {
-            const sqlQuery = {
+            const preparedQuery = {
                 text: `SELECT * FROM "user" WHERE email=$1;`,
                 values: [email]
             };
-            const { rows } = await db.query(sqlQuery);
+            const { rows } = await db.query(preparedQuery);
             return new User(rows[0]);
         } catch (error) {
             console.error(error);
@@ -20,6 +20,7 @@ class User extends CoreModel {
     async save() {
         if(this.id){
             //TODO : coder l'update d'un user
+
         } else {
             try {
                 const preparedQuery = {
@@ -32,6 +33,30 @@ class User extends CoreModel {
                 console.error(error);
                 throw new Error(error.detail);
             }
+        }
+    }
+
+    static async findAll() {
+        const data = await CoreModel.fetch('SELECT * FROM "user";');
+        return data.map(d => new User(d));
+    }
+
+    static async findById(id){
+        return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
+    }
+
+    async delete() {
+        console.log(this.id);
+        try {
+            const preparedQuery = {
+                text: `DELETE FROM "user" WHERE id=$1;`,
+                values: [this.id]
+            };
+            await db.query(preparedQuery);
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
         }
     }
 }
