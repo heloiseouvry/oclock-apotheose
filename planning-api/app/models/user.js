@@ -2,44 +2,6 @@ const CoreModel = require('./coreModel');
 const db = require('../database.js');
 
 class User extends CoreModel {
-    lastname;
-    firstname;
-    phone_number;
-    role;
-    email;
-    password;
-    status;
-    birth_date;
-    birth_city;
-    birth_department;
-    ssn;
-    intermittent_registration;
-    legal_entity;
-    siret;
-    emergency_contact;
-    emergency_phone_number;
-    comments;
-
-    constructor(data) {
-        super(data);
-        this.lastname = data.lastname;
-        this.firstname = data.firstname;
-        this.phone_number = data.phone_number;
-        this.role = data.role;
-        this.email = data.email
-        this.password = data.password;
-        this.status = data.status;
-        this.birth_date = data.birth_date;
-        this.birth_city = data.birth_city;
-        this.birth_department = data.birth_department;
-        this.ssn = data.ssn;
-        this.intermittent_registration = data.intermittent_registration;
-        this.legal_entity = data.legal_entity;
-        this.siret = data.siret;
-        this.emergency_contact = data.emergency_contact;
-        this.emergency_phone_number = data.emergency_phone_number;
-        this.comments = data.comments;
-    }
 
     static async findByEmail(email) {
 
@@ -54,6 +16,25 @@ class User extends CoreModel {
             console.error(error);
         }
 
+    }
+
+    async save() {
+        if(this.id){
+            //TODO : coder l'update d'un user
+        } else {
+
+            try {
+                const preparedQuery = {
+                    text: 'INSERT INTO "user"(lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING id',
+                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.password, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments]
+                }
+                const { rows } = await db.query(preparedQuery);
+                this.id = rows[0].id;
+            } catch (error) {
+                console.error(error);
+                throw new Error(error.detail);
+            }
+        }
     }
 }
 

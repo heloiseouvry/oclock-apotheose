@@ -19,7 +19,7 @@ router.get('/events', eventController.getAllEvents);
 // router.delete('/phase/:id', phaseController);
 
 // router.get('/users', userController);
-// router.post('/users', userController);
+router.post('/users', userController.addUser);
 // router.get('/users/:id', userController);
 // router.patch('/users/:id', userController);
 // router.delete('/users/:id', userController);

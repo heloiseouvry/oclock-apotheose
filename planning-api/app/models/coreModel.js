@@ -8,10 +8,11 @@ class NoDataError extends Error {
 }
 
 class CoreModel {
-    id;
 
-    constructor(data){
-        this.id = data.id;
+    constructor(data) {
+        for (const prop in data) {
+            this[prop] = data[prop];
+        }
     }
 
     static async fetch(...args) {
