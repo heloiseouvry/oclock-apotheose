@@ -7,7 +7,7 @@ const eventController = require('./controllers/eventController');
 const phaseController = require('./controllers/phaseController');
 
 router.post('/contact', mainController);
-router.post('/login', mainController);
+router.post('/login', mainController.loginSubmit);
 
 router.get('/events', eventController);
 router.post('/events', eventController);
