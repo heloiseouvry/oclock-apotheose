@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './styles.scss';
 import 'semantic-ui-css/semantic.min.css'
 import { Button } from 'semantic-ui-react'
@@ -13,7 +14,9 @@ const Homepage= () => {
         <img className="image-exemple" src="https://cdn.pixabay.com/photo/2015/05/15/14/50/concert-768722_960_720.jpg"/> 
             <div>   
             <Button content='Nous contacter' secondary /> 
+            <Link to ="/login">
             <Button content='Se connecter' primary />
+            </Link>
             </div>
         
         </div>

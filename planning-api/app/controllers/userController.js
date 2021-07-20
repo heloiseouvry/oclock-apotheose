@@ -5,7 +5,6 @@ const userController = {
     addUser : async (req, res) => {   
       const newUser = new User(req.body);
       newUser.password = bcrypt.hashSync(newUser.password, 10);
-    
       try {
         await newUser.save();
         res.status(201).json(newUser);

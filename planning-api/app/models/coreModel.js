@@ -8,13 +8,10 @@ class NoDataError extends Error {
 }
 
 class CoreModel {
+
     constructor(data) {
         for (const prop in data) {
-            if(prop){
-                this[prop] = data[prop];
-            } else {
-                this[prop] = null;
-            }
+            this[prop] = data[prop];
         }
     }
 
