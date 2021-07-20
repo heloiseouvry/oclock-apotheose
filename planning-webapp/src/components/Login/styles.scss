@@ -1,12 +1,12 @@
 .LoginForm {
-  font-family: "McLaren", cursive;
+  font-family: "Source Sans Pro", sans-serif;
   color: rgb(0, 0, 0);
   font-size: 1.25rem;
   background-color: whitesmoke;
-  margin-top: 5rem;
+  margin-top: 1rem;
   margin-left:40rem;
   margin-right: 40rem;
-  margin-bottom: 5rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,6 +19,7 @@
 .title{
   margin-bottom: 2rem;
   text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 form input {
@@ -47,13 +48,30 @@ form input {
 
 .connect  {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  padding-left: 14rem;
+  padding-right: 14rem;
 
+}
+
+.error{
+  text-align: center;
+  margin:1rem;
+  color:red;
 }
 
 .forgottenPassword{
   text-align: center;
+  margin-top: 0.5rem;
+}
+
+.demo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
   margin-top: 2rem;
+  padding-left: 14rem;
+  padding-right: 14rem;
 }

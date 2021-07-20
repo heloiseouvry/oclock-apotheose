@@ -5,7 +5,8 @@ import React from 'react';
 import './styles.scss';
 
 import Header from '../Header';
-import LoginForm from '../Login'
+//import LoginForm from '../Login'
+import LoginApp from '../Login/loginApp'
 //import Homepage from '../Homepage';
 //import MyComponent from '../Sidebar';
 //import MyCalendar from '../Calendar';
@@ -18,7 +19,7 @@ import Footer from '../Footer';
 const App = () => (
   <div className="app">
     <Header />
-    <LoginForm/>
+    <LoginApp/>
     <Footer />
   </div>
 );
