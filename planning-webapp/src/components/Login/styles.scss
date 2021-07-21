@@ -1,0 +1,77 @@
+.LoginForm {
+  font-family: "Source Sans Pro", sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 1.25rem;
+  background-color: whitesmoke;
+  margin-top: 1rem;
+  margin-left:40rem;
+  margin-right: 40rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid rgb(44, 44, 44);
+  border-radius: 15px 50px;
+  box-shadow: 1px 1px 1px rgb(88, 79, 79);
+  padding: 5rem;
+}
+
+.title{
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+form input {
+  border: 1px solid rgba(44, 41, 41, 0.2);
+  background-color: rgba(44, 41, 41, 0.2);
+  width: 250px;
+  border-radius: 3px;
+  font-family: "Source Sans Pro", sans-serif;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: black;
+  font-weight: 300;
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  padding-left: 14rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.connect  {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 14rem;
+  padding-right: 14rem;
+
+}
+
+.error{
+  text-align: center;
+  margin:1rem;
+  color:red;
+}
+
+.forgottenPassword{
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.demo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-top: 2rem;
+  padding-left: 14rem;
+  padding-right: 14rem;
+}
