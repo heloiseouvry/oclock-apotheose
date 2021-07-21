@@ -10,9 +10,14 @@ class User extends CoreModel {
                 values: [email]
             };
             const { rows } = await db.query(preparedQuery);
-            return new User(rows[0]);
+            if(rows.length){
+                return new User(rows[0]);
+            } else {
+                return null;
+            }
         } catch (error) {
             console.error(error);
+            throw new Error(error.detail);
         }
 
     }
