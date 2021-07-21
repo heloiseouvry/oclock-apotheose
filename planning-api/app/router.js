@@ -11,9 +11,9 @@ router.post('/login', authController.loginSubmit);
 
 router.get('/events', eventController.getAllEvents);
 router.post('/events', eventController.addEvent);
-// router.get('/events/:id', eventController);
+router.get('/events/:id', eventController.getOneEvent);
 router.patch('/events/:id', eventController.editEvent);
-// router.delete('/events/:id', eventController);
+router.delete('/events/:id', eventController.deleteEvent);
 
 router.post('/phases', phaseController.addPhase);
 router.get('/phases/:id', phaseController.getOnePhase);

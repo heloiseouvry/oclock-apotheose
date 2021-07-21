@@ -24,8 +24,7 @@ class User extends CoreModel {
 
     async save() {
         if(this.id){
-            console.log("dans le model : ",this);
-            //TODO : coder l'update d'un user
+            
             try {
                 const preparedQuery = {
                     text:`UPDATE "user" SET (lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments)=($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,

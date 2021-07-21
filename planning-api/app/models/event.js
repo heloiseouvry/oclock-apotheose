@@ -1,4 +1,5 @@
 const CoreModel = require('./coreModel');
+const db = require('../database.js');
 
 class Event extends CoreModel {
     static async findAll() {
@@ -12,15 +13,43 @@ class Event extends CoreModel {
 
     async save(){
         if(this.id){
-            //TODO : coder l'update d'un user
-            console.log("Edit event");
-        } else {
             try {
-                return new Event(await CoreModel.fetchOne('INSERT INTO event(title, start_date, duration, color, user_id, address_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id', [this.title, this.start_date, this.duration, this.color, this.user_id, this.address_id]));
+                const preparedQuery = {
+                    text:`UPDATE event SET (title, start_date, duration, color, user_id, address_id)=($1, $2, $3, $4, $5, $6)`,
+                    values: [this.title, this.start_date, this.duration, this.color, this.user_id, this.address_id]
+                }
+                const { rows } = await db.query(preparedQuery);
+                 
             } catch (error) {
                 console.error(error);
                 throw new Error(error.detail);
             }
+        } else {
+            try {
+                const preparedQuery = {
+                    text: 'INSERT INTO event (title, start_date, duration, color, user_id, address_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
+                    values: [this.title, this.start_date, this.duration, this.color, this.user_id, this.address_id]
+                }
+                const { rows } = await db.query(preparedQuery);
+                this.id = rows[0].id;
+            } catch (error) {
+                console.error(error);
+                throw new Error(error.detail);
+            }
+        }
+    }
+
+    async delete() {
+        try {
+            const preparedQuery = {
+                text: `DELETE FROM event WHERE id=$1;`,
+                values: [this.id]
+            };
+            await db.query(preparedQuery);
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
         }
     }
 }
