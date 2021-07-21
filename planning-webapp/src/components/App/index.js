@@ -15,7 +15,6 @@ import MyCalendar from '../Calendar';
 const App = () => (
   <div className="app">
     <Homepage />
-    <MyCalendar />
     <Footer />
   </div>
 );

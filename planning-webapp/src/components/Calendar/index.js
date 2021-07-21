@@ -6,6 +6,7 @@ import TUICalendar from '@toast-ui/react-calendar';
 import Modal from 'react-modal';
 
 import Form from '../Form';
+import data from '../../data/data.js';
 
 // import Calendar from '@toast-ui/react-calendar';
 import 'tui-calendar/dist/tui-calendar.css';
@@ -17,115 +18,6 @@ import 'tui-time-picker/dist/tui-time-picker.css';
 const myTheme = {
   // Theme object to extends default dark theme.
 };
-/*
-const today = new Date();
-
-const MyCalendar = () => (
-  <Calendar
-    height="900px"
-    calendars={[
-      {
-        id: '0',
-        name: 'Private',
-        bgColor: '#9e5fff',
-        borderColor: '#9e5fff'
-      },
-      {
-        id: '1',
-        name: 'Company',
-        bgColor: '#00a9ff',
-        borderColor: '#00a9ff'
-      }
-    ]}
-    // disableDblClick={true}
-    disableClick={false}
-    isReadOnly={false}
-    month={{
-      startDayOfWeek: 0
-    }}
-    schedules={[
-      {
-        id: '1',
-        calendarId: '0',
-        title: 'TOAST UI Calendar Study',
-        category: 'time',
-        dueDateClass: '',
-        start: today.toISOString(),
-        end: getDate('hours', today, 3, '+').toISOString()
-      },
-      {
-        id: '2',
-        calendarId: '0',
-        title: 'Practice',
-        category: 'milestone',
-        dueDateClass: '',
-        start: getDate('date', today, 1, '+').toISOString(),
-        end: getDate('date', today, 1, '+').toISOString(),
-        isReadOnly: true
-      },
-      {
-        id: '3',
-        calendarId: '0',
-        title: 'FE Workshop',
-        category: 'allday',
-        dueDateClass: '',
-        start: getDate('date', today, 2, '-').toISOString(),
-        end: getDate('date', today, 1, '-').toISOString(),
-        isReadOnly: true
-      },
-      {
-        id: '4',
-        calendarId: '0',
-        title: 'Report',
-        category: 'time',
-        dueDateClass: '',
-        start: today.toISOString(),
-        end: getDate('hours', today, 1, '+').toISOString()
-      }
-    ]}
-    scheduleView
-    taskView
-    template={{
-      milestone(schedule) {
-        return `<span style="color:#fff;background-color: ${schedule.bgColor};">${
-          schedule.title
-        }</span>`;
-      },
-      milestoneTitle() {
-        return 'Milestone';
-      },
-      allday(schedule) {
-        return `${schedule.title}<i class="fa fa-refresh"></i>`;
-      },
-      alldayTitle() {
-        return 'All Day';
-      }
-    }}
-    theme={myTheme}
-    timezones={[
-      {
-        timezoneOffset: 540,
-        displayLabel: 'GMT+09:00',
-        tooltip: 'Seoul'
-      },
-      {
-        timezoneOffset: -420,
-        displayLabel: 'GMT-08:00',
-        tooltip: 'Los Angeles'
-      }
-    ]}
-    useDetailPopup
-    useCreationPopup
-    view="month" // You can also set the `defaultView` option.
-    week={{
-      showTimezoneCollapseButton: true,
-      timezonesCollapsed: true
-    }}
-  />
-);
-*/
-
-// import "./styles.css";
 
 const start = new Date();
 const end = new Date(new Date().setMinutes(start.getMinutes() + 30));
@@ -194,8 +86,13 @@ const MyCalendar = () => {
   let subtitle;
   let modalStartDate;
   let modalEndDate;
+
+  const [editingPhase, setEditingPhase] = React.useState(null);
+
+  // React.useState crée un couple variable (qui fait partie de mon composant) et fonction pour modifier cette variable
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
+  // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
   function openModal() {
     setIsOpen(true);
   }
@@ -224,25 +121,6 @@ const MyCalendar = () => {
     modalEndDate = scheduleData.end;
     // Need to open the modal to add an event
     openModal();
-
-    /*
-    const schedule = {
-      id: String(Math.random()),
-      title: scheduleData.title,
-      isAllDay: scheduleData.isAllDay,
-      start: scheduleData.start,
-      end: scheduleData.end,
-      category: scheduleData.isAllDay ? "allday" : "time",
-      dueDateClass: "",
-      location: scheduleData.location,
-      raw: {
-        class: scheduleData.raw["class"]
-      },
-      state: scheduleData.state
-    };
-
-    cal.current.calendarInst.createSchedules([schedule]);
-    */
   }, []);
 
 
@@ -255,15 +133,18 @@ const MyCalendar = () => {
   }, []);
 
   const onBeforeUpdateSchedule = useCallback((e) => {
-    console.log(e);
+    console.log("onBeforeUpdateSchedule", e);
 
     const { schedule, changes } = e;
 
-    cal.current.calendarInst.updateSchedule(
-      schedule.id,
-      schedule.calendarId,
-      changes
-    );
+    setEditingPhase(e.schedule);
+    openModal();
+    
+    //TODO décaler ce qu'il y a en dessous dans le onSubmit
+    //il va falloir détecter si je suis en train de modifier ou de créer
+    // rappel : si editingPhase est null alors je crée, si editingPhase contient des données alors je suis en train de modifier
+
+
   }, []);
 
   function getFormattedTime(time) {
@@ -281,17 +162,17 @@ const MyCalendar = () => {
       html.push("<strong>" + getFormattedTime(schedule.start) + "</strong> ");
     }
     if (schedule.isPrivate) {
-      html.push('<span class="calendar-font-icon ic-lock-b"></span>');
+      html.push('<span className="calendar-font-icon ic-lock-b"></span>');
       html.push(" Private");
     } else {
       if (schedule.isReadOnly) {
-        html.push('<span class="calendar-font-icon ic-readonly-b"></span>');
+        html.push('<span className="calendar-font-icon ic-readonly-b"></span>');
       } else if (schedule.recurrenceRule) {
-        html.push('<span class="calendar-font-icon ic-repeat-b"></span>');
+        html.push('<span className="calendar-font-icon ic-repeat-b"></span>');
       } else if (schedule.attendees.length) {
-        html.push('<span class="calendar-font-icon ic-user-b"></span>');
+        html.push('<span className="calendar-font-icon ic-user-b"></span>');
       } else if (schedule.location) {
-        html.push('<span class="calendar-font-icon ic-location-b"></span>');
+        html.push('<span className="calendar-font-icon ic-location-b"></span>');
       }
       html.push(" " + schedule.title);
     }
@@ -299,29 +180,71 @@ const MyCalendar = () => {
     return html.join("");
   }
 
-  const onSubmit = useCallback((event) => {
-    event.preventDefault(event);
-    console.log(event.target.name.value);
-    console.log(event.target.email.value);
-    console.log(modalStartDate);
-    console.log(modalEndDate);
-
-
+  const onSubmitCreate = (eventFromForm) => {
     var schedule = {
       id: String(Math.random()),
-      title: event.target.name.value,
+      title: eventFromForm.target.name.value,
       isAllDay: false,
+      // les 2 lignes d'après sont attribuées dans onCreateSchedule
+      //TODO à récupérer depuis le event.target
       start: modalStartDate,
       end: modalEndDate,
       category:  'time',
-      raw: event.target.email.value,
+      raw: {
+        techID : parseInt(eventFromForm.target.techName.value, 10),
+      },
       calendarId: "1",
-      body: event.target.email.value
+      // Schedule.body is basic text, not possible to put anything but string
+      body: "test",
     };
     /* step2. save schedule */
     // @ts-ignore: Object is possibly 'null'.
+    
+    // TODO ici je dois prévoir d'envoyer le schedule à sauvegarder en BDD
+    //potientiellement ajax.post
+    //avec une fausse ID
+    //auquel je passe une callback avec ce qu'il y a à executer en cas de retour valide j'execute le createschedule (ligne juste en dessous) qui comportera tous l'objet schedule definitif avec l'ID généré par le back
     cal.current.calendarInst.createSchedules([schedule]);
+  };
 
+  const onSubmitUpdate = (eventFromForm) => {
+    console.log("eventFromForm.target.IDHidden.value", parseFloat(eventFromForm.target.IDHidden.value));
+    console.log("eventFromForm.target.calendarIdHidden.value", eventFromForm.target.calendarIdHidden.value);
+    console.log("eventFromForm.target.name.value", eventFromForm.target.name.value);
+    console.log("eventFromForm.target.techName.value", eventFromForm.target.techName.value);
+
+    // TODO check informations I send
+    cal.current.calendarInst.updateSchedule(
+      parseFloat(eventFromForm.target.IDHidden.value),
+      parseInt(eventFromForm.target.calendarIdHidden.value, 10),
+      {
+        title: eventFromForm.target.name.value,
+        raw:{
+          techID : parseInt(eventFromForm.target.techName.value, 10),
+        },
+      }
+    );
+  };
+
+  const onSubmit = useCallback((event) => {
+    event.preventDefault(event);
+    // ici avec event.target.techName.value je récupère l'ID de mon tech depuis le select du Form.js
+    console.log("je suis event.target.techName.value", event.target.techName.value);
+    console.log("je suis modalStartDate", modalStartDate);
+    console.log("je suis modalEndDate", modalEndDate);
+
+    //TODO faure le test pour appeler le bon onSubmit
+
+    console.log("event.target.createHidden.value", event.target.createHidden.value);
+    if (event.target.createHidden.value == "false") {
+      console.log("uptdate");
+      onSubmitUpdate(event);
+    }
+    else {
+      console.log("create");
+      onSubmitCreate(event);
+    }
+    setEditingPhase(null);
     closeModal();
 
   }, []);
@@ -331,44 +254,28 @@ const MyCalendar = () => {
       console.log('time', schedule);
       return getTimeTemplate(schedule, false);
     },
-    collapseBtnTitle: function() {
-      return '<span class="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
-  },
-    /*
-     popupDetailDate: (details) => {
-      console.log(`popupDetailDate`, details);
-      return '<div>TESTDATE</div>'
-    },
-    popupDetailLocation: (details) => {
-      console.log(`popupDetailLocation`, details);
-      return '<div>TESTLocation</div>'
-    },  
-    popupDetailUser: (details) => {
-      console.log(`popupDetailUser`, details);
-      return '<div>TESTUser</div>'
-    },  
-    popupDetailState: (details) => {
-      console.log(`popupDetailState`, details);
-      return '<div>TESTState</div>'
-    },  
-    popupDetailRepeat: (details) => {
-      console.log(`popupDetailRepeat`, details);
-      return '<div>TESTRepeat</div>'
-    },  
-    popupDetailBody: (details) => {
-      console.log(`popupDetailBody`, details);
-      return '<div>TESTBody</div>'
-    },  
+  //   collapseBtnTitle: function() {
+  //     return '<span className="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
+  // },
+    popupDetailBody: (phaseDetails) => {
+      console.log(`popupDetailBody`, phaseDetails);
+      var ret="<div>"+phaseDetails.body;
+      ret += "<ul>";
 
-    popupEdit: (details) => {
-      console.log(`popupEdit`, details);
-      return '<div>TESTEdit</div>'
-    },
-    popupDelete: (details) => {
-      console.log(`popupEdit`, details);
-      return '<div>TESTDelete</div>'
-    },
-    */
+      var techFound = data.find((elementTech) => {
+        console.log("tech Find=", elementTech);
+        console.log("elementTech.id=", elementTech.id);
+        console.log("phaseDetails.raw.techID=", phaseDetails.raw.techID);
+        return elementTech.id === phaseDetails.raw.techID;
+      });
+      console.log("techFound=", techFound);
+
+      ret += "<li>"+techFound.prenom +" "+ techFound.nom+"</li>";
+
+      ret += "</ul>";
+      ret += "</div>";
+      return ret;
+    },  
   };
 
   return (
@@ -384,7 +291,7 @@ const MyCalendar = () => {
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
         <button onClick={closeModal}>close</button>
-        <Form onSubmit={onSubmit} />
+        <Form onSubmit={onSubmit} techList={data} currentPhase={editingPhase} />
       </Modal>
 
       <TUICalendar
