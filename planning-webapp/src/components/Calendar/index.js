@@ -1,6 +1,7 @@
 // import React from 'react';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import TUICalendar from '@toast-ui/react-calendar';
+import { Button } from 'semantic-ui-react';
 
 // Import react-modal to use it instead of app's Popup
 import Modal from 'react-modal';
@@ -88,10 +89,10 @@ const MyCalendar = () => {
   let modalStartDate;
   let modalEndDate;
 
-  const [editingPhase, setEditingPhase] = React.useState(null);
+  const [editingPhase, setEditingPhase] = useState(null);
 
-  // React.useState crée un couple variable (qui fait partie de mon composant) et fonction pour modifier cette variable
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  // useState crée un couple variable (qui fait partie de mon composant) et fonction pour modifier cette variable
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
   function openModal() {
@@ -107,6 +108,29 @@ const MyCalendar = () => {
     setIsOpen(false);
   }
 
+  function dayView() {
+    cal.current.calendarInst.changeView('day', true);
+  }
+
+  function weekView() {
+    cal.current.calendarInst.changeView('week', true);
+  }
+
+  function monthView() {
+    cal.current.calendarInst.changeView('month', true);
+  }
+
+  function todayView() {
+    cal.current.calendarInst.today();
+  }
+
+  function prevView() {
+    cal.current.calendarInst.prev();
+  }
+
+  function nextView() {
+    cal.current.calendarInst.next();
+  }
 
   const onClickSchedule = useCallback((e) => {
     const { calendarId, id } = e.schedule;
@@ -279,6 +303,8 @@ const MyCalendar = () => {
     },  
   };
 
+  
+
   return (
     <div className="App">
       <Modal
@@ -292,13 +318,19 @@ const MyCalendar = () => {
         <button onClick={closeModal}>close</button>
         <Form onSubmit={onSubmit} techList={data} currentPhase={editingPhase} />
       </Modal>
+      <Button content='<' secondary onClick={prevView} /> 
+      <Button content='Jour' secondary onClick={dayView} /> 
+      <Button content='Semaine' secondary onClick={weekView}/> 
+      <Button content='Mois' secondary onClick={monthView}/> 
+      <Button content='>' secondary onClick={nextView}/> 
+      <Button content="Aujourd'hui" secondary onClick={todayView}/> 
 
       <TUICalendar
         ref={cal}
-        height="1000px"
+        height="600px"
         view="week"
-        // useCreationPopup={false} to use our form instead of app Popup
-        useCreationPopup={false}
+        taskView={false}
+        useCreationPopup={false} // "false" to use our form instead of app Popup
         useDetailPopup={true}
         template={templates}
         calendars={calendars}
