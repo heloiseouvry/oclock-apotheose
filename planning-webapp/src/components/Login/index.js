@@ -1,89 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react/cjs/react.development';
+import { Link } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
+import { Button, Checkbox } from 'semantic-ui-react';
 
-import Field from './Field';
+import './styles.scss';
+    //Passing the Login and error message as an argument
+function LoginForm ({ Login, error}) {
+    //Setting the default details of the user to none 
+    const [details, setDetails] = useState({email: "", password: ""});
+    // (1)SubmitHandler is listening for the form to submit (onSubmit)
+    const submitHandler = event =>{
+        event.preventDefault();
 
-import './style.scss';
+        Login(details);
+    }
 
-const LoginForm = ({
-  email,
-  password,
-  changeField,
-  handleLogin,
-  handleLogout,
-  isLogged,
-  loggedMessage,
-}) => {
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    handleLogin();
-  };
-
-  return (
-    <div className="login-form">
-      {isLogged && (
-        <div className="login-form-logged">
-          <p className="login-form-message">
-            {loggedMessage}
-          </p>
-          <button
-            type="button"
-            className="login-form-button"
-            onClick={handleLogout}
-          >
-            Déconnexion
-          </button>
+    return(
+        <div className='LoginForm'>
+        <h1 className='title'>Se connecter</h1>
+                             {/* // (1)When the form will be submitted it will pass the pass the information to submitHandler  */}
+            <form className='inputForm' method="POST" onSubmit={submitHandler}> 
+                             {/* // Here we collect the detailled data of the email and password input    */}
+                <input type='email' placeholder='Email' onChange={event => setDetails({...details, email: event.target.value})} value={details.email}/><br></br>               
+                <input type="password" placeholder='Mot de passe'  onChange={event => setDetails({...details, password: event.target.value})} value={details.password}/>
+            
+                <Checkbox className='checkbox' label='Se souvenir de moi' />
+            
+                <div className='connect' >
+                    <Button type='submit' className='button' content='Se connecter' primary />
+                    {(error !="") ? (<div className="error">{error}</div>) : ""}
+                    <a  className='forgottenPassword' href="/">Mot de passe oublié?</a>
+                </div>
+            </form>
+            <div className='demo'>
+                <p>Voullez vous essayer notre aplication?</p> 
+                <Link to ="/contact">  
+                <Button content='Nous contacter' secondary /> 
+                </Link>
+            </div>
         </div>
-      )}
-      {!isLogged && (
-
-        <form autoComplete="off" className="login-form-element" onSubmit={handleSubmit}>
-          <Field
-            name="email"
-            placeholder="Adresse Email"
-            onChange={changeField}
-            value={email}
-          />
-          <Field
-            name="password"
-            type="password"
-            placeholder="Mot de passe"
-            onChange={changeField}
-            value={password}
-          />
-          <button
-            type="submit"
-            className="login-form-button"
-          >
-            OK
-          </button>
-        </form>
-      )}
-    </div>
-  );
-};
-
-LoginForm.propTypes = {
-  // Valeur du champ email
-  email: PropTypes.string.isRequired,
-  // Valeur du champ password
-  password: PropTypes.string.isRequired,
-  // Fonction permettant de modifier les valeurs des champs
-  // Elle donne 2 paramètres, la valeur et le nom du champ
-  changeField: PropTypes.func.isRequired,
-  // Fonction déclenchée à la soumission du formulaire de connexion
-  handleLogin: PropTypes.func.isRequired,
-  // Fonction déclenchée au clic du bouton déconnexion
-  handleLogout: PropTypes.func.isRequired,
-  // Booléen qui représente l'état connecté/déconnecté
-  isLogged: PropTypes.bool,
-  // Message qui s'affiche quand on est connecté
-  loggedMessage: PropTypes.string,
-};
-
-LoginForm.defaultProps = {
-  isLogged: false,
-  loggedMessage: 'Connecté',
+    )
 };
 
 export default LoginForm;
