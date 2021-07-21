@@ -23,7 +23,7 @@ router.patch('/events/:id', eventController.editEvent);
 router.get('/users', userController.getAllUsers);
 router.post('/users', validateBody(userSchema), userController.addUser);
 router.get('/users/:id', userController.getOneUser);
-// router.patch('/users/:id', userController.editUser);
+router.patch('/users/:id', userController.editUser);
 router.delete('/users/:id', userController.deleteUser);
 
 module.exports = router;
