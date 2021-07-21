@@ -85,7 +85,7 @@ Content-Type: application/json
 
 {
   "lastname": "Obama",
-  "firstname": "Barack",
+  "firstname": "Michele",
   "phone_number": "0674965896",
   "role": "tech",
   "email": "bo@gmail.com",
@@ -94,11 +94,31 @@ Content-Type: application/json
   "birth_date": "1962-12-02",
   "birth_city": "Auxerre",
   "birth_department": "89",
-  "ssn": "1 62 12 89 449 491 84",
+  "ssn": "2 62 12 89 449 491 84",
   "intermittent_registration": "1012",
   "legal_entity": null,
   "siret": null,
   "emergency_contact": "Pierre Dupont",
   "emergency_phone_number": "0612121212",
   "comments": "ne s'entend pas avec Jean-Jacques ni michel d'ailleurs, mais bosse super bien avec Jean Eudes !"
+}
+
+### Creation of a phase
+
+POST {{baseUrl}}/phases
+Content-Type: application/json
+
+{
+  "title": "montage-scène principale",
+  "start_date": "2021-09-09 08:00:00",
+  "duration": "6 hours",
+  "type": "montage",
+  "internal_location": "scène 1",
+  "tech_manager_contact": "Céline",
+  "provider_contact": "Robert B",
+  "number_fee": 1,
+  "comments": "Attention, il faudrait prévoir des parpaing pour caler la scène",
+  "event_id" : 1,
+  "vehicle_id": 1,
+  "user_id": 1
 }

@@ -15,10 +15,10 @@ router.post('/events', eventController.addEvent);
 router.patch('/events/:id', eventController.editEvent);
 // router.delete('/events/:id', eventController);
 
-// router.post('/phase', phaseController);
-// router.get('/phase/:id', phaseController);
-// router.patch('/phase/:id', phaseController);
-// router.delete('/phase/:id', phaseController);
+router.post('/phases', phaseController.addPhase);
+router.get('/phases/:id', phaseController.getOnePhase);
+router.patch('/phases/:id', phaseController.editPhase);
+router.delete('/phases/:id', phaseController.deletePhase);
 
 router.get('/users', userController.getAllUsers);
 router.post('/users', validateBody(userSchema), userController.addUser);

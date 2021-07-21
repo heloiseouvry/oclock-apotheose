@@ -34,7 +34,7 @@ const userController = {
             userToEdit.id = req.params.id
             console.log("dans le controller : ",userToEdit);
             await userToEdit.save();
-            res.redirect(`/users/${userToEdit.id}`);
+            res.status(201).json(userToEdit);
         } catch (error) {
             res.status(500).json(error.message);
         }
