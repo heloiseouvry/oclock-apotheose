@@ -24,20 +24,21 @@ const end = new Date(new Date().setMinutes(start.getMinutes() + 30));
 // const schedules: ISchedule[] = [
 const schedules = [
   {
-    calendarId: "1",
+    calendarId: "2",
     category: "time",
     isVisible: true,
-    title: "Study",
+    title: "Montage",
     id: "1",
     body: "Test",
     start,
-    end
+    end,
+    color: "#fefefe"
   },
   {
     calendarId: "2",
     category: "time",
     isVisible: true,
-    title: "Meeting",
+    title: "Exploitation",
     id: "2",
     body: "Description",
     start: new Date(new Date().setHours(start.getHours() + 1)),
@@ -280,8 +281,6 @@ const MyCalendar = () => {
 
   return (
     <div className="App">
-      <h1>Welcome to TOAST Ui Calendar</h1>
-
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}

@@ -12,7 +12,6 @@ function LoginForm ({ Login, error}) {
     // (1)SubmitHandler is listening for the form to submit (onSubmit)
     const submitHandler = event =>{
         event.preventDefault();
-
         Login(details);
     }
 
@@ -22,8 +21,8 @@ function LoginForm ({ Login, error}) {
                              {/* // (1)When the form will be submitted it will pass the pass the information to submitHandler  */}
             <form className='inputForm' method="POST" onSubmit={submitHandler}> 
                              {/* // Here we collect the detailled data of the email and password input    */}
-                <input type='email' placeholder='Email' onChange={event => setDetails({...details, email: event.target.value})} value={details.email}/><br></br>               
-                <input type="password" placeholder='Mot de passe'  onChange={event => setDetails({...details, password: event.target.value})} value={details.password}/>
+                <input type='email' placeholder='Email' onChange={event => setDetails({...details, email: event.target.value})} /><br></br>               
+                <input type="password" placeholder='Mot de passe'  onChange={event => setDetails({...details, password: event.target.value})} />
             
                 <Checkbox className='checkbox' label='Se souvenir de moi' />
             
@@ -34,7 +33,7 @@ function LoginForm ({ Login, error}) {
                 </div>
             </form>
             <div className='demo'>
-                <p>Voullez vous essayer notre aplication?</p> 
+                <p>Voulez-vous essayer notre application?</p> 
                 <Link to ="/contact">  
                 <Button content='Nous contacter' secondary /> 
                 </Link>

@@ -9,7 +9,6 @@ import ContactForm from '../ContactForm'
 import Homepage from '../Homepage';
 import MyCalendar from '../Calendar';
 import Footer from '../Footer';
-import MyCalendar from '../Calendar';
 
 const App = () => (
   //We use the router method to switch from a component to another

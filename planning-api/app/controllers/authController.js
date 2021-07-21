@@ -11,7 +11,7 @@ const authController = {
         
         if(!user) {
             // l'utilisateur n'existe pas
-            res.status(401).json("This user doesn't exist");
+            res.status(403).json("This user doesn't exist");
         }
 
         // si on arrive jusqu'ici c'est que l'utilisateur existe
@@ -19,7 +19,7 @@ const authController = {
 
         if(!isPasswordValid) {
             // si le mot de passe ne correspond pas a celui qui à été encrypté en BDD alors on reaffiche la page de login avec une erreur
-            res.status(401).json("Wrong password");
+            res.status(403).json("Wrong password");
         }
         
         // si on arrive jusqu'ici c'est que l'utilisateur existe (trouvé grace a l'email) et le mot de passe correspond a ce qui est en BDD
