@@ -42,6 +42,7 @@ const schedules = [
     title: "Exploitation",
     id: "2",
     body: "Description",
+    attendees: ["Bill Gates", "Elliott Anderson"],
     start: new Date(new Date().setHours(start.getHours() + 1)),
     end: new Date(new Date().setHours(start.getHours() + 2))
   }
@@ -290,12 +291,12 @@ const MyCalendar = () => {
       var techFound = data.find((elementTech) => {
         console.log("tech Find=", elementTech);
         console.log("elementTech.id=", elementTech.id);
-        console.log("phaseDetails.raw.techID=", phaseDetails.raw.techID);
-        return elementTech.id === phaseDetails.raw.techID;
+        console.log("phaseDetails.raw.techID=", phaseDetails.raw?.techID);
+        return elementTech.id === phaseDetails.raw?.techID;
       });
       console.log("techFound=", techFound);
 
-      ret += "<li>"+techFound.prenom +" "+ techFound.nom+"</li>";
+      ret += "<li>"+techFound?.prenom +" "+ techFound?.nom+"</li>";
 
       ret += "</ul>";
       ret += "</div>";
