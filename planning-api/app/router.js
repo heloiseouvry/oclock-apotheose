@@ -5,12 +5,13 @@ const router = new Router();
 const { mainController, authController, eventController, phaseController, userController } = require('./controllers');
 const { userSchema } = require('./schemas');
 const { validateBody } = require('./middlewares/validator');
+const authMW = require('./middlewares/authMW');
 
 // router.post('/contact', mainController);
 router.post('/login', authController.loginSubmit);
 
 router.get('/events', eventController.getAllEvents);
-router.post('/events', eventController.addEvent);
+router.post('/events', authMW, eventController.addEvent);
 router.get('/events/:id', eventController.getOneEvent);
 router.patch('/events/:id', eventController.editEvent);
 router.delete('/events/:id', eventController.deleteEvent);

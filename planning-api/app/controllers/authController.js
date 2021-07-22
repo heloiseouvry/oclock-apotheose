@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
+const jwt = require('../services/auth');
 
 const authController = {
     loginSubmit: async (req, res) => {
@@ -11,7 +12,7 @@ const authController = {
         
         if(!user) {
             // l'utilisateur n'existe pas
-            res.status(403).json("This user doesn't exist");
+            return res.status(403).json("This user doesn't exist");
         }
 
         // si on arrive jusqu'ici c'est que l'utilisateur existe
@@ -19,16 +20,18 @@ const authController = {
 
         if(!isPasswordValid) {
             // si le mot de passe ne correspond pas a celui qui à été encrypté en BDD alors on reaffiche la page de login avec une erreur
-            res.status(403).json("Wrong password");
+            return res.status(403).json("Wrong password");
         }
         
         // si on arrive jusqu'ici c'est que l'utilisateur existe (trouvé grace a l'email) et le mot de passe correspond a ce qui est en BDD
-        // on enregistre l'utilisateur dans la session
         // req.session.user = user;
-        // je supprimer la propriété "password" de l'utilisateur stocké en session par securité
         // req.session.user.password = null;
 
-        return res.json(user);
+        res.status(200).json({
+            token: jwt.generateToken(user),
+            // all the needed data for front
+            role: user.role
+        });
 
     },
 }
