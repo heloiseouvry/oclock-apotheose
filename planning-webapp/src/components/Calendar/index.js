@@ -42,6 +42,7 @@ const schedules = [
     title: "Exploitation",
     id: "2",
     body: "Description",
+    attendees: ["Bill Gates", "Elliott Anderson"],
     start: new Date(new Date().setHours(start.getHours() + 1)),
     end: new Date(new Date().setHours(start.getHours() + 2))
   }
@@ -69,14 +70,28 @@ const calendars = [
 
 // Style for the modal
 const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.75)'
+    },
+    content: {
+      position: 'absolute',
+      top: '40px',
+      left: '40px',
+      right: '40px',
+      bottom: '40px',
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      borderRadius: '4px',
+      outline: 'none',
+      padding: '20px'
+    }
 };
 
 Modal.setAppElement('#root');
@@ -101,7 +116,7 @@ const MyCalendar = () => {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
+    subtitle.style.color = '#000000';
   }
 
   function closeModal() {
@@ -290,12 +305,12 @@ const MyCalendar = () => {
       var techFound = data.find((elementTech) => {
         console.log("tech Find=", elementTech);
         console.log("elementTech.id=", elementTech.id);
-        console.log("phaseDetails.raw.techID=", phaseDetails.raw.techID);
-        return elementTech.id === phaseDetails.raw.techID;
+        console.log("phaseDetails.raw.techID=", phaseDetails.raw?.techID);
+        return elementTech.id === phaseDetails.raw?.techID;
       });
       console.log("techFound=", techFound);
 
-      ret += "<li>"+techFound.prenom +" "+ techFound.nom+"</li>";
+      ret += "<li>"+techFound?.prenom +" "+ techFound?.nom+"</li>";
 
       ret += "</ul>";
       ret += "</div>";
@@ -314,7 +329,7 @@ const MyCalendar = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Créé votre de phase</h2>
         <button onClick={closeModal}>close</button>
         <Form onSubmit={onSubmit} techList={data} currentPhase={editingPhase} />
       </Modal>
