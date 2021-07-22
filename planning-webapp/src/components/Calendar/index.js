@@ -2,6 +2,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import TUICalendar from '@toast-ui/react-calendar';
 import { Button } from 'semantic-ui-react';
+// import axios from "axios";
 
 // Import react-modal to use it instead of app's Popup
 import Modal from 'react-modal';
@@ -97,6 +98,12 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const MyCalendar = () => {
+  // const response = await axios.get("http://localhost:4000/v1/events", {
+  //   headers: {
+  //     Authorization: `bearer ${localStorage.getItem('token')}`,
+  //   },
+  // });
+
   const cal = useRef(null);
 
   // variable & fonction for the modal

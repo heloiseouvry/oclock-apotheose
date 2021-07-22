@@ -3,7 +3,7 @@ require('dotenv').config();
 
 module.exports = function (req, res, next) {
   try {
-    const token = req.headers("Authorization");
+    const token = req.header("Authorization").slice(7);
     if(!token){
       res.status(403).json({error: "Non-authorized"})
     }
@@ -12,6 +12,6 @@ module.exports = function (req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    res.status(403).json({error: "Token invalid"});
+    return res.status(403).json({error: "Token invalid"});
   }
 }
