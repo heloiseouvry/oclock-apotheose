@@ -1,15 +1,11 @@
 const { Router } = require('express');
+
 const router = new Router();
 
-const { mainController, authController, eventController, phaseController, userController } = require('./controllers');
+const { eventController, phaseController, userController } = require('./controllers');
 const { userSchema } = require('./schemas');
 const { validateBody } = require('./middlewares/validator');
 
-// router.post('/contact', mainController);
-router.post('/login', authController.loginSubmit);
-
-
-// Routes to remove after we put back authRouter 
 router.get('/events', eventController.getAllEvents);
 router.post('/events', eventController.addEvent);
 router.get('/events/:id', eventController.getOneEvent);

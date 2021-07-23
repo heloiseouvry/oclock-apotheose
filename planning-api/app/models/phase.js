@@ -2,6 +2,14 @@ const CoreModel = require('./coreModel');
 const db = require('../database.js');
 
 class Phase extends CoreModel{
+    static async findAll() {
+        const data = await CoreModel.fetch('SELECT * FROM phase;');
+        return data.map(d => new Phase(d));
+    }
+
+    static async findById(id){
+        return(new Phase(await CoreModel.fetchOne('SELECT * FROM phase WHERE id = $1;', [id])));
+    }
     
     async save(){
         if(this.id){
@@ -31,10 +39,6 @@ class Phase extends CoreModel{
                 throw new Error(error.detail);
             }
         }
-    }
-
-    static async findById(id){
-        return(new Phase(await CoreModel.fetchOne('SELECT * FROM phase WHERE id = $1;', [id])));
     }
 
     async delete() {

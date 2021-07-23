@@ -14,10 +14,9 @@ function LoginApp() {
   const Login = async (details) => {
     try {
       const response = await axios.post("http://localhost:4000/v1/login", details);
-      // (1)if the email and the password match the info of adminUser then the user is logged in
+      localStorage.setItem('token', response.data.token)
       setUser({email: details.email});
     } catch (error) {
-      // (2)if the email and the password don't match the info of adminUser then we show an error message
       console.error(error);
       setError("Les informations sont incorrectes !");
     }
@@ -30,7 +29,7 @@ function LoginApp() {
 
   return (
     <div>
-      {user.email != "" ? (
+      {localStorage.getItem('token') ? (
         // (1)Once we are logged in we render Calendar
         <Calendar />
       ) : (
