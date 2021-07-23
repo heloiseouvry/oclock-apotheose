@@ -142,8 +142,8 @@ const MyCalendar = () => {
           );
 
           let phaseFront = {
-            id: phaseBack.event_id.toString(),
-            calendarId: phaseBack.id.toString(),
+            id: phaseBack.id.toString(),
+            calendarId: phaseBack.event_id.toString(),
             category: "time",
             isVisible: true,
             title: phaseBack.title,
