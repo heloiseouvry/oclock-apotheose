@@ -49,6 +49,8 @@ let schedules = [
   // },
 ];
 
+// La calendar gère la couleur de l'événement & de la phase
+// https://nhn.github.io/tui.calendar/latest/CalendarProps
 // const calendars: ICalendarInfo[] = [
 let calendars = [
   // {
@@ -310,6 +312,8 @@ const MyCalendar = () => {
       start: modalStartDate,
       end: modalEndDate,
       category: "time",
+      // Dans l'objet raw je place les données qui ne sont pas prévues par la librairie et que je vais rendre via le template
+      // Exemple : salaire, véhicule
       raw: {
         techID: parseInt(eventFromForm.target.techName.value, 10),
       },
@@ -385,6 +389,7 @@ const MyCalendar = () => {
     closeModal();
   }, []);
 
+  // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
   const templates = {
     time: function (schedule) {
       console.log("time", schedule);
@@ -398,6 +403,7 @@ const MyCalendar = () => {
       var ret = "<div>" + phaseDetails.body;
       ret += "<ul>";
 
+      //Sert à afficher les prénom et le nom du technicien sélectionné dans le form de la modal
       var techFound = data.find((elementTech) => {
         console.log("tech Find=", elementTech);
         console.log("elementTech.id=", elementTech.id);
