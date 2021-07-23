@@ -14,6 +14,6 @@ app.use(express.json());
 app.use(cors("*"));
 
 app.use('/v1', router);
-app.use('/v1', authMW, authRouter);
+// app.use('/v1', authMW, authRouter);
 
 app.listen(port, () => console.log('API running on http://localhost:' + port));

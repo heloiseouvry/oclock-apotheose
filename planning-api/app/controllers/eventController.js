@@ -1,4 +1,4 @@
-const { Event } = require("../models");
+const { Event, Phase } = require("../models");
 
 const eventController = {
   getAllEvents : async (req, res, next) => {
@@ -7,8 +7,21 @@ const eventController = {
 
   addEvent : async (req, res, next) => {
     const newEvent = new Event(req.body);
+    console.log(newEvent);
     try {
       await newEvent.save();
+      
+      const newPhase = new Phase({
+        title: newEvent.title,
+        start_date: newEvent.start_date,
+        duration: newEvent.duration,
+        type: 'event',
+        number_fee: '0',
+        event_id: newEvent.id,
+        user_id: newEvent.user_id
+      });
+      await newPhase.save();
+      
       res.status(201).json(newEvent);
     } catch (error) {
       res.status(500).json(error.message);

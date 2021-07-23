@@ -102,8 +102,6 @@ const MyCalendar = () => {
   const [phases, setPhases] = useState([]);
 
   useEffect(() => {
-    console.log("This will be logged after every render!");
-
     const getAllEvents = async () => {
       try {
         const response = await axios.get("http://localhost:4000/v1/events", {
@@ -134,24 +132,42 @@ const MyCalendar = () => {
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
+          console.log(phaseBack);
+
           const start_date = new Date(phaseBack.start_date);
-          const end_date = new Date(
-            new Date(start_date).setHours(
-              start_date.getHours() + phaseBack.duration.hours
-            )
-          );
+          let end_date,
+            category, isAllDay = null;
+          if (phaseBack.type === "event") {
+            end_date = new Date(
+              new Date(start_date).setDate(
+                start_date.getDate() + phaseBack.duration.days
+              )
+            );
+            category = "allday";
+            isAllDay = true;
+          } else {
+            end_date = new Date(
+              new Date(start_date).setHours(
+                start_date.getHours() + phaseBack.duration.hours
+              )
+            );
+            category = "time";
+            isAllDay = false;
+          }
 
           let phaseFront = {
             id: phaseBack.id.toString(),
             calendarId: phaseBack.event_id.toString(),
-            category: "time",
+            category: category,
             isVisible: true,
+            isAllDay,
             title: phaseBack.title,
             body: phaseBack.comments,
             start: start_date,
             end: end_date,
             color: "#ffffff",
           };
+          console.log(phaseFront);
 
           phasesToAdd.push(phaseFront);
         }
