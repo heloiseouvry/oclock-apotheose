@@ -1,21 +1,21 @@
 // import React from 'react';
-import React, { useCallback, useRef, useState } from 'react';
-import TUICalendar from '@toast-ui/react-calendar';
-import { Button } from 'semantic-ui-react';
-// import axios from "axios";
+import React, { useCallback, useRef, useState } from "react";
+import TUICalendar from "@toast-ui/react-calendar";
+import { Button } from "semantic-ui-react";
+import axios from "axios";
 
 // Import react-modal to use it instead of app's Popup
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
-import Form from '../Form';
-import data from '../../data/data.js';
+import Form from "../Form";
+import data from "../../data/data.js";
 
 // import Calendar from '@toast-ui/react-calendar';
-import 'tui-calendar/dist/tui-calendar.css';
+import "tui-calendar/dist/tui-calendar.css";
 
 // If you use the default popups, use this.
-import 'tui-date-picker/dist/tui-date-picker.css';
-import 'tui-time-picker/dist/tui-time-picker.css';
+import "tui-date-picker/dist/tui-date-picker.css";
+import "tui-time-picker/dist/tui-time-picker.css";
 
 const myTheme = {
   // Theme object to extends default dark theme.
@@ -34,7 +34,7 @@ const schedules = [
     body: "Test",
     start,
     end,
-    color: "#fefefe"
+    color: "#fefefe",
   },
   {
     calendarId: "2",
@@ -45,8 +45,8 @@ const schedules = [
     body: "Description",
     attendees: ["Bill Gates", "Elliott Anderson"],
     start: new Date(new Date().setHours(start.getHours() + 1)),
-    end: new Date(new Date().setHours(start.getHours() + 2))
-  }
+    end: new Date(new Date().setHours(start.getHours() + 2)),
+  },
 ];
 
 // const calendars: ICalendarInfo[] = [
@@ -57,7 +57,7 @@ const calendars = [
     color: "#ffffff",
     bgColor: "#9e5fff",
     dragBgColor: "#9e5fff",
-    borderColor: "#9e5fff"
+    borderColor: "#9e5fff",
   },
   {
     id: "2",
@@ -65,44 +65,56 @@ const calendars = [
     color: "#ffffff",
     bgColor: "#00a9ff",
     dragBgColor: "#00a9ff",
-    borderColor: "#00a9ff"
-  }
+    borderColor: "#00a9ff",
+  },
 ];
 
 // Style for the modal
 const customStyles = {
-    overlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(255, 255, 255, 0.75)'
-    },
-    content: {
-      position: 'absolute',
-      top: '40px',
-      left: '40px',
-      right: '40px',
-      bottom: '40px',
-      border: '1px solid #ccc',
-      background: '#fff',
-      overflow: 'auto',
-      WebkitOverflowScrolling: 'touch',
-      borderRadius: '4px',
-      outline: 'none',
-      padding: '20px'
-    }
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.75)",
+  },
+  content: {
+    position: "absolute",
+    top: "40px",
+    left: "40px",
+    right: "40px",
+    bottom: "40px",
+    border: "1px solid #ccc",
+    background: "#fff",
+    overflow: "auto",
+    WebkitOverflowScrolling: "touch",
+    borderRadius: "4px",
+    outline: "none",
+    padding: "20px",
+  },
 };
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const MyCalendar = () => {
-  // const response = await axios.get("http://localhost:4000/v1/events", {
-  //   headers: {
-  //     Authorization: `bearer ${localStorage.getItem('token')}`,
-  //   },
-  // });
+  async function getAllEvents() {
+    try {
+      const response = await axios.get("http://localhost:4000/v1/events", {
+        headers: {
+          Authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = response.data;
+      console.log("data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null
+    }
+  }
+
+  console.log("All events", getAllEvents());
 
   const cal = useRef(null);
 
@@ -123,7 +135,7 @@ const MyCalendar = () => {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = '#000000';
+    subtitle.style.color = "#000000";
   }
 
   function closeModal() {
@@ -131,15 +143,15 @@ const MyCalendar = () => {
   }
 
   function dayView() {
-    cal.current.calendarInst.changeView('day', true);
+    cal.current.calendarInst.changeView("day", true);
   }
 
   function weekView() {
-    cal.current.calendarInst.changeView('week', true);
+    cal.current.calendarInst.changeView("week", true);
   }
 
   function monthView() {
-    cal.current.calendarInst.changeView('month', true);
+    cal.current.calendarInst.changeView("month", true);
   }
 
   function todayView() {
@@ -158,7 +170,7 @@ const MyCalendar = () => {
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
 
-    console.log('onClickSchedule',e , el.getBoundingClientRect());
+    console.log("onClickSchedule", e, el.getBoundingClientRect());
   }, []);
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
@@ -170,9 +182,8 @@ const MyCalendar = () => {
     openModal();
   }, []);
 
-
   const onBeforeDeleteSchedule = useCallback((res) => {
-    console.log("onBeforeDeleteSchedule",res);
+    console.log("onBeforeDeleteSchedule", res);
 
     const { id, calendarId } = res.schedule;
 
@@ -186,12 +197,10 @@ const MyCalendar = () => {
 
     setEditingPhase(e.schedule);
     openModal();
-    
+
     //TODO décaler ce qu'il y a en dessous dans le onSubmit
     //il va falloir détecter si je suis en train de modifier ou de créer
     // rappel : si editingPhase est null alors je crée, si editingPhase contient des données alors je suis en train de modifier
-
-
   }, []);
 
   function getFormattedTime(time) {
@@ -236,9 +245,9 @@ const MyCalendar = () => {
       //TODO à récupérer depuis le event.target
       start: modalStartDate,
       end: modalEndDate,
-      category:  'time',
+      category: "time",
       raw: {
-        techID : parseInt(eventFromForm.target.techName.value, 10),
+        techID: parseInt(eventFromForm.target.techName.value, 10),
       },
       calendarId: "1",
       // Schedule.body is basic text, not possible to put anything but string
@@ -246,7 +255,7 @@ const MyCalendar = () => {
     };
     /* step2. save schedule */
     // @ts-ignore: Object is possibly 'null'.
-    
+
     // TODO ici je dois prévoir d'envoyer le schedule à sauvegarder en BDD
     //potientiellement ajax.post
     //avec une fausse ID
@@ -255,10 +264,22 @@ const MyCalendar = () => {
   };
 
   const onSubmitUpdate = (eventFromForm) => {
-    console.log("eventFromForm.target.IDHidden.value", parseFloat(eventFromForm.target.IDHidden.value));
-    console.log("eventFromForm.target.calendarIdHidden.value", eventFromForm.target.calendarIdHidden.value);
-    console.log("eventFromForm.target.name.value", eventFromForm.target.name.value);
-    console.log("eventFromForm.target.techName.value", eventFromForm.target.techName.value);
+    console.log(
+      "eventFromForm.target.IDHidden.value",
+      parseFloat(eventFromForm.target.IDHidden.value)
+    );
+    console.log(
+      "eventFromForm.target.calendarIdHidden.value",
+      eventFromForm.target.calendarIdHidden.value
+    );
+    console.log(
+      "eventFromForm.target.name.value",
+      eventFromForm.target.name.value
+    );
+    console.log(
+      "eventFromForm.target.techName.value",
+      eventFromForm.target.techName.value
+    );
 
     // TODO check informations I send
     cal.current.calendarInst.updateSchedule(
@@ -266,8 +287,8 @@ const MyCalendar = () => {
       parseInt(eventFromForm.target.calendarIdHidden.value, 10),
       {
         title: eventFromForm.target.name.value,
-        raw:{
-          techID : parseInt(eventFromForm.target.techName.value, 10),
+        raw: {
+          techID: parseInt(eventFromForm.target.techName.value, 10),
         },
       }
     );
@@ -276,37 +297,41 @@ const MyCalendar = () => {
   const onSubmit = useCallback((event) => {
     event.preventDefault(event);
     // ici avec event.target.techName.value je récupère l'ID de mon tech depuis le select du Form.js
-    console.log("je suis event.target.techName.value", event.target.techName.value);
+    console.log(
+      "je suis event.target.techName.value",
+      event.target.techName.value
+    );
     console.log("je suis modalStartDate", modalStartDate);
     console.log("je suis modalEndDate", modalEndDate);
 
     //TODO faure le test pour appeler le bon onSubmit
 
-    console.log("event.target.createHidden.value", event.target.createHidden.value);
+    console.log(
+      "event.target.createHidden.value",
+      event.target.createHidden.value
+    );
     if (event.target.createHidden.value == "false") {
       console.log("uptdate");
       onSubmitUpdate(event);
-    }
-    else {
+    } else {
       console.log("create");
       onSubmitCreate(event);
     }
     setEditingPhase(null);
     closeModal();
-
   }, []);
 
   const templates = {
     time: function (schedule) {
-      console.log('time', schedule);
+      console.log("time", schedule);
       return getTimeTemplate(schedule, false);
     },
-  //   collapseBtnTitle: function() {
-  //     return '<span className="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
-  // },
+    //   collapseBtnTitle: function() {
+    //     return '<span className="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
+    // },
     popupDetailBody: (phaseDetails) => {
       console.log(`popupDetailBody`, phaseDetails);
-      var ret="<div>"+phaseDetails.body;
+      var ret = "<div>" + phaseDetails.body;
       ret += "<ul>";
 
       var techFound = data.find((elementTech) => {
@@ -317,15 +342,13 @@ const MyCalendar = () => {
       });
       console.log("techFound=", techFound);
 
-      ret += "<li>"+techFound?.prenom +" "+ techFound?.nom+"</li>";
+      ret += "<li>" + techFound?.prenom + " " + techFound?.nom + "</li>";
 
       ret += "</ul>";
       ret += "</div>";
       return ret;
-    },  
+    },
   };
-
-  
 
   return (
     <div className="App">
@@ -340,12 +363,12 @@ const MyCalendar = () => {
         <button onClick={closeModal}>close</button>
         <Form onSubmit={onSubmit} techList={data} currentPhase={editingPhase} />
       </Modal>
-      <Button content='<' secondary onClick={prevView} /> 
-      <Button content='Jour' secondary onClick={dayView} /> 
-      <Button content='Semaine' secondary onClick={weekView}/> 
-      <Button content='Mois' secondary onClick={monthView}/> 
-      <Button content='>' secondary onClick={nextView}/> 
-      <Button content="Aujourd'hui" secondary onClick={todayView}/> 
+      <Button content="<" secondary onClick={prevView} />
+      <Button content="Jour" secondary onClick={dayView} />
+      <Button content="Semaine" secondary onClick={weekView} />
+      <Button content="Mois" secondary onClick={monthView} />
+      <Button content=">" secondary onClick={nextView} />
+      <Button content="Aujourd'hui" secondary onClick={todayView} />
 
       <TUICalendar
         ref={cal}
@@ -364,8 +387,7 @@ const MyCalendar = () => {
       />
     </div>
   );
-}
-
+};
 
 // export default Calendar;
 export default MyCalendar;

@@ -14,7 +14,7 @@ function LoginApp() {
   const Login = async (details) => {
     try {
       const response = await axios.post("http://localhost:4000/v1/login", details);
-      // localStorage.setItem('token', response.data.token)
+      localStorage.setItem('token', response.data.token)
       setUser({email: details.email});
     } catch (error) {
       console.error(error);
@@ -29,7 +29,7 @@ function LoginApp() {
 
   return (
     <div>
-      {user.email != "" ? (
+      {localStorage.getItem('token') ? (
         // (1)Once we are logged in we render Calendar
         <Calendar />
       ) : (

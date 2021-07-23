@@ -1,5 +1,7 @@
 .header{
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: whitesmoke;
     margin-left: 1rem;
 }
@@ -10,4 +12,8 @@
     font-weight: 500;
     font-size: 3rem;
     margin-left: 1rem;
+}
+
+.logout{
+  height: 50%;
 }
