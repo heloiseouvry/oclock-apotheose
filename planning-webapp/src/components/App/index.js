@@ -4,11 +4,13 @@ import { BrowserRouter, Switch , Route } from 'react-router-dom';
 import './styles.scss';
 
 import Header from '../Header';
+import ConnectedHeader from '../ConnectedHeader';
 import LoginApp from '../Login/loginApp'
 import ContactForm from '../ContactForm'
 import Homepage from '../Homepage';
 import MyCalendar from '../Calendar';
 import Footer from '../Footer';
+import ConnectedFooter from '../ConnectedFooter';
 import PageNotFound from '../PageNotFound';
 
 const App = () => (
@@ -36,9 +38,9 @@ const App = () => (
         </Route>
         
       <Route path="/Calendar"> 
-          <Header />
+          <ConnectedHeader />
           <MyCalendar /> 
-          <Footer />
+          <ConnectedFooter />
         </Route>
 
         <Route path='*'>
