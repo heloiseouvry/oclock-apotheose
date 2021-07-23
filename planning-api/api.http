@@ -111,6 +111,10 @@ Content-Type: application/json
   "comments": "ne s'entend pas avec Jean-Jacques ni michel d'ailleurs, mais bosse super bien avec Jean Eudes !"
 }
 
+### Get all phases
+
+GET {{baseUrl}}/phases
+
 ### Creation of a phase
 
 POST {{baseUrl}}/phases
