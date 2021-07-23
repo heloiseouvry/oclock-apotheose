@@ -28,7 +28,7 @@ const App = () => (
         <Route path="/login"> 
           <Header />
           <LoginApp />
-          <Footer />
+          {/* <Footer /> */}
         </Route>
 
       <Route path="/Contact"> 

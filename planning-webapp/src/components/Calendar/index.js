@@ -114,10 +114,10 @@ const MyCalendar = () => {
           let eventFront = {
             id: eventBack.id.toString(),
             name: eventBack.title,
-            color: eventBack.color,
-            bgColor: "#00a9ff",
+            color: "#ffffff",
+            bgColor: eventBack.color,
             dragBgColor: "#00a9ff",
-            borderColor: "#00a9ff",
+            borderColor: "#001247",
           };
           eventsToAdd.push(eventFront);
         }
