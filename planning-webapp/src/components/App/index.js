@@ -9,6 +9,7 @@ import LoginApp from '../Login/loginApp'
 import ContactForm from '../ContactForm'
 import Homepage from '../Homepage';
 import MyCalendar from '../Calendar';
+import AddTech from '../AddTech';
 import Footer from '../Footer';
 import ConnectedFooter from '../ConnectedFooter';
 import PageNotFound from '../PageNotFound';
@@ -42,6 +43,13 @@ const App = () => (
           <MyCalendar /> 
           <ConnectedFooter />
         </Route>
+
+        <Route path="/AddTech"> 
+          <ConnectedHeader />
+          <AddTech /> 
+          <ConnectedFooter />
+        </Route>
+
 
         <Route path='*'>
           <Header />
