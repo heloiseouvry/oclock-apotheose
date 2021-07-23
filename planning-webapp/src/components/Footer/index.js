@@ -10,7 +10,7 @@ const Footer= () => {
     return (
         <footer>
         <p>Qui sommes nous?</p>
-        <div classname="footer-div">
+        <div className="footer-div">
             <div className="team">
                 <div className="logoEquipe">
                     <img src="https://img.icons8.com/ios-filled/100/000000/user-male-circle.png"/>

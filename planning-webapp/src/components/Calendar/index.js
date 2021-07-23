@@ -1,5 +1,5 @@
 // import React from 'react';
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import TUICalendar from "@toast-ui/react-calendar";
 import { Button } from "semantic-ui-react";
 import axios from "axios";
@@ -24,49 +24,49 @@ const myTheme = {
 const start = new Date();
 const end = new Date(new Date().setMinutes(start.getMinutes() + 30));
 // const schedules: ISchedule[] = [
-const schedules = [
-  {
-    calendarId: "2",
-    category: "time",
-    isVisible: true,
-    title: "Montage",
-    id: "1",
-    body: "Test",
-    start,
-    end,
-    color: "#fefefe",
-  },
-  {
-    calendarId: "2",
-    category: "time",
-    isVisible: true,
-    title: "Exploitation",
-    id: "2",
-    body: "Description",
-    attendees: ["Bill Gates", "Elliott Anderson"],
-    start: new Date(new Date().setHours(start.getHours() + 1)),
-    end: new Date(new Date().setHours(start.getHours() + 2)),
-  },
+let schedules = [
+  // {
+  //   calendarId: "2",
+  //   category: "time",
+  //   isVisible: true,
+  //   title: "Montage",
+  //   id: "1",
+  //   body: "Test",
+  //   start,
+  //   end,
+  //   color: "#fefefe",
+  // },
+  // {
+  //   calendarId: "2",
+  //   category: "time",
+  //   isVisible: true,
+  //   title: "Exploitation",
+  //   id: "2",
+  //   body: "Description",
+  //   attendees: ["Bill Gates", "Elliott Anderson"],
+  //   start: new Date(new Date().setHours(start.getHours() + 1)),
+  //   end: new Date(new Date().setHours(start.getHours() + 2)),
+  // },
 ];
 
 // const calendars: ICalendarInfo[] = [
-const calendars = [
-  {
-    id: "1",
-    name: "My Calendar",
-    color: "#ffffff",
-    bgColor: "#9e5fff",
-    dragBgColor: "#9e5fff",
-    borderColor: "#9e5fff",
-  },
-  {
-    id: "2",
-    name: "Company",
-    color: "#ffffff",
-    bgColor: "#00a9ff",
-    dragBgColor: "#00a9ff",
-    borderColor: "#00a9ff",
-  },
+let calendars = [
+  // {
+  //   id: "1",
+  //   name: "My Calendar",
+  //   color: "#ffffff",
+  //   bgColor: "#9e5fff",
+  //   dragBgColor: "#9e5fff",
+  //   borderColor: "#9e5fff",
+  // },
+  // {
+  //   id: "2",
+  //   name: "Company",
+  //   color: "#ffffff",
+  //   bgColor: "#00a9ff",
+  //   dragBgColor: "#00a9ff",
+  //   borderColor: "#00a9ff",
+  // },
 ];
 
 // Style for the modal
@@ -98,23 +98,71 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const MyCalendar = () => {
-  async function getAllEvents() {
-    try {
-      const response = await axios.get("http://localhost:4000/v1/events", {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const data = response.data;
-      console.log("data", data);
-      return data;
-    } catch (error) {
-      console.error(error);
-      return null
-    }
-  }
+  const [events, setEvents] = useState([]);
+  const [phases, setPhases] = useState([]);
 
-  console.log("All events", getAllEvents());
+  useEffect(() => {
+    console.log("This will be logged after every render!");
+
+    const getAllEvents = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/v1/events", {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        let eventsToAdd = [];
+        for (const eventBack of response.data) {
+          let eventFront = {
+            id: eventBack.id.toString(),
+            name: eventBack.title,
+            color: "#ffffff",
+            bgColor: eventBack.color,
+            dragBgColor: "#00a9ff",
+            borderColor: "#001247",
+          };
+          eventsToAdd.push(eventFront);
+        }
+        setEvents(eventsToAdd);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const getAllPhases = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/v1/phases", {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        let phasesToAdd = [];
+        for (const phaseBack of response.data) {
+          const start_date = new Date(phaseBack.start_date);
+          const end_date = new Date(
+            new Date(start_date).setHours(
+              start_date.getHours() + phaseBack.duration.hours
+            )
+          );
+
+          let phaseFront = {
+            id: phaseBack.id.toString(),
+            calendarId: phaseBack.event_id.toString(),
+            category: "time",
+            isVisible: true,
+            title: phaseBack.title,
+            body: phaseBack.comments,
+            start: start_date,
+            end: end_date,
+            color: "#ffffff",
+          };
+
+          phasesToAdd.push(phaseFront);
+        }
+        setPhases(phasesToAdd);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAllEvents();
+    getAllPhases();
+  }, []);
 
   const cal = useRef(null);
 
@@ -378,8 +426,8 @@ const MyCalendar = () => {
         useCreationPopup={false} // "false" to use our form instead of app Popup
         useDetailPopup={true}
         template={templates}
-        calendars={calendars}
-        schedules={schedules}
+        calendars={events}
+        schedules={phases}
         onClickSchedule={onClickSchedule}
         onBeforeCreateSchedule={onBeforeCreateSchedule}
         onBeforeDeleteSchedule={onBeforeDeleteSchedule}

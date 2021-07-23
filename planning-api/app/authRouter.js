@@ -12,6 +12,7 @@ router.get('/events/:id', eventController.getOneEvent);
 router.patch('/events/:id', eventController.editEvent);
 router.delete('/events/:id', eventController.deleteEvent);
 
+router.get('/phases', phaseController.getAllPhases);
 router.post('/phases', phaseController.addPhase);
 router.get('/phases/:id', phaseController.getOnePhase);
 router.patch('/phases/:id', phaseController.editPhase);
