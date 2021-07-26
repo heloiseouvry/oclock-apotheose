@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 function ProtectedRoute({ children, ...rest }) {

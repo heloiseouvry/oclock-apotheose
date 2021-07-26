@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react/cjs/react.development";
-import { Link, Route, Redirect, useHistory  } from "react-router-dom";
+import { Link, useHistory  } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Checkbox } from "semantic-ui-react";
 import axios from "axios";
@@ -12,7 +12,7 @@ const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
 
-function Login() {
+function Login({setRole}) {
   const [error, setError] = useState("");
   const [details, setDetails] = useState({ email: "", password: "" });
   const [isLogged, setIsLogged] = useState(!!localStorage.getItem("token"));
@@ -22,9 +22,11 @@ function Login() {
     event.preventDefault();
     try {
       const response = await axios.post(`${base_url}/login`, details);
+      console.log(response);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
       setIsLogged(true);
-      console.log("Je passe ici");
+      setRole(response.data.role);
       history.push('calendar');
     } catch (error) {
       console.error(error);

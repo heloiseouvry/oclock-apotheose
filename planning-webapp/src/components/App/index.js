@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import "./styles.scss";
 
 import Header from "../Header";
 import ConnectedHeader from "../ConnectedHeader";
-import LoginApp from "../Login";
+import Login from "../Login";
 import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
@@ -16,22 +16,24 @@ import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
 
 const isLogged = !!localStorage.getItem("token");
-console.log("isLogged", isLogged);
 
-const App = () => (
+const App = () => {
+
+  const [role, setRole] = useState(!!localStorage.getItem("role"));
+
+  return (
   //We use the router method to switch from a component to another
   <BrowserRouter>
     <div className="app">
       <Switch>
         <Route exact path="/">
-          {/* { isLogged ? <Redirect to="/calendar" /> : <Redirect to="/login" /> } */}
           <Homepage />
           {/* <Footer /> */}
         </Route>
 
         <Route path="/login">
           <Header />
-          <LoginApp />
+          <Login setRole={setRole} />
           {/* <Footer /> */}
         </Route>
 
@@ -42,13 +44,13 @@ const App = () => (
         </Route>
 
         <ProtectedRoute path="/calendar">
-          <ConnectedHeader />
+          <ConnectedHeader role={role} />
           <MyCalendar />
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
 
         <ProtectedRoute path="/addtech">
-          <ConnectedHeader />
+          <ConnectedHeader role={role} />
           <AddTech />
         {/* <ConnectedFooter /> */}
         </ProtectedRoute>
@@ -61,6 +63,6 @@ const App = () => (
       </Switch>
     </div>
   </BrowserRouter>
-);
+)};
 
 export default App;
