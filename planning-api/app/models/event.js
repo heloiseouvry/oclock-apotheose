@@ -1,16 +1,45 @@
 const CoreModel = require('./coreModel');
 const db = require('../database.js');
 
+/**
+ * An entity representing an User
+ * @class Event
+ */
+
+/**
+ * An entity representing an Event
+ * @typedef Event
+ * @property {number} id
+ * @property {string} title
+ * @property {timestamptz} start_date
+ * @property {number} duration
+ * @property {string} color
+ * @property {number} user_id
+ * @property {number} address_id
+ */
 class Event extends CoreModel {
+    /**
+     * Fetches all events from the database
+     * @returns {Array<Event>} an array of all events (object) in database
+     */
     static async findAll() {
         const data = await CoreModel.fetch('SELECT * FROM event;');
         return data.map(d => new Event(d));
     }
 
+    /**
+     * Fetches a single event from the database
+     * @param {Number} id 
+     * @returns {object} an object event who matches this id
+     */
     static async findById(id){
         return(new Event(await CoreModel.fetchOne('SELECT * FROM event WHERE id = $1;', [id])));
     }
 
+    /**
+     * Send an update or insert request to the database if there is an id(update) or not (insert)
+     * @returns {object} an object event with all the properties from the database
+     */
     async save(){
         if(this.id){
             try {
@@ -39,6 +68,10 @@ class Event extends CoreModel {
         }
     }
 
+    /**
+     * send a delete request of an event by his id in database
+     * @returns {error} in the case of the delete request didn't work
+     */
     async delete() {
         try {
             const preparedQuery = {

@@ -1,7 +1,42 @@
 const CoreModel = require('./coreModel');
 const db = require('../database.js');
 
+/**
+ * An entity representing an User
+ * @class User
+ */
+
+/**
+ * An entity representing an User
+ * @typedef User
+ * @property {number} id
+ * @property {string} lastname
+ * @property {string} firstname
+ * @property {number} phone_number
+ * @property {string} role
+ * @property {string} email
+ * @property {string} password
+ * @property {string} status
+ * @property {datetz} birth_date
+ * @property {string} birth_city
+ * @property {string} birth_department
+ * @property {string} ssn
+ * @property {string} intermittent_registration
+ * @property {string} legal_entity
+ * @property {string} siret
+ * @property {string} emergency_contact
+ * @property {number} emergency_phone_number
+ * @property {string} comments
+ */
+
 class User extends CoreModel {
+
+    /**
+     * Fetches an user by his email
+     * @param {String} email a string representing an email
+     * @returns an object User who matches this email
+     */
+
     static async findByEmail(email) {
 
         try {
@@ -22,6 +57,10 @@ class User extends CoreModel {
 
     }
 
+    /**
+     * Send an update or insert request to the database if there is an id(update) or not (insert)
+     * @returns {Object} an object user with all the properties from the database
+     */
     async save() {
         if(this.id){
             
@@ -52,15 +91,28 @@ class User extends CoreModel {
         }
     }
 
+    /**
+     * Fetches all users from the database
+     * @returns {Array<User>} an array of all users (object) in database
+     */
     static async findAll() {
         const data = await CoreModel.fetch('SELECT * FROM "user";');
         return data.map(d => new User(d));
     }
 
+    /**
+     * Fetches a single user from the database
+     * @param {Number} id 
+     * @returns an object user who matches this id
+     */
     static async findById(id){
         return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
     }
 
+    /**
+     * send a delete request of an user by his id in database
+     * @returns {error} in the case of the delete request didn't work
+     */
     async delete() {
         console.log(this.id);
         try {

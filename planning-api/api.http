@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "title": "Fête de l'Huma",
-  "start_date": "2022-09-10 08:00:00",
+  "start_date": "2021-07-19 08:00:00",
   "duration": "5 days",
   "color": "#fefefe",
   "user_id": "1",
@@ -24,11 +24,16 @@ Content-Type: application/json
 
 ### Edit an event
 
-PATCH {{baseUrl}}/events/4
+PATCH {{baseUrl}}/events/5
 Content-Type: application/json
 
 {
-  "color": "#aaa"
+  "title": "Fête de l'Huma",
+  "start_date": "2022-09-10 08:00:00",
+  "duration": "5 days",
+  "color": "#f0f",
+  "user_id": "1",
+  "address_id": "1"
 }
 
 ### Delete an event
@@ -110,6 +115,10 @@ Content-Type: application/json
   "emergency_phone_number": "0612121212",
   "comments": "ne s'entend pas avec Jean-Jacques ni michel d'ailleurs, mais bosse super bien avec Jean Eudes !"
 }
+
+### Get all phases
+
+GET {{baseUrl}}/phases
 
 ### Creation of a phase
 
