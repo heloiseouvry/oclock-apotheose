@@ -7,14 +7,28 @@ class NoDataError extends Error {
     }
 }
 
+/**
+ * a model representing the core model
+ * @class CoreModel
+ */
+
 class CoreModel {
 
+    /**
+     * the core model's constructor, used for all other models
+     * @param {object} data a litteral object with properties copied into the instance
+     */
     constructor(data) {
         for (const prop in data) {
             this[prop] = data[prop];
         }
     }
 
+    /**
+     * 
+     * @param  {...any} args 
+     * @returns 
+     */
     static async fetch(...args) {
         const { rows } = await db.query(...args);
         if (rows.length === 0) {

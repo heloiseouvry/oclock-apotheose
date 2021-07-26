@@ -111,6 +111,7 @@ class User extends CoreModel {
 
     /**
      * send a delete request of an user by his id in database
+     * @returns {error} in the case of the delete request didn't work
      */
     async delete() {
         console.log(this.id);

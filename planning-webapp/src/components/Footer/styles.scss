@@ -1,24 +1,24 @@
 footer{
-    background-color: whitesmoke;
+    position: absolute;
     text-align: center;
-    color: rgb(0, 0, 0);
+    bottom: 0;
+    width: 100%;
+    height: 12.5rem;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
     font-family: "Source Sans Pro", sans-serif;
-    font-size: 1.5rem;
-    clear: both;
-    position: relative;
-    height: 200px;
-    
-   
+    font-weight: 100;
 }
 
 .team{
     display: flex;
     justify-content: center;
-   
+
 }
 .logoEquipe{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
 }
+
 
