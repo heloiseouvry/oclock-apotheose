@@ -10,6 +10,8 @@ import ContactForm from '../ContactForm'
 import Homepage from '../Homepage';
 import MyCalendar from '../Calendar';
 import AddTech from '../AddTech';
+import EventForm from '../EventForm'
+import PhaseForm from '../PhaseForm'
 import Footer from '../Footer';
 import ConnectedFooter from '../ConnectedFooter';
 import PageNotFound from '../PageNotFound';
@@ -50,6 +52,17 @@ const App = () => (
           {/* <ConnectedFooter /> */}
         </Route>
 
+        <Route path="/EventForm"> 
+          <ConnectedHeader />
+          <EventForm /> 
+          {/* <ConnectedFooter /> */}
+        </Route>
+
+        <Route path="/PhaseForm"> 
+          <ConnectedHeader />
+          <PhaseForm /> 
+          {/* <ConnectedFooter /> */}
+        </Route>
 
         <Route path='*'>
           <Header />
