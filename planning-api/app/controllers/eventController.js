@@ -16,7 +16,7 @@ const eventController = {
       const newPhase = new Phase({
         title: newEvent.title,
         start_date: newEvent.start_date,
-        duration: newEvent.duration,
+        duration: newEvent.duration + ' hours',
         type: 'event',
         number_fee: '0',
         event_id: newEvent.id,
@@ -26,6 +26,7 @@ const eventController = {
       
       res.status(201).json(newEvent);
     } catch (error) {
+      console.error(error);
       res.status(500).json(error.message);
     }
   },

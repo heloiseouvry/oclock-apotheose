@@ -101,30 +101,21 @@ const MyCalendar = () => {
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
-          // console.log(phaseBack);
-
           const start_date = new Date(phaseBack.start_date);
-          let end_date,
-            category,
+          const end_date = new Date(
+            new Date(start_date).setHours(
+              start_date.getHours() + phaseBack.duration.hours
+            )
+          );
+          let category,
             isAllDay = null;
           if (phaseBack.type === "event") {
-            end_date = new Date(
-              new Date(start_date).setDate(
-                start_date.getDate() + phaseBack.duration.days
-              )
-            );
             category = "allday";
             isAllDay = true;
           } else {
-            end_date = new Date(
-              new Date(start_date).setHours(
-                start_date.getTime() + phaseBack.duration.hours
-              )
-            );
             category = "time";
             isAllDay = false;
           }
-
           let phaseFront = {
             id: phaseBack.id.toString(),
             calendarId: phaseBack.event_id.toString(),
@@ -135,6 +126,9 @@ const MyCalendar = () => {
             body: phaseBack.comments,
             start: start_date,
             end: end_date,
+            raw: {
+              type: phaseBack.type
+            },
             color: "#ffffff",
           };
           // console.log(phaseFront);
@@ -152,15 +146,7 @@ const MyCalendar = () => {
 
   const cal = useRef(null);
 
-  // variable & fonction for the modal
-  let subtitle;
-  let modalStartDate;
-  let modalEndDate;
-
   const [editingPhase, setEditingPhase] = useState(null);
-
-  // useState crée un couple variable (qui fait partie de mon composant) et fonction pour modifier cette variable
-  const [modalIsOpen, setIsOpen] = useState(false);
 
   // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
   function openChoiceModal() {
@@ -175,11 +161,6 @@ const MyCalendar = () => {
   function openPhaseModal() {
     closeChoiceModal();
     setPhaseOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "#000000";
   }
 
   function closeChoiceModal() {
@@ -226,14 +207,10 @@ const MyCalendar = () => {
   }, []);
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
-    console.log("onBeforeCreateSchedule", scheduleData);
     // use the schedule data to use it in the modal
     setStartTime(scheduleData.start.toDate());
     setEndTime(scheduleData.end.toDate());
-
-    modalStartDate = scheduleData.start;
-    modalEndDate = scheduleData.end;
-    // Need to open the modal to add an event
+    // Need to open the choice modal to select bewteen creating an event or a phase
     openChoiceModal();
   }, []);
 
@@ -430,12 +407,12 @@ const MyCalendar = () => {
       >
         <Modal.Header>Créer un événement</Modal.Header>
         <Modal.Content>
-          <EventForm startTime={startTime} endTime={endTime} />
+          <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} />
         </Modal.Content>
-        <Modal.Actions>
+        {/* <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} />
-          <Button icon="close" onClick={closeEventModal} />
-        </Modal.Actions>
+          <Button icon="close" closeEventModal={closeEventModal} />
+        </Modal.Actions> */}
       </Modal>
 
       <Modal
