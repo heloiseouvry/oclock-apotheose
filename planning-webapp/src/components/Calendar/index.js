@@ -11,7 +11,6 @@ import Form from "../Form";
 import EventForm from "../EventForm";
 import data from "../../data/data.js";
 
-
 // import Calendar from '@toast-ui/react-calendar';
 import "tui-calendar/dist/tui-calendar.css";
 
@@ -27,9 +26,6 @@ const base_url = `http://${host}:${port}/${router}`;
 const myTheme = {
   // Theme object to extends default dark theme.
 };
-
-const start = new Date();
-const end = new Date(new Date().setMinutes(start.getMinutes() + 30));
 
 // Style for the modal
 const customStyles = {
@@ -64,8 +60,8 @@ const MyCalendar = () => {
   const [eventOpen, setEventOpen] = useState(false);
   const [phaseOpen, setPhaseOpen] = useState(false);
 
-  const [eventForm, setEventForm] = useState({});
-
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
 
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
@@ -122,7 +118,7 @@ const MyCalendar = () => {
           } else {
             end_date = new Date(
               new Date(start_date).setHours(
-                start_date.getHours() + phaseBack.duration.hours
+                start_date.getTime() + phaseBack.duration.hours
               )
             );
             category = "time";
@@ -232,6 +228,9 @@ const MyCalendar = () => {
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
     console.log("onBeforeCreateSchedule", scheduleData);
     // use the schedule data to use it in the modal
+    setStartTime(scheduleData.start.toDate());
+    setEndTime(scheduleData.end.toDate());
+
     modalStartDate = scheduleData.start;
     modalEndDate = scheduleData.end;
     // Need to open the modal to add an event
@@ -431,7 +430,7 @@ const MyCalendar = () => {
       >
         <Modal.Header>Créer un événement</Modal.Header>
         <Modal.Content>
-          <EventForm setEventForm={setEventForm} />
+          <EventForm startTime={startTime} endTime={endTime} />
         </Modal.Content>
         <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} />
