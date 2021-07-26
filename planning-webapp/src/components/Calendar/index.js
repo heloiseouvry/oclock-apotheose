@@ -17,6 +17,11 @@ import "tui-calendar/dist/tui-calendar.css";
 import "tui-date-picker/dist/tui-date-picker.css";
 import "tui-time-picker/dist/tui-time-picker.css";
 
+const host = "localhost";
+const port = "4000";
+const router = "v1";
+const base_url = `http://${host}:${port}/${router}`;
+
 const myTheme = {
   // Theme object to extends default dark theme.
 };
@@ -106,7 +111,7 @@ const MyCalendar = () => {
   useEffect(() => {
     const getAllEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/v1/events", {
+        const response = await axios.get(`${base_url}/events`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         let eventsToAdd = [];
@@ -129,7 +134,7 @@ const MyCalendar = () => {
 
     const getAllPhases = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/v1/phases", {
+        const response = await axios.get(`${base_url}/phases`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         let phasesToAdd = [];

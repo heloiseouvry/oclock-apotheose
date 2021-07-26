@@ -3,6 +3,11 @@ import LoginForm from "./index";
 import Calendar from "../Calendar";
 import axios from "axios";
 
+const host = "localhost";
+const port = "4000";
+const router = "v1";
+const base_url = `http://${host}:${port}/${router}`;
+
 function LoginApp() {
 
   //Setting the default details of the user to none
@@ -13,7 +18,7 @@ function LoginApp() {
   //Checking if the user is logged in
   const Login = async (details) => {
     try {
-      const response = await axios.post("http://100.25.136.194:4000/v1/login", details);
+      const response = await axios.post(`${base_url}/login`, details);
       localStorage.setItem('token', response.data.token)
       setUser({email: details.email});
     } catch (error) {
