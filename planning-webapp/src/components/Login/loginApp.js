@@ -13,7 +13,7 @@ function LoginApp() {
   //Checking if the user is logged in
   const Login = async (details) => {
     try {
-      const response = await axios.post("http://localhost:4000/v1/login", details);
+      const response = await axios.post("http://100.25.136.194:4000/v1/login", details);
       localStorage.setItem('token', response.data.token)
       setUser({email: details.email});
     } catch (error) {

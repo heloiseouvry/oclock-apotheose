@@ -22,7 +22,7 @@ const App = () => (
       <Switch>
         <Route exact path="/"> 
           <Homepage />
-          <Footer />
+          {/* <Footer /> */}
         </Route>
 
         {/* Here we show the Login page */}
@@ -35,26 +35,26 @@ const App = () => (
       <Route path="/Contact"> 
           <Header />
           <ContactForm />
-          <Footer />
+          {/* <Footer /> */}
         </Route>
         
       <Route path="/Calendar"> 
           <ConnectedHeader />
           <MyCalendar /> 
-          <ConnectedFooter />
+          {/* <ConnectedFooter /> */}
         </Route>
 
         <Route path="/AddTech"> 
           <ConnectedHeader />
           <AddTech /> 
-          <ConnectedFooter />
+          {/* <ConnectedFooter /> */}
         </Route>
 
 
         <Route path='*'>
           <Header />
           <PageNotFound />
-          <Footer />
+          {/* <Footer /> */}
         </Route>
       
 
