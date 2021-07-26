@@ -1,7 +1,7 @@
-import React from 'react';
-import { BrowserRouter, Switch , Route } from 'react-router-dom';
+import React, {useState} from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
-import './styles.scss';
+import "./styles.scss";
 
 import Header from '../Header';
 import ConnectedHeader from '../ConnectedHeader';
@@ -16,41 +16,39 @@ import Footer from '../Footer';
 import ConnectedFooter from '../ConnectedFooter';
 import PageNotFound from '../PageNotFound';
 
-const App = () => (
+const isLogged = !!localStorage.getItem("token");
+
+const App = () => {
+
+  const [role, setRole] = useState(!!localStorage.getItem("role"));
+
+  return (
   //We use the router method to switch from a component to another
-  <BrowserRouter >
+  <BrowserRouter>
     <div className="app">
-    {/* Here we show the Homepage */}
       <Switch>
-        <Route exact path="/"> 
+        <Route exact path="/">
           <Homepage />
           {/* <Footer /> */}
         </Route>
 
-        {/* Here we show the Login page */}
-        <Route path="/login"> 
+        <Route path="/login">
           <Header />
-          <LoginApp />
+          <Login setRole={setRole} />
           {/* <Footer /> */}
         </Route>
 
-      <Route path="/Contact"> 
+        <Route path="/contact">
           <Header />
           <ContactForm />
           {/* <Footer /> */}
         </Route>
-        
-      <Route path="/Calendar"> 
-          <ConnectedHeader />
-          <MyCalendar /> 
-          {/* <ConnectedFooter /> */}
-        </Route>
 
-        <Route path="/AddTech"> 
-          <ConnectedHeader />
-          <AddTech /> 
+        <ProtectedRoute path="/calendar">
+          <ConnectedHeader role={role} />
+          <MyCalendar />
           {/* <ConnectedFooter /> */}
-        </Route>
+        </ProtectedRoute>
 
         <Route path="/EventForm"> 
           <ConnectedHeader />
@@ -63,18 +61,21 @@ const App = () => (
           <PhaseForm /> 
           {/* <ConnectedFooter /> */}
         </Route>
+        
+        <ProtectedRoute path="/addtech">
+          <ConnectedHeader role={role} />
+          <AddTech />
+        {/* <ConnectedFooter /> */}
+        </ProtectedRoute>
 
-        <Route path='*'>
+        <Route path="*">
           <Header />
           <PageNotFound />
           {/* <Footer /> */}
         </Route>
-      
-
-      </Switch> 
-          
+      </Switch>
     </div>
   </BrowserRouter>
-);
+)};
 
 export default App;

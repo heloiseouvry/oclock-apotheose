@@ -25,8 +25,8 @@ function AddTech () {
                         <option value="cat">Prestataire</option>
                     </select>
 
-                <label className='datePicker' for="start">Date de naissance:</label> 
-                <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
+                <label className='datePicker' htmlFor="start">Date de naissance:</label> 
+                <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" /> 
 
                 <input type="text" placeholder='Code Postale de Naissance' />
                 <input type='text' placeholder='Ville de Naissance' />               
