@@ -1,6 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import axios from "axios";
+
+const host = "localhost";
+const port = "4000";
+const router = "v1";
+const base_url = `http://${host}:${port}/${router}`;
 
 const Form = ({ onSubmit, techList, currentPhase}) => {
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const response = await axios.get(`${base_url}/users`, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };   
+    getAllUsers();
+  }, []);
 
   let test;
 

@@ -22,7 +22,6 @@ function Login({setRole}) {
     event.preventDefault();
     try {
       const response = await axios.post(`${base_url}/login`, details);
-      console.log(response);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
       setIsLogged(true);

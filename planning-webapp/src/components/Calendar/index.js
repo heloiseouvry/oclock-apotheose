@@ -1,11 +1,11 @@
 // import React from 'react';
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import TUICalendar from "@toast-ui/react-calendar";
-import { Button } from "semantic-ui-react";
+import { Button, Modal, Header, Image, Icon } from "semantic-ui-react";
 import axios from "axios";
 
 // Import react-modal to use it instead of app's Popup
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import ConnectedHeader from "../ConnectedHeader";
 import Form from "../Form";
 import data from "../../data/data.js";
@@ -102,9 +102,13 @@ const customStyles = {
   },
 };
 
-Modal.setAppElement("#root");
+// Modal.setAppElement("#root");
 
 const MyCalendar = () => {
+  const [choiceOpen, setChoiceOpen] = useState(false);
+  const [eventOpen, setEventOpen] = useState(false);
+  const [phaseOpen, setPhaseOpen] = useState(false);
+
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
 
@@ -143,7 +147,8 @@ const MyCalendar = () => {
 
           const start_date = new Date(phaseBack.start_date);
           let end_date,
-            category, isAllDay = null;
+            category,
+            isAllDay = null;
           if (phaseBack.type === "event") {
             end_date = new Date(
               new Date(start_date).setDate(
@@ -200,8 +205,18 @@ const MyCalendar = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
-  function openModal() {
-    setIsOpen(true);
+  function openChoiceModal() {
+    setChoiceOpen(true);
+  }
+
+  function openEventModal() {
+    closeChoiceModal();
+    setEventOpen(true);
+  }
+
+  function openPhaseModal() {
+    closeChoiceModal();
+    setPhaseOpen(true);
   }
 
   function afterOpenModal() {
@@ -209,8 +224,16 @@ const MyCalendar = () => {
     subtitle.style.color = "#000000";
   }
 
-  function closeModal() {
-    setIsOpen(false);
+  function closeChoiceModal() {
+    setChoiceOpen(false);
+  }
+
+  function closeEventModal() {
+    setEventOpen(false);
+  }
+
+  function closePhaseModal() {
+    setPhaseOpen(false);
   }
 
   function dayView() {
@@ -250,7 +273,7 @@ const MyCalendar = () => {
     modalStartDate = scheduleData.start;
     modalEndDate = scheduleData.end;
     // Need to open the modal to add an event
-    openModal();
+    openChoiceModal();
   }, []);
 
   const onBeforeDeleteSchedule = useCallback((res) => {
@@ -367,7 +390,7 @@ const MyCalendar = () => {
     );
   };
 
-  const onSubmit = useCallback((event) => {
+  const onSubmitEvent = useCallback((event) => {
     event.preventDefault(event);
     // ici avec event.target.techName.value je récupère l'ID de mon tech depuis le select du Form.js
     console.log(
@@ -391,7 +414,7 @@ const MyCalendar = () => {
       onSubmitCreate(event);
     }
     setEditingPhase(null);
-    closeModal();
+    closeChoiceModal();
   }, []);
 
   // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
@@ -427,17 +450,43 @@ const MyCalendar = () => {
 
   return (
     <div className="App">
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
+       <Modal
+        onClose={closeChoiceModal}
+        onOpen={openChoiceModal}
+        open={choiceOpen}
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Créé votre de phase</h2>
-        <button onClick={closeModal}>close</button>
-        <Form onSubmit={onSubmit} techList={data} currentPhase={editingPhase} />
+        <Modal.Header>Créer un événement ou une phase</Modal.Header>
+        <Modal.Actions>
+          <Button content="Evenement" onClick={openEventModal} />
+          <Button content="Phase" onClick={openPhaseModal} />
+        </Modal.Actions>
       </Modal>
+
+      <Modal
+        onClose={closeEventModal}
+        onOpen={openEventModal}
+        open={eventOpen}
+      >
+        <Modal.Header>Créer un événement</Modal.Header>
+        <Modal.Actions>
+          <Button icon="check" onClick={onSubmitEvent} />
+          <Button icon="close" onClick={closeEventModal} />
+        </Modal.Actions>
+      </Modal>
+
+      <Modal
+        onClose={closePhaseModal}
+        onOpen={openPhaseModal}
+        open={phaseOpen}
+      >
+        <Modal.Header>Créer une phase</Modal.Header>
+        <Modal.Actions>
+          <Button icon="check" onClick={onSubmitEvent} /> //TODO : onSubmitPhase
+          <Button icon="close" onClick={closePhaseModal} />
+        </Modal.Actions>
+      </Modal>
+      
+      
       <Button content="<" secondary onClick={prevView} />
       <Button content="Jour" secondary onClick={dayView} />
       <Button content="Semaine" secondary onClick={weekView} />
