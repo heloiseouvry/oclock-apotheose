@@ -8,7 +8,9 @@ import axios from "axios";
 // import Modal from "react-modal";
 import ConnectedHeader from "../ConnectedHeader";
 import Form from "../Form";
+import EventForm from "../EventForm";
 import data from "../../data/data.js";
+
 
 // import Calendar from '@toast-ui/react-calendar';
 import "tui-calendar/dist/tui-calendar.css";
@@ -28,53 +30,6 @@ const myTheme = {
 
 const start = new Date();
 const end = new Date(new Date().setMinutes(start.getMinutes() + 30));
-// const schedules: ISchedule[] = [
-let schedules = [
-  // {
-  //   calendarId: "2",
-  //   category: "time",
-  //   isVisible: true,
-  //   title: "Montage",
-  //   id: "1",
-  //   body: "Test",
-  //   start,
-  //   end,
-  //   color: "#fefefe",
-  // },
-  // {
-  //   calendarId: "2",
-  //   category: "time",
-  //   isVisible: true,
-  //   title: "Exploitation",
-  //   id: "2",
-  //   body: "Description",
-  //   attendees: ["Bill Gates", "Elliott Anderson"],
-  //   start: new Date(new Date().setHours(start.getHours() + 1)),
-  //   end: new Date(new Date().setHours(start.getHours() + 2)),
-  // },
-];
-
-// La calendar gère la couleur de l'événement & de la phase
-// https://nhn.github.io/tui.calendar/latest/CalendarProps
-// const calendars: ICalendarInfo[] = [
-let calendars = [
-  // {
-  //   id: "1",
-  //   name: "My Calendar",
-  //   color: "#ffffff",
-  //   bgColor: "#9e5fff",
-  //   dragBgColor: "#9e5fff",
-  //   borderColor: "#9e5fff",
-  // },
-  // {
-  //   id: "2",
-  //   name: "Company",
-  //   color: "#ffffff",
-  //   bgColor: "#00a9ff",
-  //   dragBgColor: "#00a9ff",
-  //   borderColor: "#00a9ff",
-  // },
-];
 
 // Style for the modal
 const customStyles = {
@@ -109,17 +64,23 @@ const MyCalendar = () => {
   const [eventOpen, setEventOpen] = useState(false);
   const [phaseOpen, setPhaseOpen] = useState(false);
 
+  const [eventForm, setEventForm] = useState({});
+
+
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
 
   useEffect(() => {
     const getAllEvents = async () => {
       try {
+        // get all events from the API
         const response = await axios.get(`${base_url}/events`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         let eventsToAdd = [];
+        // loop through the array of events we get in response.data
         for (const eventBack of response.data) {
+          // for each event we get from the API we create an object eventFront that has the right structure for the library
           let eventFront = {
             id: eventBack.id.toString(),
             name: eventBack.title,
@@ -130,6 +91,7 @@ const MyCalendar = () => {
           };
           eventsToAdd.push(eventFront);
         }
+        // we update the props events with this array of all the eventFront
         setEvents(eventsToAdd);
       } catch (error) {
         console.error(error);
@@ -468,6 +430,9 @@ const MyCalendar = () => {
         open={eventOpen}
       >
         <Modal.Header>Créer un événement</Modal.Header>
+        <Modal.Content>
+          <EventForm setEventForm={setEventForm} />
+        </Modal.Content>
         <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} />
           <Button icon="close" onClick={closeEventModal} />
