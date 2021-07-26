@@ -1,4 +1,4 @@
-const { Event, Phase } = require("../models");
+const { Event, Phase, Address } = require("../models");
 
 const eventController = {
   getAllEvents : async (req, res, next) => {
@@ -6,9 +6,11 @@ const eventController = {
   },
 
   addEvent : async (req, res, next) => {
-    const newEvent = new Event(req.body);
-    console.log(newEvent);
+    const { title, start_date, duration, color, main, additional, zip_code, city} = req.body;
+    const newAddress = new Address({main, additional, zip_code, city});
     try {
+      await newAddress.save();
+      const newEvent = new Event({title, start_date, duration, color, user_id: req.user.userID, address_id: newAddress.id});
       await newEvent.save();
       
       const newPhase = new Phase({

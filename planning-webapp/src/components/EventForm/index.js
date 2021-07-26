@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import { Button, Form  } from 'semantic-ui-react';
 // import SemanticDatepicker from 'semantic-ui-calendar';
+import axios from "axios";
 
 import './styles.scss';
 
 const host = "localhost";
 const port = "4000";
-const router = "v1";
+const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
 function EventForm ({startTime, endTime}) {
@@ -16,14 +17,27 @@ function EventForm ({startTime, endTime}) {
   const end_date = `${endTime.getFullYear()}-${("0" + (endTime.getMonth() + 1)).slice(-2)}-${("0" + endTime.getDate()).slice(-2)}`;
   const end_time = `${("0" + endTime.getHours()).slice(-2)}:${("0" + endTime.getMinutes()).slice(-2)}`;
 
-  const [eventForm, setEventForm] = useState({ title: "", start_date, end_date, start_time, end_time, color: "", address: "" });
+  const [error, setError] = useState("");
+  const [eventForm, setEventForm] = useState({ title: "", start_date, end_date, start_time, end_time, color: "#ffffff", main: "", additional: "", zip_code: "", city: "" });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${base_url}/events`, eventForm, {
+      console.log("eventForm", eventForm);
+      
+      const startParsedDate = new Date(Date.parse(`${eventForm.start_date}T${eventForm.start_time}:00`));
+      const endParsedDate = new Date(Date.parse(`${eventForm.end_date}T${eventForm.end_time}:00`));
+      const timeDiffInHours = (endParsedDate - startParsedDate)/1000/60/60;
+      
+      const body = {...eventForm};
+      body.start_date = startParsedDate;
+      body.duration = timeDiffInHours;
+      console.log("body", body);
+
+      const response = await axios.post(`${base_url}/events`, body, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
+      console.log(response);
     } catch (error) {
       console.error(error);
       setError("Les informations sont incorrectes !");
@@ -34,7 +48,8 @@ function EventForm ({startTime, endTime}) {
         <Form onSubmit={handleSubmit}>
             <Form.Field>
               <label>Nom de l'évenement</label>
-              <input placeholder="Nom de l'évenement" name="title"/>
+              <input placeholder="Nom de l'évenement" name="title" onChange={(event) => 
+                setEventForm({ ...eventForm, title: event.target.value })}/>
             </Form.Field>
 
             <Form.Field>
@@ -61,12 +76,32 @@ function EventForm ({startTime, endTime}) {
               <input type="time" name="end_hour" id="end_hour" value={eventForm.end_time} onChange={(event) =>
             setEventForm({ ...eventForm, end_time: event.target.value })
           }/>  
+            </Form.Field>  
+
+            <Form.Field>
+              <label htmlFor="color">Couleur de l'événement:</label>
+              <input type="color" name="color" id="color" value={eventForm.color} onChange={(event) =>
+            setEventForm({ ...eventForm, color: event.target.value })
+          }/>  
             </Form.Field>   
 
-            <Form.Field><input type='text' placeholder='Adresse' name="main_adress"/></Form.Field>            
-            <Form.Field><input type="text" placeholder='Code postal' name="zipcode"/></Form.Field>
-            <Form.Field><input type='text' placeholder='Ville' name="city"/></Form.Field>      
-                
+            <Form.Field>
+              <input type='text' placeholder='Adresse principale' name="main" onChange={(event) =>
+                setEventForm({ ...eventForm, main: event.target.value })}/>
+            </Form.Field>            
+            <Form.Field>
+              <input type='text' placeholder="Complément d'adresse" name="additional" onChange={(event) =>
+                setEventForm({ ...eventForm, additional: event.target.value })}/>
+            </Form.Field>            
+            <Form.Field>
+              <input type="text" placeholder='Code postal' name="zip_code" onChange={(event) =>
+                setEventForm({ ...eventForm, zip_code: event.target.value })}/>
+            </Form.Field>
+            <Form.Field>
+              <input type='text' placeholder='Ville' name="city" onChange={(event) =>
+                setEventForm({ ...eventForm, city: event.target.value })}/>
+            </Form.Field>      
+            {error != "" ? <div className="error">{error}</div> : ""}
                 <div className='Submit-Tech' >
                     <Button type='submit' className='button' content="Créer l'event" primary />
                 </div>
