@@ -3,17 +3,18 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import "./styles.scss";
 
-import Header from "../Header";
-import ConnectedHeader from "../ConnectedHeader";
-import Login from "../Login";
-import ContactForm from "../ContactForm";
-import Homepage from "../Homepage";
-import MyCalendar from "../Calendar";
-import AddTech from "../AddTech";
-import Footer from "../Footer";
-import ConnectedFooter from "../ConnectedFooter";
-import PageNotFound from "../PageNotFound";
-import ProtectedRoute from "../ProtectedRoute";
+import Header from '../Header';
+import ConnectedHeader from '../ConnectedHeader';
+import LoginApp from '../Login/loginApp'
+import ContactForm from '../ContactForm'
+import Homepage from '../Homepage';
+import MyCalendar from '../Calendar';
+import AddTech from '../AddTech';
+import EventForm from '../EventForm'
+import PhaseForm from '../PhaseForm'
+import Footer from '../Footer';
+import ConnectedFooter from '../ConnectedFooter';
+import PageNotFound from '../PageNotFound';
 
 const isLogged = !!localStorage.getItem("token");
 
@@ -49,6 +50,18 @@ const App = () => {
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
 
+        <Route path="/EventForm"> 
+          <ConnectedHeader />
+          <EventForm /> 
+          {/* <ConnectedFooter /> */}
+        </Route>
+
+        <Route path="/PhaseForm"> 
+          <ConnectedHeader />
+          <PhaseForm /> 
+          {/* <ConnectedFooter /> */}
+        </Route>
+        
         <ProtectedRoute path="/addtech">
           <ConnectedHeader role={role} />
           <AddTech />

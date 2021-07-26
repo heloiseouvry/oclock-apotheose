@@ -17,7 +17,7 @@ const db = require('../database.js');
  * @property {string} email
  * @property {string} password
  * @property {string} status
- * @property {timestamptz} birth_date
+ * @property {datetz} birth_date
  * @property {string} birth_city
  * @property {string} birth_department
  * @property {string} ssn
@@ -59,7 +59,7 @@ class User extends CoreModel {
 
     /**
      * Send an update or insert request to the database if there is an id(update) or not (insert)
-     * @returns {object} an object user with all the properties from the database
+     * @returns {Object} an object user with all the properties from the database
      */
     async save() {
         if(this.id){
@@ -103,7 +103,7 @@ class User extends CoreModel {
     /**
      * Fetches a single user from the database
      * @param {Number} id 
-     * @returns {object} an object user who matches this id
+     * @returns an object user who matches this id
      */
     static async findById(id){
         return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
