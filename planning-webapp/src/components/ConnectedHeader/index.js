@@ -11,7 +11,6 @@ function logout() {
     localStorage.removeItem('token');
 }
     return (
-      // Here we use a link to redirect the user to the "/" route   
         <Link to ="/">
         <header className='header'>
             <img src="https://img.icons8.com/ios/100/000000/health-calendar.png"/>    

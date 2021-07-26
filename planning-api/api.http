@@ -60,11 +60,11 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "lastname": "Obama",
+  "lastname": "Michelle",
   "firstname": "Barack",
   "phone_number": "0674965896",
-  "role": "tech",
-  "email": "bo@gmail.com",
+  "role": "cdp",
+  "email": "mo@gmail.com",
   "password": "micdrop",
   "status": "intermittent",
   "birth_date": "1962-12-02",

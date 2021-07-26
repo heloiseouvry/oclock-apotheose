@@ -1,65 +1,64 @@
-import React from 'react';
-import { BrowserRouter, Switch , Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
-import './styles.scss';
+import "./styles.scss";
 
-import Header from '../Header';
-import ConnectedHeader from '../ConnectedHeader';
-import LoginApp from '../Login/loginApp'
-import ContactForm from '../ContactForm'
-import Homepage from '../Homepage';
-import MyCalendar from '../Calendar';
-import AddTech from '../AddTech';
-import Footer from '../Footer';
-import ConnectedFooter from '../ConnectedFooter';
-import PageNotFound from '../PageNotFound';
+import Header from "../Header";
+import ConnectedHeader from "../ConnectedHeader";
+import LoginApp from "../Login";
+import ContactForm from "../ContactForm";
+import Homepage from "../Homepage";
+import MyCalendar from "../Calendar";
+import AddTech from "../AddTech";
+import Footer from "../Footer";
+import ConnectedFooter from "../ConnectedFooter";
+import PageNotFound from "../PageNotFound";
+import ProtectedRoute from "../ProtectedRoute";
+
+const isLogged = !!localStorage.getItem("token");
+console.log("isLogged", isLogged);
 
 const App = () => (
   //We use the router method to switch from a component to another
-  <BrowserRouter >
+  <BrowserRouter>
     <div className="app">
-    {/* Here we show the Homepage */}
       <Switch>
-        <Route exact path="/"> 
+        <Route exact path="/">
+          {/* { isLogged ? <Redirect to="/calendar" /> : <Redirect to="/login" /> } */}
           <Homepage />
           {/* <Footer /> */}
         </Route>
 
-        {/* Here we show the Login page */}
-        <Route path="/login"> 
+        <Route path="/login">
           <Header />
           <LoginApp />
           {/* <Footer /> */}
         </Route>
 
-      <Route path="/Contact"> 
+        <Route path="/contact">
           <Header />
           <ContactForm />
           {/* <Footer /> */}
         </Route>
-        
-      <Route path="/Calendar"> 
+
+        <ProtectedRoute path="/calendar">
           <ConnectedHeader />
-          <MyCalendar /> 
+          <MyCalendar />
           {/* <ConnectedFooter /> */}
-        </Route>
+        </ProtectedRoute>
 
-        <Route path="/AddTech"> 
+        <ProtectedRoute path="/addtech">
           <ConnectedHeader />
-          <AddTech /> 
-          {/* <ConnectedFooter /> */}
-        </Route>
+          <AddTech />
+        {/* <ConnectedFooter /> */}
+        </ProtectedRoute>
 
-
-        <Route path='*'>
+        <Route path="*">
           <Header />
           <PageNotFound />
           {/* <Footer /> */}
         </Route>
-      
-
-      </Switch> 
-          
+      </Switch>
     </div>
   </BrowserRouter>
 );

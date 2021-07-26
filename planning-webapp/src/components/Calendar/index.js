@@ -6,7 +6,7 @@ import axios from "axios";
 
 // Import react-modal to use it instead of app's Popup
 import Modal from "react-modal";
-
+import ConnectedHeader from "../ConnectedHeader";
 import Form from "../Form";
 import data from "../../data/data.js";
 
@@ -139,7 +139,7 @@ const MyCalendar = () => {
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
-          console.log(phaseBack);
+          // console.log(phaseBack);
 
           const start_date = new Date(phaseBack.start_date);
           let end_date,
@@ -174,7 +174,7 @@ const MyCalendar = () => {
             end: end_date,
             color: "#ffffff",
           };
-          console.log(phaseFront);
+          // console.log(phaseFront);
 
           phasesToAdd.push(phaseFront);
         }

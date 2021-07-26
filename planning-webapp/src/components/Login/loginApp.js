@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import LoginForm from "./index";
 import Calendar from "../Calendar";
 import axios from "axios";
+import { BrowserRouter, Switch , Route, Redirect } from 'react-router-dom';
 
 const host = "localhost";
 const port = "4000";
@@ -15,32 +16,26 @@ function LoginApp() {
   //Setting the error
   const [error, setError] = useState("");
 
+  const [isLogged, setIsLogged] = useState(!!localStorage.getItem("token"));
+
   //Checking if the user is logged in
   const Login = async (details) => {
     try {
       const response = await axios.post(`${base_url}/login`, details);
       localStorage.setItem('token', response.data.token)
       setUser({email: details.email});
+      setIsLogged(true);
     } catch (error) {
       console.error(error);
+      setIsLogged(false);
       setError("Les informations sont incorrectes !");
     }
     
   };
-  //Logging out and setting the user default to none
-  const Logout = () => {
-    setUser({ email: "", password: "" });
-  };
 
   return (
     <div>
-      {localStorage.getItem('token') ? (
-        // (1)Once we are logged in we render Calendar
-        <Calendar />
-      ) : (
-        // (1)if we have an error then we render the error message
-        <LoginForm Login={Login} error={error} />
-      )}
+      { isLogged ? <Redirect to="/calendar" /> : <LoginForm Login={Login} error={error} /> }
     </div>
   );
 }
