@@ -167,3 +167,35 @@ Content-Type: application/json
   "vehicle_id": 1,
   "user_id": 1
 }
+
+### Get all address
+
+GET {{baseUrl}}/address
+
+### Creation of an address
+
+POST {{baseUrl}}/address
+Content-Type: application/json
+
+{
+  "main": "Rue de la Soif",
+  "additional": null,
+  "zip_code": "35000",
+  "city": "Rennes"
+}
+
+### Edit an address
+
+PATCH {{baseUrl}}/address/21
+Content-Type: application/json
+
+{
+  "main": "Chez ouat",
+  "additional": null,
+  "zip_code": "28000",
+  "city": "Toulouse"
+}
+
+### Delete an address
+
+DELETE {{baseUrl}}/address/23

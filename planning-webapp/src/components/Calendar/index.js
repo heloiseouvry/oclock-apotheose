@@ -269,8 +269,8 @@ const MyCalendar = () => {
         end_date: schedule.end.toDate(),
       });
     }
-    // console.log("eventInfo", eventInfo);
     openEventModal();
+    // console.log("eventInfo", eventInfo);
 
     //TODO décaler ce qu'il y a en dessous dans le onSubmit
     //il va falloir détecter si je suis en train de modifier ou de créer

@@ -2,6 +2,7 @@ const CoreModel = require("./coreModel");
 const db = require("../database.js");
 
 class Address extends CoreModel {
+  
   static async findAll() {
     const data = await CoreModel.fetch("SELECT * FROM address;");
     return data.map((d) => new Address(d));

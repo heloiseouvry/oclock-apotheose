@@ -109,6 +109,11 @@ class User extends CoreModel {
         return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
     }
 
+    static async findAvailableUsers(start_date, end_date) {
+        const data = await CoreModel.fetch('SELECT * FROM "user";');
+        return data.map(d => new User(d));
+    }
+
     /**
      * send a delete request of an user by his id in database
      * @returns {error} in the case of the delete request didn't work
