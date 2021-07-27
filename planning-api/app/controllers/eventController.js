@@ -6,11 +6,9 @@ const eventController = {
   },
 
   addEvent : async (req, res, next) => {
-    const { title, start_date, end_date, color, address} = req.body;
-    const newAddress = new Address(address);
+    const { title, start_date, end_date, color, address_id} = req.body;
     try {
-      await newAddress.save();
-      const newEvent = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id: newAddress.id});
+      const newEvent = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id});
       await newEvent.save();
       
       const newPhase = new Phase({
@@ -34,12 +32,9 @@ const eventController = {
 
   editEvent : async (req, res, next) => {
     try {
-      const { title, start_date, end_date, color, address} = req.body;
+      const { title, start_date, end_date, color, address_id} = req.body;
 
-      const addressToEdit = new Address(address);
-      await addressToEdit.save();
-
-      const eventToEdit = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id: addressToEdit.id});
+      const eventToEdit = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id});
       eventToEdit.id = parseInt(req.params.id);
       await eventToEdit.save();
 

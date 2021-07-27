@@ -29,27 +29,36 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
       const startParsedDate = new Date(Date.parse(`${eventForm.start_date}T${eventForm.start_time}:00`));
       const endParsedDate = new Date(Date.parse(`${eventForm.end_date}T${eventForm.end_time}:00`));
       
-      const body = {...eventForm};
-      body.start_date = startParsedDate;
-      body.end_date = endParsedDate;
-      body.address = eventForm.raw.address;
-      body.color = eventForm.bgColor;
+      const eventBody = {...eventForm};
+      eventBody.start_date = startParsedDate;
+      eventBody.end_date = endParsedDate;
+      eventBody.color = eventForm.bgColor;
 
-      // console.log("body", body);
+      const addressBody = eventForm.raw.address;
+      console.log(addressBody);
+
+      // console.log("eventBody", eventBody);
       // console.log("eventEdit", eventEdit);
       let response;
       if(eventEdit){
-        response = await axios.patch(`${base_url}/events/${body.calendarId}`, body, {
+        response = await axios.patch(`${base_url}/address/${addressBody.id}`, addressBody, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        eventBody.address_id = addressBody.id;
+        await axios.patch(`${base_url}/events/${eventBody.calendarId}`, eventBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         setEventEdit(false);
       } else {
-        response = await axios.post(`${base_url}/events`, body, {
+        response = await axios.post(`${base_url}/address`, addressBody, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        eventBody.address_id = response.data.id;
+        await axios.post(`${base_url}/events`, eventBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
       }
       closeEventModal();
-      // console.log(response);
     } catch (error) {
       console.error(error);
       setError("Les informations sont incorrectes !");
