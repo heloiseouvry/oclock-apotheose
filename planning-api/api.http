@@ -61,10 +61,10 @@ Content-Type: application/json
 
 {
   "lastname": "Obama",
-  "firstname": "Michelle",
+  "firstname": "Barack",
   "phone_number": "0674965896",
-  "role": "cdp",
-  "email": "mo@gmail.com",
+  "role": "tech",
+  "email": "bo@gmail.com",
   "password": "micdrop",
   "status": "intermittent",
   "birth_date": "1962-12-02",

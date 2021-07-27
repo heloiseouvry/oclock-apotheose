@@ -9,6 +9,7 @@ import Login from "../Login";
 import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
+import TechCalendar from "../TechCalendar";
 import AddTech from "../AddTech";
 import Footer from "../Footer";
 import ConnectedFooter from "../ConnectedFooter";
@@ -46,6 +47,12 @@ const App = () => {
         <ProtectedRoute path="/calendar">
           <ConnectedHeader />
           <MyCalendar />
+          {/* <ConnectedFooter /> */}
+        </ProtectedRoute>
+
+        <ProtectedRoute path="/tech/calendar">
+          <ConnectedHeader />
+          <TechCalendar />
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
 
