@@ -1,4 +1,4 @@
-const { Phase } = require("../models");
+const { Phase, Event } = require("../models");
 
 const phaseController = {
   getAllPhases: async (req, res, next) => {
@@ -27,8 +27,14 @@ const phaseController = {
   deletePhase: async (req, res) => {
     try {
       const phaseToDelete = await Phase.findById(req.params.id);
-      await phaseToDelete.delete();
-      res.status(201).json({ message: "Supression effectuée avec succès." });
+      if (phaseToDelete.type === "event") {
+        const eventToDelete = await Event.findById(phaseToDelete.event_id);
+        await phaseToDelete.delete();
+        await eventToDelete.delete();
+      } else {
+        await phaseToDelete.delete();
+      }
+      res.status(204).json({ message: "Phase - Supression effectuée avec succès." });
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -40,7 +46,7 @@ const phaseController = {
       phaseToEdit.id = req.params.id;
       console.log("dans le controller : ", phaseToEdit);
       await phaseToEdit.save();
-      res.status(201).json(phaseToEdit);
+      res.status(200).json(phaseToEdit);
     } catch (error) {
       res.status(500).json(error.message);
     }

@@ -60,8 +60,25 @@ const MyCalendar = () => {
   const [eventOpen, setEventOpen] = useState(false);
   const [phaseOpen, setPhaseOpen] = useState(false);
 
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [eventEdit, setEventEdit] = useState(false);
+  const [eventInfo, setEventInfo] = useState({
+    title: "",
+    start_date: new Date(),
+    end_date: new Date(),
+    start_time: new Date(),
+    end_time: new Date(),
+    color: "#ffffff",
+    bgColor: '#000000',
+    raw: {
+      type: "",
+      address: {
+        main: "",
+        additional: "",
+        zip_code: "",
+        city: "",
+      },
+    },
+  });
 
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
@@ -101,12 +118,9 @@ const MyCalendar = () => {
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
+          // console.log("phaseBack", phaseBack);
           const start_date = new Date(phaseBack.start_date);
-          const end_date = new Date(
-            new Date(start_date).setHours(
-              start_date.getHours() + phaseBack.duration.hours
-            )
-          );
+          const end_date = new Date(phaseBack.end_date);
           let category,
             isAllDay = null;
           if (phaseBack.type === "event") {
@@ -127,11 +141,19 @@ const MyCalendar = () => {
             start: start_date,
             end: end_date,
             raw: {
-              type: phaseBack.type
+              type: phaseBack.type,
+              address: {
+                main: phaseBack.main,
+                additional: phaseBack.additional,
+                zip_code: phaseBack.zip_code,
+                city: phaseBack.city,
+              },
             },
             color: "#ffffff",
+            bgColor: phaseBack.color
           };
-          // console.log(phaseFront);
+          // console.log("phaseFront", phaseFront);
+          // console.log("phaseFront address", phaseFront["raw"]["address"]);
 
           phasesToAdd.push(phaseFront);
         }
@@ -145,8 +167,6 @@ const MyCalendar = () => {
   }, []);
 
   const cal = useRef(null);
-
-  const [editingPhase, setEditingPhase] = useState(null);
 
   // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
   function openChoiceModal() {
@@ -206,29 +226,51 @@ const MyCalendar = () => {
     console.log("onClickSchedule", e, el.getBoundingClientRect());
   }, []);
 
-  const onBeforeCreateSchedule = useCallback((scheduleData) => {
+  const onBeforeCreateSchedule = useCallback((event) => {
     // use the schedule data to use it in the modal
-    setStartTime(scheduleData.start.toDate());
-    setEndTime(scheduleData.end.toDate());
+    setEventInfo({
+      ...eventInfo,
+      start_date: event.start.toDate(),
+      end_date: event.end.toDate(),
+    });
     // Need to open the choice modal to select bewteen creating an event or a phase
     openChoiceModal();
   }, []);
 
-  const onBeforeDeleteSchedule = useCallback((res) => {
-    console.log("onBeforeDeleteSchedule", res);
+  const onBeforeDeleteSchedule = useCallback(async (event) => {
+    console.log("onBeforeDeleteSchedule", event);
 
-    const { id, calendarId } = res.schedule;
-
+    const { id, calendarId } = event.schedule;
+    try {
+      await axios.delete(`${base_url}/phases/${id}`, {
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.error(error);
+    }
     cal.current.calendarInst.deleteSchedule(id, calendarId);
   }, []);
 
-  const onBeforeUpdateSchedule = useCallback((e) => {
-    console.log("onBeforeUpdateSchedule", e);
+  const onBeforeUpdateSchedule = useCallback((event) => {
+    console.log("onBeforeUpdateSchedule", event);
 
-    const { schedule, changes } = e;
-
-    setEditingPhase(e.schedule);
-    openModal();
+    const { schedule, changes } = event;
+    setEventEdit(true);
+    if(changes){
+      setEventInfo({
+        ...schedule,
+        start_date: changes.start.toDate(),
+        end_date: changes.end.toDate(),
+      });
+    } else {
+      setEventInfo({
+        ...schedule,
+        start_date: schedule.start.toDate(),
+        end_date: schedule.end.toDate(),
+      });
+    }
+    openEventModal();
+    // console.log("eventInfo", eventInfo);
 
     //TODO décaler ce qu'il y a en dessous dans le onSubmit
     //il va falloir détecter si je suis en train de modifier ou de créer
@@ -268,92 +310,92 @@ const MyCalendar = () => {
     return html.join("");
   }
 
-  const onSubmitCreate = (eventFromForm) => {
-    var schedule = {
-      id: String(Math.random()),
-      title: eventFromForm.target.name.value,
-      isAllDay: false,
-      // les 2 lignes d'après sont attribuées dans onCreateSchedule
-      //TODO à récupérer depuis le event.target
-      start: modalStartDate,
-      end: modalEndDate,
-      category: "time",
-      // Dans l'objet raw je place les données qui ne sont pas prévues par la librairie et que je vais rendre via le template
-      // Exemple : salaire, véhicule
-      raw: {
-        techID: parseInt(eventFromForm.target.techName.value, 10),
-      },
-      calendarId: "1",
-      // Schedule.body is basic text, not possible to put anything but string
-      body: "test",
-    };
-    /* step2. save schedule */
-    // @ts-ignore: Object is possibly 'null'.
+  // const onSubmitCreate = (eventFromForm) => {
+  //   var schedule = {
+  //     id: String(Math.random()),
+  //     title: eventFromForm.target.name.value,
+  //     isAllDay: false,
+  //     // les 2 lignes d'après sont attribuées dans onCreateSchedule
+  //     //TODO à récupérer depuis le event.target
+  //     start: modalStartDate,
+  //     end: modalEndDate,
+  //     category: "time",
+  //     // Dans l'objet raw je place les données qui ne sont pas prévues par la librairie et que je vais rendre via le template
+  //     // Exemple : salaire, véhicule
+  //     raw: {
+  //       techID: parseInt(eventFromForm.target.techName.value, 10),
+  //     },
+  //     calendarId: "1",
+  //     // Schedule.body is basic text, not possible to put anything but string
+  //     body: "test",
+  //   };
+  //   /* step2. save schedule */
+  //   // @ts-ignore: Object is possibly 'null'.
 
-    // TODO ici je dois prévoir d'envoyer le schedule à sauvegarder en BDD
-    //potientiellement ajax.post
-    //avec une fausse ID
-    //auquel je passe une callback avec ce qu'il y a à executer en cas de retour valide j'execute le createschedule (ligne juste en dessous) qui comportera tous l'objet schedule definitif avec l'ID généré par le back
-    cal.current.calendarInst.createSchedules([schedule]);
-  };
+  //   // TODO ici je dois prévoir d'envoyer le schedule à sauvegarder en BDD
+  //   //potientiellement ajax.post
+  //   //avec une fausse ID
+  //   //auquel je passe une callback avec ce qu'il y a à executer en cas de retour valide j'execute le createschedule (ligne juste en dessous) qui comportera tous l'objet schedule definitif avec l'ID généré par le back
+  //   cal.current.calendarInst.createSchedules([schedule]);
+  // };
 
-  const onSubmitUpdate = (eventFromForm) => {
-    console.log(
-      "eventFromForm.target.IDHidden.value",
-      parseFloat(eventFromForm.target.IDHidden.value)
-    );
-    console.log(
-      "eventFromForm.target.calendarIdHidden.value",
-      eventFromForm.target.calendarIdHidden.value
-    );
-    console.log(
-      "eventFromForm.target.name.value",
-      eventFromForm.target.name.value
-    );
-    console.log(
-      "eventFromForm.target.techName.value",
-      eventFromForm.target.techName.value
-    );
+  // const onSubmitUpdate = (eventFromForm) => {
+  //   console.log(
+  //     "eventFromForm.target.IDHidden.value",
+  //     parseFloat(eventFromForm.target.IDHidden.value)
+  //   );
+  //   console.log(
+  //     "eventFromForm.target.calendarIdHidden.value",
+  //     eventFromForm.target.calendarIdHidden.value
+  //   );
+  //   console.log(
+  //     "eventFromForm.target.name.value",
+  //     eventFromForm.target.name.value
+  //   );
+  //   console.log(
+  //     "eventFromForm.target.techName.value",
+  //     eventFromForm.target.techName.value
+  //   );
 
-    // TODO check informations I send
-    cal.current.calendarInst.updateSchedule(
-      parseFloat(eventFromForm.target.IDHidden.value),
-      parseInt(eventFromForm.target.calendarIdHidden.value, 10),
-      {
-        title: eventFromForm.target.name.value,
-        raw: {
-          techID: parseInt(eventFromForm.target.techName.value, 10),
-        },
-      }
-    );
-  };
+  //   // TODO check informations I send
+  //   cal.current.calendarInst.updateSchedule(
+  //     parseFloat(eventFromForm.target.IDHidden.value),
+  //     parseInt(eventFromForm.target.calendarIdHidden.value, 10),
+  //     {
+  //       title: eventFromForm.target.name.value,
+  //       raw: {
+  //         techID: parseInt(eventFromForm.target.techName.value, 10),
+  //       },
+  //     }
+  //   );
+  // };
 
-  const onSubmitEvent = useCallback((event) => {
-    event.preventDefault(event);
-    // ici avec event.target.techName.value je récupère l'ID de mon tech depuis le select du Form.js
-    console.log(
-      "je suis event.target.techName.value",
-      event.target.techName.value
-    );
-    console.log("je suis modalStartDate", modalStartDate);
-    console.log("je suis modalEndDate", modalEndDate);
+  // const onSubmitEvent = useCallback((event) => {
+  //   event.preventDefault(event);
+  //   // ici avec event.target.techName.value je récupère l'ID de mon tech depuis le select du Form.js
+  //   console.log(
+  //     "je suis event.target.techName.value",
+  //     event.target.techName.value
+  //   );
+  //   console.log("je suis modalStartDate", modalStartDate);
+  //   console.log("je suis modalEndDate", modalEndDate);
 
-    //TODO faure le test pour appeler le bon onSubmit
+  //   //TODO faure le test pour appeler le bon onSubmit
 
-    console.log(
-      "event.target.createHidden.value",
-      event.target.createHidden.value
-    );
-    if (event.target.createHidden.value == "false") {
-      console.log("uptdate");
-      onSubmitUpdate(event);
-    } else {
-      console.log("create");
-      onSubmitCreate(event);
-    }
-    setEditingPhase(null);
-    closeChoiceModal();
-  }, []);
+  //   console.log(
+  //     "event.target.createHidden.value",
+  //     event.target.createHidden.value
+  //   );
+  //   if (event.target.createHidden.value == "false") {
+  //     console.log("uptdate");
+  //     onSubmitUpdate(event);
+  //   } else {
+  //     console.log("create");
+  //     onSubmitCreate(event);
+  //   }
+  //   setEditingPhase(null);
+  //   closeChoiceModal();
+  // }, []);
 
   // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
   const templates = {
@@ -361,9 +403,6 @@ const MyCalendar = () => {
       console.log("time", schedule);
       return getTimeTemplate(schedule, false);
     },
-    //   collapseBtnTitle: function() {
-    //     return '<span className="tui-full-calendar-icon tui-full-calendar-ic-arrow-solid-top"></span>';
-    // },
     popupDetailBody: (phaseDetails) => {
       console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
@@ -388,10 +427,11 @@ const MyCalendar = () => {
 
   return (
     <div className="App">
-       <Modal
+      <Modal
         onClose={closeChoiceModal}
         onOpen={openChoiceModal}
         open={choiceOpen}
+        size="mini"
       >
         <Modal.Header>Créer un événement ou une phase</Modal.Header>
         <Modal.Actions>
@@ -400,14 +440,13 @@ const MyCalendar = () => {
         </Modal.Actions>
       </Modal>
 
-      <Modal
-        onClose={closeEventModal}
-        onOpen={openEventModal}
-        open={eventOpen}
-      >
-        <Modal.Header>Créer un événement</Modal.Header>
+      <Modal onClose={closeEventModal} onOpen={openEventModal} open={eventOpen}>
+        <Modal.Header>
+          {eventEdit ? "Modifier un événement" : "Créer un événement"}
+        </Modal.Header>
         <Modal.Content>
-          <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} />
+          {/* <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} /> */}
+          <EventForm eventInfo={eventInfo} eventEdit={eventEdit} setEventEdit={setEventEdit} closeEventModal={closeEventModal} />
         </Modal.Content>
         {/* <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} />
@@ -415,19 +454,14 @@ const MyCalendar = () => {
         </Modal.Actions> */}
       </Modal>
 
-      <Modal
-        onClose={closePhaseModal}
-        onOpen={openPhaseModal}
-        open={phaseOpen}
-      >
+      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
         <Modal.Header>Créer une phase</Modal.Header>
-        <Modal.Actions>
+        {/* <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} /> //TODO : onSubmitPhase
           <Button icon="close" onClick={closePhaseModal} />
-        </Modal.Actions>
+        </Modal.Actions> */}
       </Modal>
-      
-      
+
       <Button content="<" secondary onClick={prevView} />
       <Button content="Jour" secondary onClick={dayView} />
       <Button content="Semaine" secondary onClick={weekView} />
@@ -441,7 +475,7 @@ const MyCalendar = () => {
         view="week"
         week={{
           startDayOfWeek: 1,
-          daynames: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."]
+          daynames: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
         }}
         taskView={false}
         useCreationPopup={false} // "false" to use our form instead of app Popup

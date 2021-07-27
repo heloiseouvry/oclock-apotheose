@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = new Router();
 
-const { mainController, authController, eventController, phaseController, userController } = require('./controllers');
+const { mainController, authController, eventController, phaseController, userController, addressController } = require('./controllers');
 const { userSchema } = require('./schemas');
 const { validateBody } = require('./middlewares/validator');
 const { User } = require('./models');
@@ -148,5 +148,13 @@ router.post('/users', validateBody(userSchema), userController.addUser);
 router.get('/users/:id', userController.getOneUser);
 router.patch('/users/:id', userController.editUser);
 router.delete('/users/:id', userController.deleteUser);
+
+router.get('/available_users', userController.getAvailableUsers);
+
+router.get('/address', addressController.getAllAddresses);
+router.post('/address', addressController.addAddress);
+router.get('/address/:id', addressController.getAddressById);
+router.patch('/address/:id', addressController.editAddress);
+router.delete('/address/:id', addressController.deleteAddress);
 
 module.exports = router;

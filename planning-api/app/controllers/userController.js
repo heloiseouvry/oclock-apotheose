@@ -48,7 +48,17 @@ const userController = {
         } catch (error) {
             res.status(500).json(error.message);
         }
-    }
+    },
+
+    getAvailableUsers : async (req, res) => {
+        try {
+            
+            res.status(201).json({message : "Supression effectuée avec succès."})
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    },
+
 
 }
 
