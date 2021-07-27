@@ -11,7 +11,7 @@ const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
-function EventForm ({eventInfo, eventEdit, closeEventModal}) {
+function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
   // console.log("eventInfo", eventInfo);
   const start_date = `${eventInfo.start_date.getFullYear()}-${("0" + (eventInfo.start_date.getMonth() + 1)).slice(-2)}-${("0" + eventInfo.start_date.getDate()).slice(-2)}`;
   const start_time = `${("0" + eventInfo.start_date.getHours()).slice(-2)}:${("0" + eventInfo.start_date.getMinutes()).slice(-2)}`;
@@ -20,7 +20,6 @@ function EventForm ({eventInfo, eventEdit, closeEventModal}) {
   const end_time = `${("0" + eventInfo.end_date.getHours()).slice(-2)}:${("0" + eventInfo.end_date.getMinutes()).slice(-2)}`;
 
   const [error, setError] = useState("");
-  // const [eventForm, setEventForm] = useState({ title: "", start_date, end_date, start_time, end_time, color: "#ffffff", main: "", additional: "", zip_code: "", city: "" });
   const [eventForm, setEventForm] = useState({ ...eventInfo, start_date, end_date, start_time, end_time });
   // console.log("eventForm", eventForm);
 
@@ -43,6 +42,7 @@ function EventForm ({eventInfo, eventEdit, closeEventModal}) {
         response = await axios.patch(`${base_url}/events/${body.calendarId}`, body, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
+        setEventEdit(false);
       } else {
         response = await axios.post(`${base_url}/events`, body, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },

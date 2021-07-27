@@ -80,9 +80,6 @@ const MyCalendar = () => {
     },
   });
 
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
-
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
 
@@ -259,11 +256,19 @@ const MyCalendar = () => {
 
     const { schedule, changes } = event;
     setEventEdit(true);
-    setEventInfo({
-      ...schedule,
-      start_date: schedule.start.toDate(),
-      end_date: schedule.end.toDate(),
-    });
+    if(changes){
+      setEventInfo({
+        ...schedule,
+        start_date: changes.start.toDate(),
+        end_date: changes.end.toDate(),
+      });
+    } else {
+      setEventInfo({
+        ...schedule,
+        start_date: schedule.start.toDate(),
+        end_date: schedule.end.toDate(),
+      });
+    }
     // console.log("eventInfo", eventInfo);
     openEventModal();
 
@@ -441,7 +446,7 @@ const MyCalendar = () => {
         </Modal.Header>
         <Modal.Content>
           {/* <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} /> */}
-          <EventForm eventInfo={eventInfo} eventEdit={eventEdit} closeEventModal={closeEventModal} />
+          <EventForm eventInfo={eventInfo} eventEdit={eventEdit} setEventEdit={setEventEdit} closeEventModal={closeEventModal} />
         </Modal.Content>
         {/* <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} />
