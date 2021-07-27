@@ -2,6 +2,7 @@ const CoreModel = require("./coreModel");
 const db = require("../database.js");
 
 class Address extends CoreModel {
+  
   static async findAll() {
     const data = await CoreModel.fetch("SELECT * FROM address;");
     return data.map((d) => new Address(d));
@@ -15,8 +16,8 @@ class Address extends CoreModel {
     if (this.id) {
       try {
         const preparedQuery = {
-          text: `UPDATE address SET (main, additional, zip_code, city)=($1, $2, $3, $4)`,
-          values: [this.main, this.additional, this.zip_code, this.city],
+          text: `UPDATE address SET (main, additional, zip_code, city)=($1, $2, $3, $4) WHERE id = $5`,
+          values: [this.main, this.additional, this.zip_code, this.city, this.id],
         };
         const { rows } = await db.query(preparedQuery);
       } catch (error) {

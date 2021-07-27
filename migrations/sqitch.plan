@@ -6,3 +6,5 @@ init 2021-07-15T09:42:14Z Heloise Ouvry <heloiseouvry@gmail.com> # Création des
 expand-tables 2021-07-19T08:06:36Z Heloise Ouvry <heloiseouvry@gmail.com> # Expand tables with more attributes
 phase-fix-no-vehicle 2021-07-20T08:12:37Z Heloise Ouvry <heloiseouvry@gmail.com> # Remove NOT NULL constraint on vehicle_id for a phase
 user-int-to-text 2021-07-20T14:52:55Z Heloise Ouvry <heloiseouvry@gmail.com> # Change int type to text for some user attributes
+end_date 2021-07-27T10:42:28Z Heloise Ouvry <heloiseouvry@gmail.com> # Change duration to end_date
+delete_cascade 2021-07-27T12:20:27Z Heloise Ouvry <heloiseouvry@gmail.com> # Add ON DELETE CASCADE constraints

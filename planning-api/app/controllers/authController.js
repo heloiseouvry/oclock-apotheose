@@ -5,8 +5,9 @@ const jwt = require('../services/auth');
 const authController = {
     loginSubmit: async (req, res) => {
         const { email, password } = req.body;
-        
+        // console.log("dans le controller : ", req.body);
         const user = await User.findByEmail(email);
+        // console.log("user ? ", user);
         
         if(!user) {
             return res.status(403).json("This user doesn't exist");

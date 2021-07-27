@@ -44,8 +44,8 @@ class Event extends CoreModel {
         if(this.id){
             try {
                 const preparedQuery = {
-                    text:`UPDATE event SET (title, start_date, duration, color, user_id, address_id)=($1, $2, $3, $4, $5, $6)`,
-                    values: [this.title, this.start_date, this.duration, this.color, this.user_id, this.address_id]
+                    text:`UPDATE event SET (title, start_date, end_date, color, user_id, address_id)=($1, $2, $3, $4, $5, $6) WHERE id = $7`,
+                    values: [this.title, this.start_date, this.end_date, this.color, this.user_id, this.address_id, this.id]
                 }
                 const { rows } = await db.query(preparedQuery);
                  
@@ -56,8 +56,8 @@ class Event extends CoreModel {
         } else {
             try {
                 const preparedQuery = {
-                    text: 'INSERT INTO event (title, start_date, duration, color, user_id, address_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
-                    values: [this.title, this.start_date, this.duration, this.color, this.user_id, this.address_id]
+                    text: 'INSERT INTO event (title, start_date, end_date, color, user_id, address_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
+                    values: [this.title, this.start_date, this.end_date, this.color, this.user_id, this.address_id]
                 }
                 const { rows } = await db.query(preparedQuery);
                 this.id = rows[0].id;

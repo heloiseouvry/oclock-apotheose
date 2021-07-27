@@ -7,8 +7,8 @@ import TechNavbar from "../TechNavbar";
 import "./styles.scss";
 
 
-const ConnectedHeader = ({role}) => {
-  const isAdmin = (role === "cdp") ? true : false;
+const ConnectedHeader = () => {
+  const isAdmin = (localStorage.getItem("role") === "cdp") ? true : false;
   const history = useHistory();
 
   function logout() {
