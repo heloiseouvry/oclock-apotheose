@@ -5,7 +5,7 @@ const { mainController, authController, eventController, phaseController, userCo
 const { userSchema } = require('./schemas');
 const { validateBody } = require('./middlewares/validator');
 const { User } = require('./models');
-
+console.log("je suis dans le router");
 // router.post('/contact', mainController);
 router.post('/login', authController.loginSubmit);
 

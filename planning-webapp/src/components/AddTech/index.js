@@ -1,7 +1,13 @@
-import React from 'react';
-import { Button, Checkbox } from 'semantic-ui-react';
+import React, {useState} from 'react';
+import { Button, Checkbox, Form } from 'semantic-ui-react';
+import axios from "axios";
 
 import './styles.scss';
+
+const host = "localhost";
+const port = "4000";
+const router = "admin";
+const base_url = `http://${host}:${port}/${router}`;
 
 function AddTech () {
 
@@ -9,8 +15,8 @@ function AddTech () {
         <div className='CreateTech'>
         <h1 className='title'>Ajouter un technicien</h1>
                             
-            <form className='submitTech' method="POST" > 
-
+            <Form onSubmit={handleSubmit}> 
+              
                 <input type='text' placeholder='Nom' />               
                 <input type="text" placeholder='Prénom' />
                 <input type='text' placeholder='Adresse' />               
@@ -46,7 +52,7 @@ function AddTech () {
                     <Button type='submit' className='button' content='Se connecter' primary />
                     
                 </div>
-            </form>
+            </Form>
         </div>
     )
 };
