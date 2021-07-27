@@ -426,8 +426,7 @@ const MyCalendar = () => {
           <Button icon="close" onClick={closePhaseModal} />
         </Modal.Actions>
       </Modal>
-      
-      
+            
       <Button content="<" secondary onClick={prevView} />
       <Button content="Jour" secondary onClick={dayView} />
       <Button content="Semaine" secondary onClick={weekView} />
@@ -439,6 +438,7 @@ const MyCalendar = () => {
         ref={cal}
         height="600px"
         view="week"
+        week={{ daynames: ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."] }}
         taskView={false}
         useCreationPopup={false} // "false" to use our form instead of app Popup
         useDetailPopup={true}

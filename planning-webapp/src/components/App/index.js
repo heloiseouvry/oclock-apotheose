@@ -21,8 +21,6 @@ const isLogged = !!localStorage.getItem("token");
 
 const App = () => {
 
-  const [role, setRole] = useState(!!localStorage.getItem("role"));
-
   return (
   //We use the router method to switch from a component to another
   <BrowserRouter>
@@ -35,7 +33,7 @@ const App = () => {
 
         <Route path="/login">
           <Header />
-          <Login setRole={setRole} />
+          <Login />
           {/* <Footer /> */}
         </Route>
 
@@ -46,7 +44,7 @@ const App = () => {
         </Route>
 
         <ProtectedRoute path="/calendar">
-          <ConnectedHeader role={role} />
+          <ConnectedHeader />
           <MyCalendar />
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
@@ -64,7 +62,7 @@ const App = () => {
         </Route>
         
         <ProtectedRoute path="/addtech">
-          <ConnectedHeader role={role} />
+          <ConnectedHeader />
           <AddTech />
         {/* <ConnectedFooter /> */}
         </ProtectedRoute>

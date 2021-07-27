@@ -12,7 +12,7 @@ const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
 
-function Login({setRole}) {
+function Login() {
   const [error, setError] = useState("");
   const [details, setDetails] = useState({ email: "", password: "" });
   const [isLogged, setIsLogged] = useState(!!localStorage.getItem("token"));
@@ -25,7 +25,6 @@ function Login({setRole}) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
       setIsLogged(true);
-      setRole(response.data.role);
       history.push('calendar');
     } catch (error) {
       console.error(error);
