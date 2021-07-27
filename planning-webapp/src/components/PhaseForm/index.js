@@ -1,55 +1,92 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Dropdown, Form, FormField, Input, Checkbox, Label } from 'semantic-ui-react';
 
 import './styles.scss';
 
-// function PhaseType(that) {
-//     if (that.value == "other") {
-//         document.getElementById("ifYes").style.display = "block";
-//     } else {
-//         document.getElementById("ifYes").style.display = "none";
-//     }
-// }
+const options = [
+    { key: 1, text: 'Montage', value: 1 },
+    { key: 2, text: 'Répétition', value: 2 },
+    { key: 3, text: 'Exploitation', value: 3 },
+    { key: 4, text: 'Démontage', value: 4 },
+]
+const techList = [
+    { key: 1, text: 'Jacky', value: 1 },
+    { key: 2, text: 'Michel', value: 2 },
+    { key: 3, text: 'Henri', value: 3 },
+    { key: 4, text: 'Max', value: 4 },
+]
 
 const PhaseForm = () =>{ 
 
     return(
-        <div className='CreatePhase'>
-            <h1 className='title'>Créer une Phase</h1>
-                            
-            <form className='SubmitPhase' method="POST" > 
+        <div className='PhaseForm'>
+            
+            <Form  method="POST" >
+            
+            <h1 className='title'>Créer une Phase</h1> 
+            
+                <FormField required>
+                {/* Si on veut relier Les phases, possibilités de mettre un controled Dropdown sur semanticUI */}
+                <Dropdown selection options={options} placeholder='Liste des phases' />
+                </FormField>
 
-                <select name="Phases" id="pet-select">
-                    <option value="">Listes des Phases</option>
-                    <option value="Montage">Montage</option>
-                    <option value="Répétition">Répétition</option>
-                    <option value="Exploitation">Exploitation</option>
-                    <option value="Démontage">Démontage</option>
-                    <option value="Livraison">Livraison</option>
-                    <option value="Autre">Transport autre</option>
-                </select>
+                <Form.Group className="Time">
+                    <FormField required> 
+                    <label  for="start">Début</label> 
+                        <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
+                    <label  for="start">Fin</label> 
+                        <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
 
-                <label  for="start">Début</label> 
-                    <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
-                <label className='datePicker' for="start">Fin</label> 
-                    <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
+                    <label for="appt">Heure de Début:</label>
+                        <input type="time" id="appt" name="appt" />  
+                    <label for="appt">Heure de Fin:</label>
+                        <input type="time" id="appt" name="appt" />
+                        
+                    <textarea className='comment' type='text' placeholder='Laissez un commentaire (2000 charactère maximum)' maxLength = "2000"/> 
+                    </FormField>
+                </Form.Group>
 
-                <label for="appt">Heure de Début:</label>
-                    <input type="time" id="appt" name="appt" />  
-                <label for="appt">Heure de Fin:</label>
-                    <input type="time" id="appt" name="appt" />  
+                <Form.Group >
+                    <label >Selectioner un ou plusieurs métiers</label>
+                    <Checkbox  label='Son' />
+                    <Checkbox  label='Lumière' />
+                    <Checkbox  label='Vidéo' />
+                </Form.Group>
 
-                    <textarea className='comment' type='text' placeholder='Laissez un commentaire (2000 charactère maximum)' maxlength = "2000"/> 
+                <Form.Group className='techInput'>
+                    <Label >Combien de techniciens pour le Son?   </Label>
+                    <Input  placeholder="1" />
+                    <Dropdown selection options={techList} placeholder='Liste des Tech' />
+                    <Input  placeholder="Nombre d'heure" />
+                    <Input  placeholder='Cachet' />
+                    <Input  placeholder='Contact' />  {/* info recuperer dans la bdd */}
+                </Form.Group>
 
-                    {/* <div id="ifYes" style="display: none;">
-                        <label for="car">Muu, mikä?</label> <input type="text" id="car" name="car" />
-                    </div>             */}
+                <Form.Group className='techInput'>
+                    <Label >Combien de techniciens pour la lumière?</Label>
+                    <Input  placeholder="1" />
+                    <Dropdown selection options={techList} placeholder='Liste des Tech' />
+                    <Input  placeholder="Nombre d'heure" />
+                    <Input  placeholder='Cachet' />
+                    <Input  placeholder='Contact' /> {/* info recuperer dans la bdd */}
+                </Form.Group>
+
+                <Form.Group className='techInput'>
+                    <Label >Combien de techniciens pour la Vidéo?  </Label>
+                    <Input  placeholder="1" />
+                    <Dropdown selection options={techList} placeholder='Liste des Tech' />
+                    <Input  placeholder="Nombre d'heure" />
+                    <Input  placeholder='Cachet' />
+                    <Input  placeholder='Contact' />  {/* info recuperer dans la bdd */}
+                </Form.Group>
+                
+                
                 
                 <div className='Submit-Phase' >
                     <Button type='submit' className='button' content="Créer la phase" primary />
                     
                 </div>
-            </form>
+            </Form>
         </div>
     )
 };

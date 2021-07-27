@@ -72,6 +72,7 @@ const MyCalendar = () => {
     raw: {
       type: "",
       address: {
+        id: null,
         main: "",
         additional: "",
         zip_code: "",
@@ -143,6 +144,7 @@ const MyCalendar = () => {
             raw: {
               type: phaseBack.type,
               address: {
+                id: phaseBack.address_id,
                 main: phaseBack.main,
                 additional: phaseBack.additional,
                 zip_code: phaseBack.zip_code,
