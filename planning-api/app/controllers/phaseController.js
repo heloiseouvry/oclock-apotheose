@@ -46,7 +46,7 @@ const phaseController = {
       phaseToEdit.id = req.params.id;
       console.log("dans le controller : ", phaseToEdit);
       await phaseToEdit.save();
-      res.status(201).json(phaseToEdit);
+      res.status(200).json(phaseToEdit);
     } catch (error) {
       res.status(500).json(error.message);
     }

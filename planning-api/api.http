@@ -16,7 +16,7 @@ Content-Type: application/json
 {
   "title": "Fête de l'Huma",
   "start_date": "2021-07-19 08:00:00",
-  "duration": "5 days",
+  "end_date": "2021-07-24 08:00:00",
   "color": "#fefefe",
   "user_id": "1",
   "address_id": "1"
@@ -30,7 +30,7 @@ Content-Type: application/json
 {
   "title": "Fête de l'Huma",
   "start_date": "2022-09-10 08:00:00",
-  "duration": "5 days",
+  "end_date": "2022-09-15 08:00:00",
   "color": "#f0f",
   "user_id": "1",
   "address_id": "1"
@@ -60,8 +60,8 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "lastname": "Michelle",
-  "firstname": "Barack",
+  "lastname": "Obama",
+  "firstname": "Michelle",
   "phone_number": "0674965896",
   "role": "cdp",
   "email": "mo@gmail.com",
@@ -128,7 +128,7 @@ Content-Type: application/json
 {
   "title": "montage-scène principale",
   "start_date": "2021-09-09 08:00:00",
-  "duration": "6 hours",
+  "end_date": "2021-09-09 14:00:00",
   "type": "montage",
   "internal_location": "scène 1",
   "tech_manager_contact": "Céline",
@@ -156,7 +156,7 @@ Content-Type: application/json
 {
   "title": "montage-scène principale",
   "start_date": "2021-09-09 08:00:00",
-  "duration": "8 hours",
+  "end_date": "2021-09-09 16:00:00",
   "type": "montage",
   "internal_location": "scène 1",
   "tech_manager_contact": "Céline",
