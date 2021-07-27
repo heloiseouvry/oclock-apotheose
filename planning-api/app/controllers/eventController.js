@@ -1,4 +1,4 @@
-const { Event, Phase, Address } = require("../models");
+const { Event, Phase } = require("../models");
 
 const eventController = {
   getAllEvents : async (req, res, next) => {
@@ -10,18 +10,6 @@ const eventController = {
     try {
       const newEvent = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id});
       await newEvent.save();
-      
-      const newPhase = new Phase({
-        title: newEvent.title,
-        start_date: newEvent.start_date,
-        end_date: newEvent.end_date,
-        type: 'event',
-        number_fee: '0',
-        event_id: newEvent.id,
-        user_id: newEvent.user_id
-      });
-      await newPhase.save();
-      
       res.status(201).json(newEvent);
     } catch (error) {
       console.error(error);
@@ -37,14 +25,7 @@ const eventController = {
       const eventToEdit = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id});
       eventToEdit.id = parseInt(req.params.id);
       await eventToEdit.save();
-
-      const eventPhaseToEdit = await Phase.findEventPhaseByEventId(eventToEdit.id);
-      eventPhaseToEdit.title = title;
-      eventPhaseToEdit.start_date = start_date;
-      eventPhaseToEdit.end_date = end_date;
-      await eventPhaseToEdit.save();
-
-      res.status(200).json(eventToEdit);
+      res.status(200).json(await Phase.findEventPhaseByEventId(eventToEdit.id));
     } catch (error) {
       res.status(500).json(error.message);
     }

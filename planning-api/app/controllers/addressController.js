@@ -16,10 +16,8 @@ const addressController = {
 
   addAddress: async (req, res, next) => {
     try {
-      console.log("Address - req.body", req.body);
       const { main, additional, zip_code, city } = req.body;
       const newAddress = new Address({ main, additional, zip_code, city });
-      console.log("Address - newAddress", newAddress);
       await newAddress.save();
       res.status(201).json(newAddress);
     } catch (error) {

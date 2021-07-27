@@ -35,26 +35,42 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
       eventBody.color = eventForm.bgColor;
 
       const addressBody = eventForm.raw.address;
-      console.log(addressBody);
 
       // console.log("eventBody", eventBody);
       // console.log("eventEdit", eventEdit);
-      let response;
       if(eventEdit){
-        response = await axios.patch(`${base_url}/address/${addressBody.id}`, addressBody, {
+        await axios.patch(`${base_url}/address/${addressBody.id}`, addressBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         eventBody.address_id = addressBody.id;
-        await axios.patch(`${base_url}/events/${eventBody.calendarId}`, eventBody, {
+        const eventResponse = await axios.patch(`${base_url}/events/${eventBody.calendarId}`, eventBody, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        const phaseBody = {...eventBody, 
+          event_id: eventResponse.data.event_id,
+          type: 'event',
+          number_fee: '0',
+          user_id: eventResponse.data.user_id
+        };
+        await axios.patch(`${base_url}/phases/${eventResponse.data.id}`, phaseBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         setEventEdit(false);
       } else {
-        response = await axios.post(`${base_url}/address`, addressBody, {
+        const addressResponse = await axios.post(`${base_url}/address`, addressBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
-        eventBody.address_id = response.data.id;
-        await axios.post(`${base_url}/events`, eventBody, {
+        eventBody.address_id = addressResponse.data.id;
+        const eventResponse = await axios.post(`${base_url}/events`, eventBody, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        const phaseBody = {...eventBody, 
+          event_id: eventResponse.data.id,
+          type: 'event',
+          number_fee: '0',
+          user_id: eventResponse.data.user_id
+        };
+        await axios.post(`${base_url}/phases`, phaseBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
       }
