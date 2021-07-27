@@ -214,11 +214,17 @@ const MyCalendar = () => {
     openChoiceModal();
   }, []);
 
-  const onBeforeDeleteSchedule = useCallback((res) => {
-    console.log("onBeforeDeleteSchedule", res);
+  const onBeforeDeleteSchedule = useCallback(async (event) => {
+    console.log("onBeforeDeleteSchedule", event);
 
-    const { id, calendarId } = res.schedule;
-
+    const { id, calendarId } = event.schedule;
+    try {
+      await axios.delete(`${base_url}/phases/${id}`, {
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.error(error);
+    }
     cal.current.calendarInst.deleteSchedule(id, calendarId);
   }, []);
 

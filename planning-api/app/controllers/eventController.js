@@ -47,7 +47,7 @@ const eventController = {
     try {
         const eventToDelete = await Event.findById(req.params.id);
         await eventToDelete.delete()
-        res.status(201).json({message : "Supression effectuée avec succès."})
+        res.status(204).json({message : "Event - Supression effectuée avec succès."})
     } catch (error) {
         res.status(500).json(error.message);
     }

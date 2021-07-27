@@ -8,7 +8,7 @@ function AddTech () {
     return(
         <div className='CreateTech'>
         <h1 className='title'>Ajouter un technicien</h1>
-                            
+
             <form className='submitTech' method="POST" > 
 
                 <input type='text' placeholder='Nom' />               

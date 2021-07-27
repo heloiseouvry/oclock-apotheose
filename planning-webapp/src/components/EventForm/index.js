@@ -23,8 +23,6 @@ function EventForm ({startTime, endTime, closeEventModal}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log("eventForm", eventForm);
-      
       const startParsedDate = new Date(Date.parse(`${eventForm.start_date}T${eventForm.start_time}:00`));
       const endParsedDate = new Date(Date.parse(`${eventForm.end_date}T${eventForm.end_time}:00`));
       const timeDiffInHours = (endParsedDate - startParsedDate)/1000/60/60;
@@ -32,7 +30,6 @@ function EventForm ({startTime, endTime, closeEventModal}) {
       const body = {...eventForm};
       body.start_date = startParsedDate;
       body.duration = timeDiffInHours;
-      console.log("body", body);
 
       const response = await axios.post(`${base_url}/events`, body, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
