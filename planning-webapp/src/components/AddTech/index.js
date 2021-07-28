@@ -12,7 +12,9 @@ const base_url = `http://${host}:${port}/${router}`;
 function AddTech () {
 
   const [error, setError] = useState("");
-  const [eventForm, setAddTech] = useState({ lastname: "", firstname: "", phone_number, role, email, password: "", status: "", birth_date, birth_city: "", birth_department: "", ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments:""});
+  const [eventForm, setAddTech] = useState({ lastname: "", firstname: "", phone_number: "", role: "", email: "", password: "", status: "", birth_date: "", birth_city: "", birth_department: "", ssn: "", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "", emergency_phone_number: "", comments:""});
+
+  const handleSubmit = async (event) => {}
 
     return(
         <div className='CreateTech'>

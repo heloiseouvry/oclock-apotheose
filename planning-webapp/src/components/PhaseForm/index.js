@@ -26,7 +26,9 @@ state = {
     videos:[]
 }
 addSoundTech() {
-    this.setState({sounds: [...this.state.sounds, ""]})
+    this.setState((state, props) => ({
+      sounds: [...state.sounds, ""]
+    }))
 }
 
 addLightTech() {

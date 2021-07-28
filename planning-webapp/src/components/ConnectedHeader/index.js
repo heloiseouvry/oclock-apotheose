@@ -13,7 +13,7 @@ const ConnectedHeader = () => {
 
   function logout() {
     localStorage.removeItem("token");
-    history.push('login');
+    history.push('/login');
   }
   return (
     <header className="connected-header">
