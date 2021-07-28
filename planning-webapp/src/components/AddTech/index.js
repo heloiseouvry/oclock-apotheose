@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react';
+import { Button, Checkbox, Form, FormGroup, Radio, TextArea } from 'semantic-ui-react';
 import axios from "axios";
 
 import './styles.scss';
@@ -12,7 +12,12 @@ const base_url = `http://${host}:${port}/${router}`;
 function AddTech () {
 
   const [error, setError] = useState("");
-  const [eventForm, setAddTech] = useState({ lastname: "", firstname: "", phone_number, role, email, password: "", status: "", birth_date, birth_city: "", birth_department: "", ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments:""});
+  const [addTechForm, setAddTech] = useState({ lastname: "", firstname: "", phone_number: "", role: "", email: "", password: "", status: "", birth_date: "", birth_city: "", birth_department: "", ssn: "", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "", emergency_phone_number: "", comments:""});
+
+  const handleSubmit = async (event) => {};
+
+  const state = {}
+  const handleChange = (e, { value }) => this.setState({ value })
 
     return(
         <div className='CreateTech'>
@@ -22,72 +27,103 @@ function AddTech () {
               <Form.Group>
                 <Form.Field required>
                   <label htmlFor="lastname">Nom</label>
-                  <input id="lastname" type='text' value={eventForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, lastname: event.target.value })}/>               
+                  <input id="lastname" type='text' value={addTechForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, lastname: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="firstname">Prénom</label>
-                  <input id="firstname" type='text' value={eventForm.firstname} onChange={(event) => setAddTech({ ...addTechForm, firstname: event.target.value })}/>               
+                  <input id="firstname" type='text' value={addTechForm.firstname} onChange={(event) => setAddTech({ ...addTechForm, firstname: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="phone_number">N° téléphone</label>
-                  <input id="phone_number" type='text' value={eventForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, phone_number: event.target.value })}/>               
+                  <input id="phone_number" type='text' value={addTechForm.phone_number} onChange={(event) => setAddTech({ ...addTechForm, phone_number: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="email">email</label>
-                  <input id="email" type='email' value={eventForm.email} onChange={(event) => setAddTech({ ...addTechForm, email: event.target.value })}/>               
+                  <input id="email" type='email' value={addTechForm.email} onChange={(event) => setAddTech({ ...addTechForm, email: event.target.value })}/>               
                 </Form.Field>
+              </Form.Group>
+
+              <Form.Group>
                 <Form.Field required>
                   <label htmlFor="birth_date">Date de naissance</label>
-                  <input id="birth_date" type='date' value={eventForm.birth_date} onChange={(event) => setAddTech({ ...addTechForm, birth_date: event.target.value })}/>               
+                  <input id="birth_date" type='date' value={addTechForm.birth_date} onChange={(event) => setAddTech({ ...addTechForm, birth_date: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
-                  <label htmlFor="lastname">Nom</label>
-                  <input id="lastname" type='text' value={eventForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, lastname: event.target.value })}/>               
+                  <label htmlFor="birth_city">Ville de naissance</label>
+                  <input id="birth_city" type='text' value={addTechForm.birth_city} onChange={(event) => setAddTech({ ...addTechForm, birth_city: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
-                  <label htmlFor="lastname">Nom</label>
-                  <input id="lastname" type='text' value={eventForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, lastname: event.target.value })}/>               
+                  <label htmlFor="birth_department">N° du département de naissance</label>
+                  <input id="birth_department" type='text' value={addTechForm.birth_department} onChange={(event) => setAddTech({ ...addTechForm, birth_department: event.target.value })}/>               
                 </Form.Field>
-                <Form.Field required>
-                  <label htmlFor="lastname">Nom</label>
-                  <input id="lastname" type='text' value={eventForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, lastname: event.target.value })}/>               
-                </Form.Field>
-                <Form.Field required>
-                  <label htmlFor="lastname">Nom</label>
-                  <input id="lastname" type='text' value={eventForm.lastname} onChange={(event) => setAddTech({ ...addTechForm, lastname: event.target.value })}/>               
-                </Form.Field>
-                <input type="text" placeholder='Prénom' />
-                <input type='text' placeholder='Adresse' />               
-                <input type="text" placeholder='Code postale' />
-                <input type='text' placeholder='Ville' />               
-                <input type="text" placeholder='Téléphone' />
-                <input type='email' placeholder='Email' />
               </Form.Group>
-                    <select className='statut' name="pets" id="pet-select">
-                        <option value="">Quelle est son status?</option>
-                        <option value="dog">Intermitant</option>
-                        <option value="cat">Prestataire</option>
-                    </select>
+              <Form.Group>
+                <Form.Field required>
+                  <label htmlFor="emergency_contact">Nom du contact en cas d'urgence</label>
+                  <input id="emergency_contact" type='text' value={addTechForm.emergency_contact} onChange={(event) => setAddTech({ ...addTechForm, emergency_contact: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="emergency_phone_number">N° de téléphone du contact</label>
+                  <input id="emergency_phone_number" type='text' value={addTechForm.emergency_phone_number} onChange={(event) => setAddTech({ ...addTechForm, emergency_phone_number: event.target.value })}/>               
+                </Form.Field>
+              </Form.Group>
+              <Form.Group >
+                <Form.Field required>
+                  <label htmlFor="main">Adresse principale</label>
+                  <input id="main" type='text' value={addTechForm.main} onChange={(event) => setAddTech({ ...addTechForm, main: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field >
+                  <label htmlFor="additional">Complément d'adresse</label>
+                  <input id="additional" type='text' value={addTechForm.additional} onChange={(event) => setAddTech({ ...addTechForm, additional: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="zip_code">Code postal</label>
+                  <input id="zip_code" type='text' value={addTechForm.zip_code} onChange={(event) => setAddTech({ ...addTechForm, zip_code: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="city">Ville</label>
+                  <input id="city" type='text' value={addTechForm.city} onChange={(event) => setAddTech({ ...addTechForm, city: event.target.value })}/>               
+                </Form.Field>
+              </Form.Group>
 
-                <label className='datePicker' htmlFor="start">Date de naissance:</label> 
-                <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" /> 
+              <Form.Group inline>
+                <label><h3>Le statut :</h3></label>
+                  <Form.Field>
+                    <Radio
+                    name='radioGroup' label= 'Intermittent' value='intermittent' onChange={handleChange} />
+                  </Form.Field>
+                  <Form.Field>
+                    <Radio
+                    name='radioGroup' label='Prestataire' value='prestataire' onChange={handleChange} />
+                  </Form.Field>
 
-                <input type="text" placeholder='Code Postale de Naissance' />
-                <input type='text' placeholder='Ville de Naissance' />               
-                <input type="text" placeholder='N° de Sécurité Sociale' />
-                <input type='text' placeholder='N° de Congé de spectacle' />               
-                <input type="text" placeholder='Raison Sociale' />
-                <input type='text' placeholder='N° de Siret' />               
-                <input type="text" placeholder='Commentaire suplémentaire?' />
+                  
+              </Form.Group>
 
-                <Checkbox className='checkbox' label='Son' />
-                <Checkbox className='checkbox' label='Lumiere' />
-                <Checkbox className='checkbox' label='Video' />
-                <Checkbox className='checkbox' label='Autre' />           
+              <Form.Group>
+                <Form.Field name='prestataire'>
+                  <label htmlFor="legal_entity">Raison social</label>
+                  <input id="legal_entity" type='text' value={addTechForm.legal_entity} onChange={(event) => setAddTech({ ...addTechForm, legal_entity: event.target.value })} />               
+                  
+                </Form.Field>
+                <Form.Field name='prestataire'>
+                  <label htmlFor="siret">N° de siret</label>
+                  <input id="siret" type='text' value={addTechForm.siret} onChange={(event) => setAddTech({ ...addTechForm, siret: event.target.value })} />               
+                </Form.Field>
+                <Form.Field name='intermittent'>
+                  <label htmlFor="intermittent_registration">N° Congé Spectacle</label>
+                  <input id="intermittent_registration" type='text' value={addTechForm.intermittent_registration} onChange={(event) => setAddTech({ ...addTechForm, intermittent_registration: event.target.value })}/>               
+                </Form.Field>
+              </Form.Group>
+                    
+              <Form.Field >
+                  <label htmlFor="comments">Commentaires / remarques</label>
+                  <input id="comments" type='textArea' value={addTechForm.comments} onChange={(event) => setAddTech({ ...addTechForm, comments: event.target.value })}/>               
+                </Form.Field>
                 
             
                 <div className='Submit-Tech' >
-                    <Button type='submit' className='button' content='Se connecter' primary />
+                    <Button type='submit' className='button' content='Valider' primary />
                     
                 </div>
             </Form>
