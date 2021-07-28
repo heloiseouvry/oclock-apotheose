@@ -1,4 +1,5 @@
 const CoreModel = require('./coreModel');
+const Phase = require('./phase');
 const db = require('../database.js');
 
 /**
@@ -127,6 +128,21 @@ class User extends CoreModel {
             };
             await db.query(preparedQuery);
 
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
+
+    async findPlanning() {
+        try {
+            const data = await CoreModel.fetch(
+                `SELECT phase.* 
+                FROM phase_has_user 
+                JOIN phase ON phase.id = phase_has_user.phase_id
+                WHERE phase_has_user.user_id = $1;`, 
+                [this.id]);
+            return data.map(d => new Phase(d));
         } catch (error) {
             console.error(error);
             throw new Error(error.detail);

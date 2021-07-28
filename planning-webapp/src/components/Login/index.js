@@ -26,6 +26,7 @@ function Login() {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
       setIsLogged(true);
+      console.log("history", history.location);
       if (response.data.role === "tech") {
         history.push('/tech/calendar')
       }

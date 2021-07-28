@@ -53,6 +53,18 @@ const phaseController = {
       res.status(500).json(error.message);
     }
   },
+
+  assignTech: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      const { tech_id, salary } = req.body;
+      
+      phase.assignTech(tech_id, salary);
+      res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
 };
 
 module.exports = phaseController;

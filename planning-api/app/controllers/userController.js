@@ -53,12 +53,21 @@ const userController = {
     getAvailableUsers : async (req, res) => {
         try {
             
-            res.status(201).json({message : "Supression effectuée avec succès."})
+            res.status(200).json()
         } catch (error) {
             res.status(500).json(error.message);
         }
     },
 
+    getUserPlanning : async (req, res) => {
+        try {
+            const user = await User.findById(req.user.userID);
+            const userPlanning = await user.findPlanning();
+            res.status(200).json(userPlanning)
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
 
 }
 
