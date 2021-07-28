@@ -21,7 +21,7 @@ import "tui-time-picker/dist/tui-time-picker.css";
 
 const host = "localhost";
 const port = "4000";
-const router = "v1";
+const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
 const myTheme = {

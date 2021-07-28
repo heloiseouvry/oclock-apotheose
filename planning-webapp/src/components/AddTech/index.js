@@ -16,8 +16,7 @@ function AddTech () {
 
   const handleSubmit = async (event) => {};
 
-  const state = {}
-  const handleChange = (e, { value }) => this.setState({ value })
+  const [radioButton, setButton] = useState({intermittentDisable:false, prestataireDisable:false})
 
     return(
         <div className='CreateTech'>
@@ -40,6 +39,14 @@ function AddTech () {
                 <Form.Field required>
                   <label htmlFor="email">email</label>
                   <input id="email" type='email' value={addTechForm.email} onChange={(event) => setAddTech({ ...addTechForm, email: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="ssn">N° de sécurité sociale</label>
+                  <input id="ssn" type='text' value={addTechForm.ssn} onChange={(event) => setAddTech({ ...addTechForm, ssn: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="role">Rôle</label>
+                  <input id="role" type='text' value={addTechForm.role} onChange={(event) => setAddTech({ ...addTechForm, role: event.target.value })}/>               
                 </Form.Field>
               </Form.Group>
 
@@ -90,36 +97,47 @@ function AddTech () {
                 <label><h3>Le statut :</h3></label>
                   <Form.Field>
                     <Radio
-                    name='radioGroup' label= 'Intermittent' value='intermittent' onChange={handleChange} />
+                    id='intermittent' name='radioGroup' label= 'Intermittent' value={addTechForm.status} onChange={(event) => {
+                      setAddTech({ ...addTechForm, status: event.target.value });
+                      
+                      setButton(radioButton.intermittentDisable=false, radioButton.prestataireDisable=true);
+                    }}  />
                   </Form.Field>
                   <Form.Field>
                     <Radio
-                    name='radioGroup' label='Prestataire' value='prestataire' onChange={handleChange} />
+                    id='prestataire' name='radioGroup' label='Prestataire' value={addTechForm.status} onChange={(event) => {
+                      setAddTech({ ...addTechForm, status: event.target.value });
+                      
+                      setButton(radioButton.intermittentDisable=true, radioButton.prestataireDisable=false);
+                    }}  />
                   </Form.Field>
-
-                  
               </Form.Group>
 
               <Form.Group>
                 <Form.Field name='prestataire'>
                   <label htmlFor="legal_entity">Raison social</label>
-                  <input id="legal_entity" type='text' value={addTechForm.legal_entity} onChange={(event) => setAddTech({ ...addTechForm, legal_entity: event.target.value })} />               
+                  <input id="legal_entity" type='text' disabled={radioButton.prestataireDisable} value={addTechForm.legal_entity}  onChange={(event) => setAddTech({ ...addTechForm, legal_entity: event.target.value })} />               
                   
                 </Form.Field>
                 <Form.Field name='prestataire'>
                   <label htmlFor="siret">N° de siret</label>
-                  <input id="siret" type='text' value={addTechForm.siret} onChange={(event) => setAddTech({ ...addTechForm, siret: event.target.value })} />               
+                  <input id="siret" type='text' value={addTechForm.siret} disabled={radioButton.prestataireDisable} onChange={(event) => setAddTech({ ...addTechForm, siret: event.target.value })} />               
                 </Form.Field>
                 <Form.Field name='intermittent'>
                   <label htmlFor="intermittent_registration">N° Congé Spectacle</label>
-                  <input id="intermittent_registration" type='text' value={addTechForm.intermittent_registration} onChange={(event) => setAddTech({ ...addTechForm, intermittent_registration: event.target.value })}/>               
+                  <input id="intermittent_registration" type='text' value={addTechForm.intermittent_registration} disabled={radioButton.intermittentDisable} onChange={(event) => setAddTech({ ...addTechForm, intermittent_registration: event.target.value })}/>               
                 </Form.Field>
               </Form.Group>
                     
-              <Form.Field >
-                  <label htmlFor="comments">Commentaires / remarques</label>
-                  <input id="comments" type='textArea' value={addTechForm.comments} onChange={(event) => setAddTech({ ...addTechForm, comments: event.target.value })}/>               
+              <Form.Group >
+                <Form.Field>
+                  <label>Commentaires / Remarques</label>
                 </Form.Field>
+                <TextArea
+                  placeholder= 'Inscrivez vos commentaires'  
+                  id="comments" value={addTechForm.comments} onChange={(event) => setAddTech({ ...addTechForm, comments: event.target.value })}/> 
+                             
+                </Form.Group>
                 
             
                 <div className='Submit-Tech' >
