@@ -68,11 +68,11 @@ const App = () => {
           {/* <ConnectedFooter /> */}
         </Route>
         
-        <ProtectedRoute path="/addtech">
+        <Route path="/addtech">
           <ConnectedHeader />
           <AddTech />
         {/* <ConnectedFooter /> */}
-        </ProtectedRoute>
+        </Route>
 
         <Route path="*">
           <Header />
