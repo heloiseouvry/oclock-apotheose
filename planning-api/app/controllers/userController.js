@@ -50,6 +50,15 @@ const userController = {
         }
     },
 
+    getUsersByType : async (req, res) => {
+        try {
+            const users = await User.findUsersByType(req.params.type);
+            res.status(200).json(users)
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    },
+
     getAvailableUsers : async (req, res) => {
         try {
             const users = await User.findAvailableUsers('2021-07-26T14:00:00Z', '2021-07-26T16:00:00Z');

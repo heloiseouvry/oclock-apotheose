@@ -41,7 +41,7 @@ constructor(props) {
 
   componentDidMount() {
     axios
-      .get(`${base_url}/available_users/son`, {
+      .get(`${base_url}/users/son`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       })
       .then((addressResponse) => {
@@ -60,7 +60,7 @@ constructor(props) {
       });
 
     axios
-      .get(`${base_url}/available_users/lumière`, {
+      .get(`${base_url}/users/lumière`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       })
       .then((addressResponse) => {
@@ -79,7 +79,7 @@ constructor(props) {
       });
 
     axios
-      .get(`${base_url}/available_users/vidéo`, {
+      .get(`${base_url}/users/vidéo`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       })
       .then((addressResponse) => {
@@ -218,6 +218,7 @@ handleChangeVideo(e, indexVideo){
           <Form.Field className="techInput">
             <Label>Technicien Son </Label>
             <Dropdown
+              search
               selection
               options={this.state.soundTechs}
               placeholder="Liste des Tech"
@@ -250,6 +251,7 @@ handleChangeVideo(e, indexVideo){
           <Form.Field className="techInput">
             <Label>Technicien lumière</Label>
             <Dropdown
+              search
               selection
               options={this.state.lightTechs}
               placeholder="Liste des Tech"
@@ -282,6 +284,7 @@ handleChangeVideo(e, indexVideo){
           <Form.Field className="techInput">
             <Label>Techniciens vidéo </Label>
             <Dropdown
+              search
               selection
               options={this.state.videoTechs}
               placeholder="Liste des Tech"

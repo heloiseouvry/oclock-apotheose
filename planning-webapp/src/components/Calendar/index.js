@@ -282,8 +282,8 @@ const MyCalendar = () => {
 
   function getFormattedTime(time) {
     const date = new Date(time);
-    const h = date.getHours();
-    const m = date.getMinutes();
+    const h = ("0" + date.getHours()).slice(-2);
+    const m = ("0" + date.getMinutes()).slice(-2);
 
     return `${h}:${m}`;
   }
@@ -466,12 +466,12 @@ const MyCalendar = () => {
         </Modal.Actions> */}
       </Modal>
 
-      <Button content="<" secondary onClick={prevView} />
-      <Button content="Jour" secondary onClick={dayView} />
-      <Button content="Semaine" secondary onClick={weekView} />
-      <Button content="Mois" secondary onClick={monthView} />
-      <Button content=">" secondary onClick={nextView} />
-      <Button content="Aujourd'hui" secondary onClick={todayView} />
+      <Button size='mini' content="<" secondary onClick={prevView} />
+      <Button size='mini' content="Jour" secondary onClick={dayView} />
+      <Button size='mini' content="Semaine" secondary onClick={weekView} />
+      <Button size='mini' content="Mois" secondary onClick={monthView} />
+      <Button size='mini' content=">" secondary onClick={nextView} />
+      <Button size='mini' content="Aujourd'hui" secondary onClick={todayView} />
 
       <TUICalendar
         ref={cal}

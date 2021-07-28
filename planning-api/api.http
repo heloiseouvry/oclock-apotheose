@@ -120,6 +120,10 @@ Content-Type: application/json
 
 GET {{baseUrl}}/users/planning
 
+### Get users by type
+
+GET {{baseUrl}}/users/son
+
 ### Get available users
 
 GET {{baseUrl}}/available_users

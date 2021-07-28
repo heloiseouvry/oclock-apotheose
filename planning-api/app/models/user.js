@@ -110,6 +110,15 @@ class User extends CoreModel {
         return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
     }
 
+    static async findUsersByType(type) {
+        const data = await CoreModel.fetch(`
+        SELECT "user".*, job.type FROM "user"
+        JOIN user_has_job ON user_has_job.user_id = "user".id
+        JOIN job ON user_has_job.job_id = job.id
+        WHERE job.type = $1;`, [type]);
+        return data.map(d => new User(d));
+    }
+
     static async findAvailableUsers(new_start_date, new_end_date) {
         const data = await CoreModel.fetch(`
         WITH conflict_phases AS (
