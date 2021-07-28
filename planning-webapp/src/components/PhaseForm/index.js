@@ -26,9 +26,7 @@ state = {
     videos:[]
 }
 addSoundTech() {
-    this.setState((state, props) => ({
-      sounds: [...state.sounds, ""]
-    }))
+    this.setState({sounds: [...this.state.sounds, ""]})
 }
 
 addLightTech() {
@@ -39,8 +37,43 @@ addVideoTech() {
     this.setState({videos: [...this.state.videos, ""]})
 }
 
+handleChangeSound(e, indexSound){
+
+    this.state.sounds[indexSound] = e.target.value
+    //Set the changeState
+    this.stateState({sounds: this.state.sounds})
+
+}
+
+handleChangeLight(e, indexlight){
+
+}
+
+handleChangevideo(e, indexVideo){
+
+}
+
+handleRemoveSound(indexSound){
+
+    this.state.sounds.splice(indexSound, 1)
+    //Update the state
+    this.setState({sounds: this.state.sounds})
+}
+handleRemoveLight(indexLight){
+
+    this.state.lights.splice(indexLight, 1)
+    //Update the state
+    this.setState({lights: this.state.lights})
+}
+handleRemoveVideo(indexVideo){
+
+    this.state.videos.splice(indexVideo, 1)
+    //Update the state
+    this.setState({videos: this.state.videos})
+}
+
 handleSubmit(e){
-    console.log(this.state.sounds)
+    
 }
 
 render(){ 
@@ -49,14 +82,12 @@ render(){
             
             <Form  method="POST"  >
             
-            <h1 className='title'>Créer une Phase</h1> 
-            
                 <FormField required>
                 {/* Si on veut relier Les phases, possibilités de mettre un controled Dropdown sur semanticUI */}
                 <Dropdown selection options={options} placeholder='Liste des phases' />
                 </FormField>
 
-                <Form.Group className="Time">
+                
                     <FormField required> 
                     <label>Début</label> 
                         <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
@@ -70,7 +101,7 @@ render(){
                         
                     <textarea className='comment' type='text' placeholder='Laissez un commentaire (2000 charactère maximum)' maxLength = "2000"/> 
                     </FormField>
-                </Form.Group>
+                
 
                 {/* <Form.Group >
                     <label >Selectioner un ou plusieurs métiers</label>
@@ -79,7 +110,7 @@ render(){
                     <Checkbox  label='Vidéo' />
                 </Form.Group> */}
 
-                <Form.Group className='techInput'>
+                <Form.Field className='techInput'>
                 
                     <Label >Technicien Son </Label>
                     <Dropdown selection options={techList} placeholder='Liste des Tech' />
@@ -88,62 +119,62 @@ render(){
                     <Input  placeholder='Contact' />  {/* info recuperer dans la bdd */}
                     <Button onClick={(e) => this.addSoundTech(e)} type='submit' className='button' content="Ajouter un technicien son" secondary />
                     
-                </Form.Group>
+                </Form.Field>
                     {
                         this.state.sounds.map((sound, indexSound)=>{
                             return(
-                        <Form.Group key={indexSound} className='techInput'>
+                        <Form.Field key={indexSound} className='techInput'>
                         <Label >Technicien Son </Label>
                         <Dropdown selection options={techList} placeholder='Liste des Tech' />
                         <Input  placeholder="Nombre d'heure" />
                         <Input  placeholder='Cachet' />
                         <Input  placeholder='Contact' />
-                        <Button onClick={(e) => this.addSoundTech(e)} type='submit' className='button' content="Ajouter un technicien son" secondary />
-                        </Form.Group>)})
+                        <Button inverted color='red' onClick={() => this.handleRemoveSound(indexSound)} type='submit' className='button' content="Supprimer"  />
+                        </Form.Field>)})
                     }
                     <hr></hr>
 
-                <Form.Group className='techInput'>
+                <Form.Field className='techInput'>
                     <Label >Technicien lumière</Label>
                     <Dropdown selection options={techList} placeholder='Liste des Tech' />
                     <Input  placeholder="Nombre d'heure" />
                     <Input  placeholder='Cachet' />
                     <Input  placeholder='Contact' /> {/* info recuperer dans la bdd */}
                     <Button onClick={(e) => this.addLightTech(e)} type='submit' className='button' content="Ajouter un technicien lumière" secondary />
-                </Form.Group>
+                </Form.Field>
                     {
-                        this.state.sounds.map((light, indexlight)=>{
+                        this.state.lights.map((light, indexLight)=>{
                             return(
-                        <Form.Group key={indexlight} className='techInput'>
+                        <Form.Field key={indexLight} className='techInput'>
                         <Label >Technicien Lumière </Label>
                         <Dropdown selection options={techList} placeholder='Liste des Tech' />
                         <Input  placeholder="Nombre d'heure" />
                         <Input  placeholder='Cachet' />
                         <Input  placeholder='Contact' />
-                        <Button onClick={(e) => this.addLightTech(e)} type='submit' className='button' content="Ajouter un technicien lumière" secondary />
-                        </Form.Group>)})
+                        <Button inverted color='red' onClick={() => this.handleRemoveLight(indexLight)} type='submit' className='button' content="Supprimer" />
+                        </Form.Field>)})
                     }
                     <hr></hr>
 
-                <Form.Group className='techInput'>
+                <Form.Field className='techInput'>
                     <Label >Techniciens vidéo </Label>
                     <Dropdown selection options={techList} placeholder='Liste des Tech' />
                     <Input  placeholder="Nombre d'heure" />
                     <Input  placeholder='Cachet' />
                     <Input  placeholder='Contact' />  {/* info recuperer dans la bdd */}
                     <Button onClick={(e) => this.addVideoTech(e)} type='submit' className='button' content="Ajouter un technicien vidéo" secondary />
-                </Form.Group>
+                </Form.Field>
                 {
-                        this.state.sounds.map((video, indexVideo)=>{
+                        this.state.videos.map((video, indexVideo)=>{
                             return(
-                        <Form.Group key={indexVideo} className='techInput'>
+                        <Form.Field key={indexVideo} className='techInput'>
                         <Label >Technicien vidéo </Label>
                         <Dropdown selection options={techList} placeholder='Liste des Tech' />
                         <Input  placeholder="Nombre d'heure" />
                         <Input  placeholder='Cachet' />
                         <Input  placeholder='Contact' />
-                        <Button onClick={(e) => this.addVideoTech(e)} type='submit' className='button' content="Ajouter un technicien vidéo" secondary />
-                        </Form.Group>)})
+                        <Button inverted color='red' onClick={() => this.handleRemoveVideo(indexVideo)} type='submit' className='button' content="Supprimer"  />
+                        </Form.Field>)})
                     }
                 
                 <div className='Submit-Phase' >
