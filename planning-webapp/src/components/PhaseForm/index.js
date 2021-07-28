@@ -14,7 +14,7 @@ import "./styles.scss";
 
 const host = "localhost";
 const port = "4000";
-const router = "v1";
+const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
 const options = [
@@ -23,35 +23,6 @@ const options = [
   { key: 3, text: "Exploitation", value: 3 },
   { key: 4, text: "Démontage", value: 4 },
 ];
-
-const techList = [
-  { key: 1, text: "Jacky", value: 1 },
-  { key: 2, text: "Michel", value: 2 },
-  { key: 3, text: "Henri", value: 3 },
-  { key: 4, text: "Max", value: 4 },
-];
-
-// const getAvailableUsersByType = async function () {
-//   console.log("Ca marche");
-//   const addressResponse = await axios.get(`${base_url}/available_users/son`, {
-//     headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-//   });
-//   console.log("addressResponse", addressResponse.data);
-//   const usersList = [];
-//   for (const [index, user] of addressResponse.data.entries()) {
-//     // console.log("user", user);
-//     // console.log("index", index);
-//     usersList.push({
-//       key: index+1,
-//       text: user.firstname,
-//       value: index+1
-//     });
-//   }
-//   console.log("usersList", usersList);
-//   console.log("techList", techList);
-//   return usersList;
-// };
-
 class PhaseForm extends React.Component {
 
 constructor(props) {
@@ -67,8 +38,6 @@ constructor(props) {
   };
   this.handleStartDateChange = this.handleStartDateChange.bind(this);
 }
-
-  
 
   componentDidMount() {
     axios
@@ -129,12 +98,12 @@ constructor(props) {
       });
   }
 
-  componentDidUpdate(prevProps) {
-    // Utilisation classique (pensez bien à comparer les props) :
-    if (this.props.userID !== prevProps.userID) {
-      this.fetchData(this.props.userID);
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   // Utilisation classique (pensez bien à comparer les props) :
+  //   if (this.props.userID !== prevProps.userID) {
+  //     this.fetchData(this.props.userID);
+  //   }
+  // }
 
   addSoundTech() {
     this.setState({ sounds: [...this.state.sounds, ""] });
@@ -148,16 +117,28 @@ constructor(props) {
     this.setState({ videos: [...this.state.videos, ""] });
   }
 
-  handleChangeSound(e, indexSound) {
-    this.state.sounds[indexSound] = e.target.value;
+// Handle change functions for the technicians form
+handleChangeSound(e, indexSound){
+
+    this.state.sounds[indexSound] = e.target.value
     //Set the changeState
-    this.stateState({ sounds: this.state.sounds });
-  }
+    this.stateState({sounds: this.state.sounds})
+}
+handleChangeLight(e, indexLight){
 
-  handleChangeLight(e, indexlight) {}
+    this.state.lights[indexLight] = e.target.value
+    //Set the changeState
+    this.stateState({lights: this.state.lights})
+}
+handleChangeVideo(e, indexVideo){
 
-  handleChangevideo(e, indexVideo) {}
+    this.state.videos[indexVideo] = e.target.value
+    //Set the changeState
+    this.stateState({videos: this.state.videos})
+}
 
+
+// handle removal of the technicians form
   handleRemoveSound(indexSound) {
     this.state.sounds.splice(indexSound, 1);
     //Update the state

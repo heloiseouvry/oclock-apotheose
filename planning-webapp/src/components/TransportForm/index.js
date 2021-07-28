@@ -20,18 +20,43 @@ const techList = [
 class TransportForm extends React.Component { 
 
 state = { 
-    vehicles:[],
     deliveryMans:[],
     techs:[]
 }
-addVehicle() {
-    this.setState({vehicles: [...this.state.vehicles, ""]})
-}
+
 addDeliveryMan() {
     this.setState({deliveryMans: [...this.state.deliveryMans, ""]})
 }
 addTech() {
     this.setState({techs: [...this.state.techs, ""]})
+}
+
+//handle change of the riders form
+handleChangeDeliveryMan(e, indexDeliveryMan){
+
+    this.state.deliveryMans[indexDeliveryMan] = e.target.value
+    //Set the changeState
+    this.stateState({deliveryMans: this.state.deliveryMans})
+}
+handleChangeTech(e, indexTech){
+
+    this.state.techs[indexTech] = e.target.value
+    //Set the changeState
+    this.stateState({Techs: this.state.Techs})
+}
+
+//Handle the removal of the rider's form
+handleRemoveDeliveryMan(indexDeliveryMan){
+
+    this.state.deliveryMans.splice(indexDeliveryMan, 1)
+    //Update the state
+    this.setState({DeliveryMans: this.state.DeliveryMans})
+}
+handleRemoveTech(indexTech){
+
+    this.state.techs.splice(indexTech, 1)
+    //Update the state
+    this.setState({techs: this.state.techs})
 }
 
 
@@ -95,12 +120,12 @@ render(){
                         <Input  placeholder='Marque' />
                         <Input  placeholder='Modèle' />
                         <Input  placeholder='Volume' />
-                        <Button onClick={(e) => this.addVehicle(e)} type='submit' className='button' content="Ajouter un chauffeur/véhicule" secondary />
+                        <Button onClick={(e) => this.addDeliveryMan(e)} type='submit' className='button' content="Ajouter un chauffeur avec véhicule" secondary />
                     </Form.Group>
                     {
-                        this.state.vehicles.map((vehicle, indexVehicle)=>{
+                        this.state.deliveryMans.map((deliveryMan, indexDeliveryMan)=>{
                             return(
-                            <Form.Group className='techInput' >
+                            <Form.Group  key={indexDeliveryMan} className='techInput' >
                             <Label >Livreur </Label>
                             <Input  placeholder="Nom" />
                             <Input  placeholder='Contact' />
@@ -110,7 +135,7 @@ render(){
                             <Input  placeholder='Marque' />
                             <Input  placeholder='Modèle' />
                             <Input  placeholder='Volume' />
-                            
+                            <Button inverted color='red' onClick={() => this.handleRemoveDeliveryMan(indexDeliveryMan)} type='submit' className='button' content="Supprimer" />
                             </Form.Group>)})
                     }
                     <hr></hr>
@@ -142,6 +167,7 @@ render(){
                         <Input  placeholder='Marque' />
                         <Input  placeholder='Modèle' />
                         <Input  placeholder='Volume' />
+                        <Button inverted color='red' onClick={() => this.handleRemoveTech(indexTech)} type='submit' className='button' content="Supprimer "  />
                         </Form.Group>)})
                     }
 
