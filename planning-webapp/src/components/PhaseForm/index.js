@@ -3,6 +3,15 @@ import { Button, Dropdown, Form, FormField, Input, Checkbox, Label } from 'seman
 
 import './styles.scss';
 
+import axios from "axios";
+
+import { raw } from '../../../../planning-api/app/schemas/user';
+
+const host = "localhost";
+const port = "4000";
+const router = "admin";
+const base_url = `http://${host}:${port}/${router}`;
+
 const options = [
     { key: 1, text: 'Montage', value: 1 },
     { key: 2, text: 'Répétition', value: 2 },
@@ -16,8 +25,6 @@ const techList = [
     { key: 4, text: 'Max', value: 4 },
 ]
 
-
-
 class PhaseForm extends React.Component { 
 
 state = { 
@@ -25,6 +32,7 @@ state = {
     lights:[],
     videos:[]
 }
+// Function to add a new technician form
 addSoundTech() {
     this.setState({sounds: [...this.state.sounds, ""]})
 }
@@ -37,22 +45,29 @@ addVideoTech() {
     this.setState({videos: [...this.state.videos, ""]})
 }
 
+
+// Handle change functions for the technicians form
 handleChangeSound(e, indexSound){
 
     this.state.sounds[indexSound] = e.target.value
     //Set the changeState
     this.stateState({sounds: this.state.sounds})
+}
+handleChangeLight(e, indexLight){
 
+    this.state.lights[indexLight] = e.target.value
+    //Set the changeState
+    this.stateState({lights: this.state.lights})
+}
+handleChangeVideo(e, indexVideo){
+
+    this.state.videos[indexVideo] = e.target.value
+    //Set the changeState
+    this.stateState({videos: this.state.videos})
 }
 
-handleChangeLight(e, indexlight){
 
-}
-
-handleChangevideo(e, indexVideo){
-
-}
-
+// handle removal of the technicians form
 handleRemoveSound(indexSound){
 
     this.state.sounds.splice(indexSound, 1)
