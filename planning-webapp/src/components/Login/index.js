@@ -7,7 +7,7 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
+const host = "localhost";
 const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
@@ -25,7 +25,12 @@ function Login() {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
       setIsLogged(true);
-      history.push('calendar');
+      if (response.data.role === "tech") {
+        history.push('tech/calendar')
+      }
+      else  {
+        history.push('calendar');
+      }
     } catch (error) {
       console.error(error);
       setIsLogged(false);

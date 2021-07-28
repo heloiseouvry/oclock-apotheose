@@ -62,7 +62,8 @@ const TechCalendar = () => {
   const [phases, setPhases] = useState([]);
 
   const onBeforeCreateSchedule = (e) => {
-    console.log("onBeforeCreateSchedule e", e);
+    //console.log("onBeforeCreateSchedule e", e);
+    // e.guide.clearGuideElement(); il like a preventDefault
     e.guide.clearGuideElement();
     return;
   };
