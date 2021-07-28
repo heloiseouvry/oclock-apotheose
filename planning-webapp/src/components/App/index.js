@@ -45,11 +45,11 @@ const App = () => {
           {/* <Footer /> */}
         </Route>
 
-        <ProtectedRoute path="/calendar">
+        <Route path="/calendar">
           <ConnectedHeader />
           <MyCalendar />
           {/* <ConnectedFooter /> */}
-        </ProtectedRoute>
+        </Route>
 
         <ProtectedRoute path="/tech/calendar">
           <ConnectedHeader />

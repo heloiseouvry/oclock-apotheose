@@ -9,6 +9,7 @@ import axios from "axios";
 import ConnectedHeader from "../ConnectedHeader";
 import Form from "../Form";
 import EventForm from "../EventForm";
+import PhaseForm from "../PhaseForm"
 import data from "../../data/data.js";
 
 // import Calendar from '@toast-ui/react-calendar';
@@ -458,6 +459,7 @@ const MyCalendar = () => {
 
       <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
         <Modal.Header>Créer une phase</Modal.Header>
+        <PhaseForm />
         {/* <Modal.Actions>
           <Button icon="check" onClick={onSubmitEvent} /> //TODO : onSubmitPhase
           <Button icon="close" onClick={closePhaseModal} />
