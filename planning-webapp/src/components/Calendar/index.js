@@ -222,6 +222,16 @@ const MyCalendar = () => {
     cal.current.calendarInst.next();
   }
 
+  function toggleEvent(e, button) {
+    if(e.target.dataset.visible){
+      cal.current.calendarInst.toggleSchedules(button.content, true);
+      e.target.dataset.visible = false;
+    } else {
+      cal.current.calendarInst.toggleSchedules(button.content, false);
+      e.target.dataset.visible = true;
+    }
+  }
+
   const onClickSchedule = useCallback((e) => {
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
@@ -448,22 +458,15 @@ const MyCalendar = () => {
           {eventEdit ? "Modifier un événement" : "Créer un événement"}
         </Modal.Header>
         <Modal.Content>
-          {/* <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} /> */}
           <EventForm eventInfo={eventInfo} eventEdit={eventEdit} setEventEdit={setEventEdit} closeEventModal={closeEventModal} />
         </Modal.Content>
-        {/* <Modal.Actions>
-          <Button icon="check" onClick={onSubmitEvent} />
-          <Button icon="close" closeEventModal={closeEventModal} />
-        </Modal.Actions> */}
       </Modal>
 
       <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
         <Modal.Header>Créer une phase</Modal.Header>
-        <PhaseForm />
-        {/* <Modal.Actions>
-          <Button icon="check" onClick={onSubmitEvent} /> //TODO : onSubmitPhase
-          <Button icon="close" onClick={closePhaseModal} />
-        </Modal.Actions> */}
+        <Modal.Content>
+          <PhaseForm />
+        </Modal.Content>
       </Modal>
 
       <Button size='mini' content="<" secondary onClick={prevView} />
@@ -472,7 +475,9 @@ const MyCalendar = () => {
       <Button size='mini' content="Mois" secondary onClick={monthView} />
       <Button size='mini' content=">" secondary onClick={nextView} />
       <Button size='mini' content="Aujourd'hui" secondary onClick={todayView} />
-
+      
+      {events.map((e) => <Button key={e.id} size='mini' content={e.id} circular data-visible={true} onClick={toggleEvent} />)}
+      
       <TUICalendar
         ref={cal}
         height="600px"
