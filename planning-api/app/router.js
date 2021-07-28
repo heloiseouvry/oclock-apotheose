@@ -153,6 +153,7 @@ router.delete('/users/:id(\\d+)', userController.deleteUser);
 
 router.get('/users/planning', authMW, userController.getUserPlanning);
 router.get('/available_users', userController.getAvailableUsers);
+router.get('/available_users/:type', userController.getAvailableUsersByType);
 
 router.get('/address', addressController.getAllAddresses);
 router.post('/address', addressController.addAddress);

@@ -8,7 +8,7 @@ import './styles.scss';
 const TechNavbar= () => { 
     return (
       <nav className="tech-navbar">
-        <Link to ="/calendar">
+        <Link to ="/tech/calendar">
           <Button className='calendar' content="Planning" />
         </Link>
       </nav>

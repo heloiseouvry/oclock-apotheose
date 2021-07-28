@@ -120,6 +120,13 @@ Content-Type: application/json
 
 GET {{baseUrl}}/users/planning
 
+### Get available users
+
+GET {{baseUrl}}/available_users
+
+### Get available users by type
+
+GET {{baseUrl}}/available_users/son
 
 ### Get all phases
 
@@ -131,16 +138,16 @@ POST {{baseUrl}}/phases
 Content-Type: application/json
 
 {
-  "title": "7 Wonders",
-  "start_date": "2021-07-26 17:00:00",
-  "end_date": "2021-07-26 19:00:00",
+  "title": "Débrief",
+  "start_date": "2021-07-26 14:00:00",
+  "end_date": "2021-07-26 18:00:00",
   "type": "montage",
-  "internal_location": "table du salon",
+  "internal_location": "salle du fond",
   "tech_manager_contact": "Céline",
   "provider_contact": "Robert B",
   "number_fee": 1,
   "comments": "",
-  "event_id" : 5,
+  "event_id" : 12,
   "vehicle_id": null,
   "user_id": 1
 }
