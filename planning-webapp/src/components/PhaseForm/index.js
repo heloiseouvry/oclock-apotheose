@@ -54,7 +54,7 @@ render(){
                 <Dropdown selection options={options} placeholder='Liste des phases' />
                 </FormField>
 
-                <Form.Group className="Time">
+                
                     <FormField required> 
                     <label>Début</label> 
                         <input id="date" type="date" contentEditable='true' min="1900-01-01" max="2100-12-31" value="2021-01-01" /> 
@@ -68,7 +68,7 @@ render(){
                         
                     <textarea className='comment' type='text' placeholder='Laissez un commentaire (2000 charactère maximum)' maxLength = "2000"/> 
                     </FormField>
-                </Form.Group>
+                
 
                 {/* <Form.Group >
                     <label >Selectioner un ou plusieurs métiers</label>
@@ -110,7 +110,7 @@ render(){
                     <Button onClick={(e) => this.addLightTech(e)} type='submit' className='button' content="Ajouter un technicien lumière" secondary />
                 </Form.Group>
                     {
-                        this.state.sounds.map((light, indexlight)=>{
+                        this.state.lights.map((light, indexlight)=>{
                             return(
                         <Form.Group key={indexlight} className='techInput'>
                         <Label >Technicien Lumière </Label>
@@ -132,7 +132,7 @@ render(){
                     <Button onClick={(e) => this.addVideoTech(e)} type='submit' className='button' content="Ajouter un technicien vidéo" secondary />
                 </Form.Group>
                 {
-                        this.state.sounds.map((video, indexVideo)=>{
+                        this.state.videos.map((video, indexVideo)=>{
                             return(
                         <Form.Group key={indexVideo} className='techInput'>
                         <Label >Technicien vidéo </Label>
