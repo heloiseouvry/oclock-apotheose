@@ -22,14 +22,15 @@ function Login() {
     event.preventDefault();
     try {
       const response = await axios.post(`${base_url}/login`, details);
+      // localStorage.setItem permit to stock pair key / value
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
       setIsLogged(true);
       if (response.data.role === "tech") {
-        history.push('tech/calendar')
+        history.push('/tech/calendar')
       }
       else  {
-        history.push('calendar');
+        history.push('/calendar');
       }
     } catch (error) {
       console.error(error);
