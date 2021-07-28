@@ -1,4 +1,5 @@
 const CoreModel = require('./coreModel');
+const Phase = require('./phase');
 const db = require('../database.js');
 
 /**
@@ -109,8 +110,41 @@ class User extends CoreModel {
         return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
     }
 
-    static async findAvailableUsers(start_date, end_date) {
-        const data = await CoreModel.fetch('SELECT * FROM "user";');
+    static async findAvailableUsers(new_start_date, new_end_date) {
+        const data = await CoreModel.fetch(`
+        WITH conflict_phases AS (
+            SELECT id from phase
+            WHERE start_date <= $2 AND end_date >= $1
+        ),
+        conflict_techs AS (
+            SELECT DISTINCT user_id FROM phase_has_user 
+            JOIN conflict_phases ON conflict_phases.id = phase_has_user.phase_id
+        )
+        SELECT "user".* FROM "user"
+        LEFT JOIN conflict_techs ON "user".id = conflict_techs.user_id
+        WHERE conflict_techs.user_id IS NULL;`, [new_start_date, new_end_date]);
+        return data.map(d => new User(d));
+    }
+
+    static async findAvailableUsersByType(type, new_start_date, new_end_date) {
+        const data = await CoreModel.fetch(`
+        WITH conflict_phases AS (
+            SELECT id from phase
+            WHERE start_date <= $3 AND end_date >= $2
+        ),
+        conflict_techs AS (
+            SELECT DISTINCT user_id FROM phase_has_user 
+            JOIN conflict_phases ON conflict_phases.id = phase_has_user.phase_id
+        ),
+        available_techs AS (
+            SELECT "user".* FROM "user"
+            LEFT JOIN conflict_techs ON "user".id = conflict_techs.user_id
+            WHERE conflict_techs.user_id IS NULL
+        )
+        SELECT available_techs.* FROM available_techs
+        JOIN user_has_job ON user_has_job.user_id = available_techs.id
+        JOIN job ON user_has_job.job_id = job.id
+        WHERE job.type = $1;`, [type, new_start_date, new_end_date]);
         return data.map(d => new User(d));
     }
 
@@ -127,6 +161,21 @@ class User extends CoreModel {
             };
             await db.query(preparedQuery);
 
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
+
+    async findPlanning() {
+        try {
+            const data = await CoreModel.fetch(
+                `SELECT phase.* 
+                FROM phase_has_user 
+                JOIN phase ON phase.id = phase_has_user.phase_id
+                WHERE phase_has_user.user_id = $1;`, 
+                [this.id]);
+            return data.map(d => new Phase(d));
         } catch (error) {
             console.error(error);
             throw new Error(error.detail);

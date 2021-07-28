@@ -9,6 +9,7 @@ import Login from "../Login";
 import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
+import TechCalendar from "../TechCalendar";
 import AddTech from "../AddTech";
 import Footer from "../Footer";
 import ConnectedFooter from "../ConnectedFooter";
@@ -16,6 +17,7 @@ import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
 import EventForm from '../EventForm'
 import PhaseForm from '../PhaseForm'
+import TransportForm from "../TransportForm";
 
 const isLogged = !!localStorage.getItem("token");
 
@@ -43,9 +45,15 @@ const App = () => {
           {/* <Footer /> */}
         </Route>
 
-        <ProtectedRoute path="/calendar">
+        <Route path="/calendar">
           <ConnectedHeader />
           <MyCalendar />
+          {/* <ConnectedFooter /> */}
+        </Route>
+
+        <ProtectedRoute path="/tech/calendar">
+          <ConnectedHeader />
+          <TechCalendar />
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
 
@@ -60,12 +68,18 @@ const App = () => {
           <PhaseForm /> 
           {/* <ConnectedFooter /> */}
         </Route>
+
+        <Route path="/transportform"> 
+          <ConnectedHeader />
+          <TransportForm /> 
+          {/* <ConnectedFooter /> */}
+        </Route>
         
-        <ProtectedRoute path="/addtech">
+        <Route path="/addtech">
           <ConnectedHeader />
           <AddTech />
         {/* <ConnectedFooter /> */}
-        </ProtectedRoute>
+        </Route>
 
         <Route path="*">
           <Header />

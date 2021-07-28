@@ -4,12 +4,6 @@ import TUICalendar from "@toast-ui/react-calendar";
 import { Button, Modal, Header, Image, Icon } from "semantic-ui-react";
 import axios from "axios";
 
-// Import react-modal to use it instead of app's Popup
-// import Modal from "react-modal";
-import ConnectedHeader from "../ConnectedHeader";
-import Form from "../Form";
-import EventForm from "../EventForm";
-import PhaseForm from "../PhaseForm"
 import data from "../../data/data.js";
 
 // import Calendar from '@toast-ui/react-calendar';
@@ -19,71 +13,23 @@ import "tui-calendar/dist/tui-calendar.css";
 import "tui-date-picker/dist/tui-date-picker.css";
 import "tui-time-picker/dist/tui-time-picker.css";
 
+import "./styles.scss";
+
 const host = "localhost";
 const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
 
-const myTheme = {
-  // Theme object to extends default dark theme.
-};
-
-// Style for the modal
-const customStyles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.75)",
-  },
-  content: {
-    position: "absolute",
-    top: "40px",
-    left: "40px",
-    right: "40px",
-    bottom: "40px",
-    border: "1px solid #ccc",
-    background: "#fff",
-    overflow: "auto",
-    WebkitOverflowScrolling: "touch",
-    borderRadius: "4px",
-    outline: "none",
-    padding: "20px",
-  },
-};
-
-// Modal.setAppElement("#root");
-
-const MyCalendar = () => {
-  const [choiceOpen, setChoiceOpen] = useState(false);
-  const [eventOpen, setEventOpen] = useState(false);
-  const [phaseOpen, setPhaseOpen] = useState(false);
-
-  const [eventEdit, setEventEdit] = useState(false);
-  const [eventInfo, setEventInfo] = useState({
-    title: "",
-    start_date: new Date(),
-    end_date: new Date(),
-    start_time: new Date(),
-    end_time: new Date(),
-    color: "#ffffff",
-    bgColor: '#000000',
-    raw: {
-      type: "",
-      address: {
-        id: null,
-        main: "",
-        additional: "",
-        zip_code: "",
-        city: "",
-      },
-    },
-  });
-
+const TechCalendar = () => {
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
+
+  const onBeforeCreateSchedule = (e) => {
+    //console.log("onBeforeCreateSchedule e", e);
+    // e.guide.clearGuideElement(); il like a preventDefault
+    e.guide.clearGuideElement();
+    return;
+  };
 
   useEffect(() => {
     const getAllEvents = async () => {
@@ -115,7 +61,7 @@ const MyCalendar = () => {
 
     const getAllPhases = async () => {
       try {
-        const response = await axios.get(`${base_url}/phases`, {
+        const response = await axios.get(`${base_url}/users/planning`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         let phasesToAdd = [];
@@ -145,7 +91,6 @@ const MyCalendar = () => {
             raw: {
               type: phaseBack.type,
               address: {
-                id: phaseBack.address_id,
                 main: phaseBack.main,
                 additional: phaseBack.additional,
                 zip_code: phaseBack.zip_code,
@@ -172,31 +117,6 @@ const MyCalendar = () => {
   const cal = useRef(null);
 
   // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
-  function openChoiceModal() {
-    setChoiceOpen(true);
-  }
-
-  function openEventModal() {
-    closeChoiceModal();
-    setEventOpen(true);
-  }
-
-  function openPhaseModal() {
-    closeChoiceModal();
-    setPhaseOpen(true);
-  }
-
-  function closeChoiceModal() {
-    setChoiceOpen(false);
-  }
-
-  function closeEventModal() {
-    setEventOpen(false);
-  }
-
-  function closePhaseModal() {
-    setPhaseOpen(false);
-  }
 
   function dayView() {
     cal.current.calendarInst.changeView("day", true);
@@ -227,57 +147,6 @@ const MyCalendar = () => {
     const el = cal.current.calendarInst.getElement(id, calendarId);
 
     console.log("onClickSchedule", e, el.getBoundingClientRect());
-  }, []);
-
-  const onBeforeCreateSchedule = useCallback((event) => {
-    // use the schedule data to use it in the modal
-    setEventInfo({
-      ...eventInfo,
-      start_date: event.start.toDate(),
-      end_date: event.end.toDate(),
-    });
-    // Need to open the choice modal to select bewteen creating an event or a phase
-    openChoiceModal();
-  }, []);
-
-  const onBeforeDeleteSchedule = useCallback(async (event) => {
-    console.log("onBeforeDeleteSchedule", event);
-
-    const { id, calendarId } = event.schedule;
-    try {
-      await axios.delete(`${base_url}/phases/${id}`, {
-        headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    cal.current.calendarInst.deleteSchedule(id, calendarId);
-  }, []);
-
-  const onBeforeUpdateSchedule = useCallback((event) => {
-    console.log("onBeforeUpdateSchedule", event);
-
-    const { schedule, changes } = event;
-    setEventEdit(true);
-    if(changes){
-      setEventInfo({
-        ...schedule,
-        start_date: changes.start.toDate(),
-        end_date: changes.end.toDate(),
-      });
-    } else {
-      setEventInfo({
-        ...schedule,
-        start_date: schedule.start.toDate(),
-        end_date: schedule.end.toDate(),
-      });
-    }
-    openEventModal();
-    // console.log("eventInfo", eventInfo);
-
-    //TODO décaler ce qu'il y a en dessous dans le onSubmit
-    //il va falloir détecter si je suis en train de modifier ou de créer
-    // rappel : si editingPhase est null alors je crée, si editingPhase contient des données alors je suis en train de modifier
   }, []);
 
   function getFormattedTime(time) {
@@ -429,43 +298,7 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className="App">
-      <Modal
-        onClose={closeChoiceModal}
-        onOpen={openChoiceModal}
-        open={choiceOpen}
-        size="mini"
-      >
-        <Modal.Header>Créer un événement ou une phase</Modal.Header>
-        <Modal.Actions>
-          <Button content="Evenement" onClick={openEventModal} />
-          <Button content="Phase" onClick={openPhaseModal} />
-        </Modal.Actions>
-      </Modal>
-
-      <Modal onClose={closeEventModal} onOpen={openEventModal} open={eventOpen}>
-        <Modal.Header>
-          {eventEdit ? "Modifier un événement" : "Créer un événement"}
-        </Modal.Header>
-        <Modal.Content>
-          {/* <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} /> */}
-          <EventForm eventInfo={eventInfo} eventEdit={eventEdit} setEventEdit={setEventEdit} closeEventModal={closeEventModal} />
-        </Modal.Content>
-        {/* <Modal.Actions>
-          <Button icon="check" onClick={onSubmitEvent} />
-          <Button icon="close" closeEventModal={closeEventModal} />
-        </Modal.Actions> */}
-      </Modal>
-
-      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
-        <Modal.Header>Créer une phase</Modal.Header>
-        <PhaseForm />
-        {/* <Modal.Actions>
-          <Button icon="check" onClick={onSubmitEvent} /> //TODO : onSubmitPhase
-          <Button icon="close" onClick={closePhaseModal} />
-        </Modal.Actions> */}
-      </Modal>
-
+    <div className="App TechCalendar">
       <Button content="<" secondary onClick={prevView} />
       <Button content="Jour" secondary onClick={dayView} />
       <Button content="Semaine" secondary onClick={weekView} />
@@ -489,12 +322,10 @@ const MyCalendar = () => {
         schedules={phases}
         onClickSchedule={onClickSchedule}
         onBeforeCreateSchedule={onBeforeCreateSchedule}
-        onBeforeDeleteSchedule={onBeforeDeleteSchedule}
-        onBeforeUpdateSchedule={onBeforeUpdateSchedule}
       />
     </div>
   );
 };
 
 // export default Calendar;
-export default MyCalendar;
+export default TechCalendar;

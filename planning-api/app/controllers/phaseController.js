@@ -6,7 +6,8 @@ const phaseController = {
   },
 
   addPhase: async (req, res) => {
-    const newPhase = new Phase(req.body);
+    const { title, start_date, end_date, type, number_fee, event_id, user_id } = req.body;
+    const newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
     try {
       await newPhase.save();
       res.status(201).json(newPhase);
@@ -42,11 +43,24 @@ const phaseController = {
 
   editPhase: async (req, res) => {
     try {
-      const phaseToEdit = new Phase(req.body);
-      phaseToEdit.id = req.params.id;
+      const { title, start_date, end_date, type, number_fee, event_id, user_id } = req.body;
+      const phaseToEdit = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+      phaseToEdit.id = parseInt(req.params.id);
       console.log("dans le controller : ", phaseToEdit);
       await phaseToEdit.save();
       res.status(200).json(phaseToEdit);
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  assignTech: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      const { tech_id, salary } = req.body;
+      
+      phase.assignTech(tech_id, salary);
+      res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
     } catch (error) {
       res.status(500).json(error.message);
     }

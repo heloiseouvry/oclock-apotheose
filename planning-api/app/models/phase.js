@@ -91,7 +91,19 @@ class Phase extends CoreModel{
                 values: [this.id]
             };
             await db.query(preparedQuery);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
 
+    async assignTech(id, salary = 0){
+        try {
+            const preparedQuery = {
+                text: 'INSERT INTO phase_has_user (user_id, phase_id, salary) VALUES ($1, $2, $3);',
+                values: [id, this.id, salary]
+            };
+            await db.query(preparedQuery);
         } catch (error) {
             console.error(error);
             throw new Error(error.detail);

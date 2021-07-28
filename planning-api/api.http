@@ -61,10 +61,10 @@ Content-Type: application/json
 
 {
   "lastname": "Obama",
-  "firstname": "Michelle",
+  "firstname": "Barack",
   "phone_number": "0674965896",
-  "role": "cdp",
-  "email": "mo@gmail.com",
+  "role": "tech",
+  "email": "bo@gmail.com",
   "password": "micdrop",
   "status": "intermittent",
   "birth_date": "1962-12-02",
@@ -116,6 +116,18 @@ Content-Type: application/json
   "comments": "ne s'entend pas avec Jean-Jacques ni michel d'ailleurs, mais bosse super bien avec Jean Eudes !"
 }
 
+### Get a user's planning
+
+GET {{baseUrl}}/users/planning
+
+### Get available users
+
+GET {{baseUrl}}/available_users
+
+### Get available users by type
+
+GET {{baseUrl}}/available_users/son
+
 ### Get all phases
 
 GET {{baseUrl}}/phases
@@ -126,17 +138,17 @@ POST {{baseUrl}}/phases
 Content-Type: application/json
 
 {
-  "title": "montage-scène principale",
-  "start_date": "2021-09-09 08:00:00",
-  "end_date": "2021-09-09 14:00:00",
+  "title": "Débrief",
+  "start_date": "2021-07-26 14:00:00",
+  "end_date": "2021-07-26 18:00:00",
   "type": "montage",
-  "internal_location": "scène 1",
+  "internal_location": "salle du fond",
   "tech_manager_contact": "Céline",
   "provider_contact": "Robert B",
   "number_fee": 1,
-  "comments": "Attention, il faudrait prévoir des parpaing pour caler la scène",
-  "event_id" : 1,
-  "vehicle_id": 1,
+  "comments": "",
+  "event_id" : 12,
+  "vehicle_id": null,
   "user_id": 1
 }
 
@@ -166,6 +178,16 @@ Content-Type: application/json
   "event_id" : 1,
   "vehicle_id": 1,
   "user_id": 1
+}
+
+### Assign a tech to a phase
+
+POST {{baseUrl}}/phases/13/assign
+Content-Type: application/json
+
+{
+  "tech_id": "14",
+  "salary": "100"
 }
 
 ### Get all address

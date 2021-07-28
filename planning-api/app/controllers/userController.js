@@ -52,13 +52,31 @@ const userController = {
 
     getAvailableUsers : async (req, res) => {
         try {
-            
-            res.status(201).json({message : "Supression effectuée avec succès."})
+            const users = await User.findAvailableUsers('2021-07-26T14:00:00Z', '2021-07-26T16:00:00Z');
+            res.status(200).json(users)
         } catch (error) {
             res.status(500).json(error.message);
         }
     },
 
+    getAvailableUsersByType : async (req, res) => {
+        try {
+            const users = await User.findAvailableUsersByType(req.params.type, '2021-07-26T14:00:00Z', '2021-07-26T16:00:00Z');
+            res.status(200).json(users)
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    },
+
+    getUserPlanning : async (req, res) => {
+        try {
+            const user = await User.findById(req.user.userID);
+            const userPlanning = await user.findPlanning();
+            res.status(200).json(userPlanning)
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
 
 }
 
