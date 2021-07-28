@@ -4,7 +4,6 @@ import { Button, Form  } from 'semantic-ui-react';
 import axios from "axios";
 
 import './styles.scss';
-import { raw } from '../../../../planning-api/app/schemas/user';
 
 const host = "localhost";
 const port = "4000";
