@@ -8,3 +8,4 @@ phase-fix-no-vehicle 2021-07-20T08:12:37Z Heloise Ouvry <heloiseouvry@gmail.com>
 user-int-to-text 2021-07-20T14:52:55Z Heloise Ouvry <heloiseouvry@gmail.com> # Change int type to text for some user attributes
 end_date 2021-07-27T10:42:28Z Heloise Ouvry <heloiseouvry@gmail.com> # Change duration to end_date
 delete_cascade 2021-07-27T12:20:27Z Heloise Ouvry <heloiseouvry@gmail.com> # Add ON DELETE CASCADE constraints
+user_has_address 2021-07-29T12:37:39Z Heloise Ouvry <heloiseouvry@gmail.com> # User can have an address
