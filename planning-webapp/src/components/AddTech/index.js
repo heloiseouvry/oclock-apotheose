@@ -12,8 +12,8 @@ const base_url = `http://${host}:${port}/${router}`;
 function AddTech () {
 
   const [error, setError] = useState("");
-  const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980/11/29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
-  const [addJob, setAddJob] = useState({});
+  const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980-11-29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
+  const [addJob, setAddJob] = useState({1: false, 2: false, 3: false, 4: false});
   const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
 
   const handleSubmit = async (event) => {
@@ -23,14 +23,25 @@ function AddTech () {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
       addTechForm.address_id = addressResponse.data.id;
-      console.log(addTechForm);
+      console.log("handlesubmit", addTechForm);
       const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
       const user_id = userResponse.data.id;
-      const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, addJob,{
+      console.log("addJob", addJob);
+      // soit je fait 1 appel à UserAsJob pour chaque job qu'il a : jobId
+      // soit je fait 1 appel à UserAsJob auquel je passe 1 liste de tous les jobs [jobId, jobId]
+      let finalJobs = [];
+      // si mon booleen est true alors je le push dans l'array
+
+      for (const [key, value] of Object.entries(addJob)) {
+        if (value === true)
+          finalJobs.push(key);
+      }
+
+      const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, finalJobs,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
-      })
+      });
 
       console.log(userHasJobResponse)
       
@@ -171,10 +182,10 @@ function AddTech () {
               <Form.Group inline>
                 <label><h3>Métier :</h3></label>
                   <Form.Field>
-                  <Checkbox label='Son' value='1' onChange={(event)=>setAddJob(event.target.value)} />
-                  <Checkbox label='Lumière' value='2' onChange={(event)=>setAddJob(event.target.value)} />
-                  <Checkbox label='Vidéo' value='3' onChange={(event)=>setAddJob(event.target.value)} />
-                  <Checkbox label='Autre' value='4' onChange={(event)=>setAddJob(event.target.value)} />
+                  <Checkbox label='Son' value='1' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
+                  <Checkbox label='Lumière' value='2' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
+                  <Checkbox label='Vidéo' value='3' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
+                  <Checkbox label='Autre' value='4' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   </Form.Field>
               </Form.Group>
               <Form.Group >
