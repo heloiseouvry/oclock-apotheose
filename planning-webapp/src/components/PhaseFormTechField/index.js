@@ -21,17 +21,15 @@ function PhaseFormTechField({type, options, techsSelected, setTechsSelected}) {
       <Form.Field>
         <Label>Technicien {type}</Label>
         <Dropdown
+          multiple
           search
           selection
           options={options}
-          placeholder="Sélectionner un technicien"
-          onChange={(event) => setTech(event.target.innerText)}
-        />
-        <Input type="number" placeholder="Salaire" min="0" step="10"/>
-        <Button
-          onClick={(e) => setTechsSelected([...techsSelected, tech])}
-          content={`Ajouter un technicien ${type}`}
-          secondary
+          placeholder="Sélectionner un/des technicien(s)"
+          onChange={(event) => { console.log(event.target);
+            console.log(event);
+            setTechsSelected([...techsSelected, event.target.innerText])
+          }}
         />
       </Form.Field>
   );
