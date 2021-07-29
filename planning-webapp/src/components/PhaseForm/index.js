@@ -7,11 +7,11 @@ import {
   Input,
   Checkbox,
   Label,
-  TextArea, 
-  Divider
+  TextArea,
+  Divider,
 } from "semantic-ui-react";
 import axios from "axios";
-import PhaseFormTechField from "../PhaseFormTechField"
+import PhaseFormTechField from "../PhaseFormTechField";
 
 import "./styles.scss";
 
@@ -43,35 +43,35 @@ let otherUsersFormatDropdown = [];
     usersFormatDropdown.push({
       key: user.id,
       text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-      value: user.id
+      value: user.id,
     });
-    switch(user.type){
+    switch (user.type) {
       case "son":
         soundUsersFormatDropdown.push({
           key: user.id,
           text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id
+          value: user.id,
         });
         break;
       case "lumière":
         lightUsersFormatDropdown.push({
           key: user.id,
           text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id
+          value: user.id,
         });
         break;
       case "vidéo":
         videoUsersFormatDropdown.push({
           key: user.id,
           text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id
+          value: user.id,
         });
         break;
       case "autres":
         otherUsersFormatDropdown.push({
           key: user.id,
           text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id
+          value: user.id,
         });
         break;
       default:
@@ -80,102 +80,280 @@ let otherUsersFormatDropdown = [];
   }
 })();
 
-function PhaseForm ({phaseInfo, phaseEdit, setPhaseEdit, closePhaseModal}) {
+function PhaseForm({
+  events,
+  phaseInfo,
+  phaseEdit,
+  setPhaseEdit,
+  closePhaseModal,
+}) {
   console.log("phaseInfo", phaseInfo);
+  let eventsFormatted = [];
+  for (const event of events) {
+    eventsFormatted.push({
+      key: event.id,
+      text: `#${event.id} ${event.name}`,
+      value: event.id,
+    });
+  }
 
-  const start_date = `${phaseInfo.start_date.getFullYear()}-${("0" + (phaseInfo.start_date.getMonth() + 1)).slice(-2)}-${("0" + phaseInfo.start_date.getDate()).slice(-2)}`;
-  const start_time = `${("0" + phaseInfo.start_date.getHours()).slice(-2)}:${("0" + phaseInfo.start_date.getMinutes()).slice(-2)}`;
+  const start_date = `${phaseInfo.start_date.getFullYear()}-${(
+    "0" +
+    (phaseInfo.start_date.getMonth() + 1)
+  ).slice(-2)}-${("0" + phaseInfo.start_date.getDate()).slice(-2)}`;
+  const start_time = `${("0" + phaseInfo.start_date.getHours()).slice(-2)}:${(
+    "0" + phaseInfo.start_date.getMinutes()
+  ).slice(-2)}`;
 
-  const end_date = `${phaseInfo.end_date.getFullYear()}-${("0" + (phaseInfo.end_date.getMonth() + 1)).slice(-2)}-${("0" + phaseInfo.end_date.getDate()).slice(-2)}`;
-  const end_time = `${("0" + phaseInfo.end_date.getHours()).slice(-2)}:${("0" + phaseInfo.end_date.getMinutes()).slice(-2)}`;
+  const end_date = `${phaseInfo.end_date.getFullYear()}-${(
+    "0" +
+    (phaseInfo.end_date.getMonth() + 1)
+  ).slice(-2)}-${("0" + phaseInfo.end_date.getDate()).slice(-2)}`;
+  const end_time = `${("0" + phaseInfo.end_date.getHours()).slice(-2)}:${(
+    "0" + phaseInfo.end_date.getMinutes()
+  ).slice(-2)}`;
 
   const [soundTechsSelected, setSoundTechsSelected] = useState([]);
   const [lightTechsSelected, setLightTechsSelected] = useState([]);
   const [videoTechsSelected, setVideoTechsSelected] = useState([]);
   const [techs, setTechs] = useState(users);
-  const [techsFormatDropdown, setTechsFormatDropdown] = useState(usersFormatDropdown);
-  const [soundTechsFormatDropdown, setSoundTechsFormatDropdown] = useState(soundUsersFormatDropdown);
-  const [lightTechsFormatDropdown, setLightTechsFormatDropdown] = useState(lightUsersFormatDropdown);
-  const [videoTechsFormatDropdown, setVideoTechsFormatDropdown] = useState(videoUsersFormatDropdown);
-  const [otherTechsFormatDropdown, setOtherTechsFormatDropdown] = useState(otherUsersFormatDropdown);
+  const [techsFormatDropdown, setTechsFormatDropdown] =
+    useState(usersFormatDropdown);
+  const [soundTechsFormatDropdown, setSoundTechsFormatDropdown] = useState(
+    soundUsersFormatDropdown
+  );
+  const [lightTechsFormatDropdown, setLightTechsFormatDropdown] = useState(
+    lightUsersFormatDropdown
+  );
+  const [videoTechsFormatDropdown, setVideoTechsFormatDropdown] = useState(
+    videoUsersFormatDropdown
+  );
+  const [otherTechsFormatDropdown, setOtherTechsFormatDropdown] = useState(
+    otherUsersFormatDropdown
+  );
+  const [eventsFormatDropdown, seteventsFormatDropdown] =
+    useState(eventsFormatted);
   const [startDate, setStarDate] = useState();
 
-  const [phaseForm, setPhaseForm] = useState({ ...phaseInfo, start_date, end_date, start_time, end_time });
+  const [phaseForm, setPhaseForm] = useState({
+    ...phaseInfo,
+    start_date,
+    end_date,
+    start_time,
+    end_time,
+  });
 
   // console.log("techs", techs);
-  console.log("soundTechsSelected", soundTechsSelected);
 
-useEffect(() => { 
+  useEffect(() => {}, []);
 
- }, []);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-};
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Dropdown
+          required
+          label="Lié à l'événement"
+          search
+          selection
+          options={eventsFormatDropdown}
+          placeholder="Liste des événements"
+        ></Form.Dropdown>
+        <Form.Dropdown
+          required
+          label="Type de phase"
+          selection
+          options={phaseTypes}
+          defaultValue={1}
+        ></Form.Dropdown>
+        <FormField required>
+          <label htmlFor="start_date">Date de début</label>
+          <input
+            id="start_date"
+            name="start_date"
+            type="date"
+            min="1900-01-01"
+            max="2100-12-31"
+            value={phaseForm.start_date}
+            onChange={(event) =>
+              setEventForm({ ...phaseForm, start_date: event.target.value })
+            }
+          />
+        </FormField>
+        <FormField required>
+          <label htmlFor="start_hour">Heure de début</label>
+          <input
+            type="time"
+            id="start_hour"
+            name="start_date"
+            value={phaseForm.start_time}
+            onChange={(event) =>
+              setEventForm({ ...phaseForm, start_time: event.target.value })
+            }
+          />
+        </FormField>
 
-    return (
-        <Form onSubmit={handleSubmit}>
-          {/* <FormField required> */}
-            {/* Si on veut relier Les phases, possibilités de mettre un controled Dropdown sur semanticUI */}
-            <Dropdown
-              selection
-              options={phaseTypes}
-              placeholder="Type de phases"
-            />
-          {/* </FormField> */}
-        <Form.Group>
-          <FormField required>
-            <label htmlFor="start_date">Date de début</label>
-            <input
-              id="start_date"
-              name="start_date"
-              type="date"
-              min="1900-01-01"
-              max="2100-12-31"
-              onChange={console.log("")}/>
-          </FormField>
-          <FormField required>
-            <label htmlFor="start_hour">Heure de début</label>
-            <input type="time" id="start_hour" name="start_date" />
-          </FormField>
+        <FormField required>
+          <label htmlFor="end_date">Date de fin</label>
+          <input
+            id="end_date"
+            name="end_date"
+            type="date"
+            min="1900-01-01"
+            max="2100-12-31"
+            value={phaseForm.end_date}
+            onChange={(event) =>
+              setEventForm({ ...phaseForm, end_date: event.target.value })
+            }
+          />
+        </FormField>
+        <FormField required>
+          <label htmlFor="end_hour">Heure de fin</label>
+          <input
+            type="time"
+            id="end_hour"
+            name="end_hour"
+            value={phaseForm.end_time}
+            onChange={(event) =>
+              setEventForm({ ...phaseForm, end_time: event.target.value })
+            }
+          />
+        </FormField>
+      </Form.Group>
 
-          <FormField required>
-            <label htmlFor="end_date">Date de fin</label>
-            <input
-              id="end_date"
-              name="end_date"
-              type="date"
-              min="1900-01-01"
-              max="2100-12-31"
-            />
-          </FormField>
-          <FormField required>
-            <label htmlFor="end_hour">Heure de fin</label>
-            <input type="time" id="end_hour" name="end_hour" />
-            </FormField>
-        </Form.Group>
+      <Form.Group>
+        <FormField required>
+          <label htmlFor="title">Titre de la phase</label>
+          <input
+            id="title"
+            placeholder="Titre de la phase"
+            name="title"
+            value={phaseForm.title}
+            onChange={(event) =>
+              setEventForm({ ...phaseForm, title: event.target.value })
+            }
+          />
+        </FormField>
+        <Form.Field>
+          <label htmlFor="internal_location">Lieu interne</label>
+          <input
+            id="internal_location"
+            type="text"
+            placeholder="Lieu interne"
+            name="internal_location"
+            value={phaseForm.raw.address.main}
+            onChange={(event) =>
+              setEventForm({
+                ...phaseForm,
+                raw: {
+                  ...phaseForm.raw,
+                  address: {
+                    ...phaseForm.raw.address,
+                    main: event.target.value,
+                  },
+                },
+              })
+            }
+          />
+        </Form.Field>
+      </Form.Group>
 
-        <TextArea rows={2} placeholder="Commentaire" />
+      <Form.Group>
+        <FormField>
+          <label htmlFor="tech_manager_contact">Contact régisseur</label>
+          <input
+            id="tech_manager_contact"
+            placeholder="ex: Chuck Norris 0658759564"
+            name="tech_manager_contact"
+            value={phaseForm.tech_manager_contact}
+            onChange={(event) =>
+              setEventForm({
+                ...phaseForm,
+                tech_manager_contact: event.target.value,
+              })
+            }
+          />
+        </FormField>
+        <FormField>
+          <label htmlFor="provider_contact">Contact sur place</label>
+          <input
+            id="provider_contact"
+            placeholder="ex: Barack Obama 0695741206"
+            name="provider_contact"
+            value={phaseForm.provider_contact}
+            onChange={(event) =>
+              setEventForm({
+                ...phaseForm,
+                provider_contact: event.target.value,
+              })
+            }
+          />
+        </FormField>
+      </Form.Group>
 
-        <Divider />
-        <Form.Group>
-          <PhaseFormTechField type={"son"} options={soundTechsFormatDropdown} techsSelected={soundTechsSelected} setTechsSelected={setSoundTechsSelected} />
-          <PhaseFormTechField type={"lumière"} options={lightTechsFormatDropdown} techsSelected={lightTechsSelected} setTechsSelected={setLightTechsSelected} />
-          <PhaseFormTechField type={"vidéo"} options={videoTechsFormatDropdown} techsSelected={videoTechsSelected} setTechsSelected={setVideoTechsSelected} />
-        </Form.Group>
-        <Form.Group>
-          {soundTechsSelected.map((tech, index) => <PhaseFormTechField key={index} type={"son"} options={soundTechsFormatDropdown} techsSelected={soundTechsSelected} setTechsSelected={setSoundTechsSelected} />)}
-          {lightTechsSelected.map((tech, index) => <PhaseFormTechField key={index} type={"lumière"} options={lightTechsFormatDropdown} techsSelected={lightTechsSelected} setTechsSelected={setLightTechsSelected} />)}
-          {videoTechsSelected.map((tech, index) => <PhaseFormTechField key={index} type={"vidéo"} options={videoTechsFormatDropdown} techsSelected={videoTechsSelected} setTechsSelected={setVideoTechsSelected} />)}
-        </Form.Group>
-
-        <Button
-          type="submit"
-          content="Créer la phase"
-          primary
+      <Form.Group>
+        <PhaseFormTechField
+          type={"son"}
+          options={soundTechsFormatDropdown}
+          techsSelected={soundTechsSelected}
+          setTechsSelected={setSoundTechsSelected}
         />
-        </Form>
-    );
+        <PhaseFormTechField
+          type={"lumière"}
+          options={lightTechsFormatDropdown}
+          techsSelected={lightTechsSelected}
+          setTechsSelected={setLightTechsSelected}
+        />
+        <PhaseFormTechField
+          type={"vidéo"}
+          options={videoTechsFormatDropdown}
+          techsSelected={videoTechsSelected}
+          setTechsSelected={setVideoTechsSelected}
+        />
+      </Form.Group>
+      <Form.Group>
+        {soundTechsSelected.map((tech, index) => (
+          <Form.Input
+            key={index}
+            type="number"
+            placeholder={`Salaire ${tech.split("(")[0]}`}
+            min="0"
+            step="10"
+          />
+        ))}
+        {lightTechsSelected.map((tech, index) => (
+          <Form.Input
+            key={index}
+            type="number"
+            placeholder={`Salaire ${tech.split("(")[0]}`}
+            min="0"
+            step="10"
+          />
+        ))}
+        {videoTechsSelected.map((tech, index) => (
+          <Form.Input
+            key={index}
+            type="number"
+            placeholder={`Salaire ${tech.split("(")[0]}`}
+            min="0"
+            step="10"
+          />
+        ))}
+      </Form.Group>
+
+      <Form.Field
+        label="Commentaires"
+        rows={2}
+        control={TextArea}
+        placeholder="Commentaires"
+      />
+
+      <Button type="submit" content="Créer la phase" primary />
+    </Form>
+  );
 }
 
 export default PhaseForm;

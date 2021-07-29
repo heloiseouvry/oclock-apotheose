@@ -274,6 +274,11 @@ const MyCalendar = () => {
       start_date: event.start.toDate(),
       end_date: event.end.toDate(),
     });
+    setPhaseInfo({
+      ...phaseInfo,
+      start_date: event.start.toDate(),
+      end_date: event.end.toDate(),
+    });
     // Need to open the choice modal to select bewteen creating an event or a phase
     openChoiceModal();
   }, []);
@@ -441,22 +446,22 @@ const MyCalendar = () => {
   // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
   const templates = {
     time: function (schedule) {
-      console.log("time", schedule);
+      // console.log("time", schedule);
       return getTimeTemplate(schedule, false);
     },
     popupDetailBody: (phaseDetails) => {
-      console.log(`popupDetailBody`, phaseDetails);
+      // console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
       ret += "<ul>";
 
       //Sert à afficher les prénom et le nom du technicien sélectionné dans le form de la modal
       var techFound = data.find((elementTech) => {
-        console.log("tech Find=", elementTech);
-        console.log("elementTech.id=", elementTech.id);
-        console.log("phaseDetails.raw.techID=", phaseDetails.raw?.techID);
+        // console.log("tech Find=", elementTech);
+        // console.log("elementTech.id=", elementTech.id);
+        // console.log("phaseDetails.raw.techID=", phaseDetails.raw?.techID);
         return elementTech.id === phaseDetails.raw?.techID;
       });
-      console.log("techFound=", techFound);
+      // console.log("techFound=", techFound);
 
       ret += "<li>" + techFound?.prenom + " " + techFound?.nom + "</li>";
 
@@ -495,7 +500,7 @@ const MyCalendar = () => {
           {phaseEdit ? "Modifier une phase" : "Créer une phase"}
         </Modal.Header>
         <Modal.Content>
-          <PhaseForm phaseInfo={phaseInfo} phaseEdit={phaseEdit} setPhaseEdit={setPhaseEdit} closePhaseModal={closePhaseModal} />
+          <PhaseForm events={events} phaseInfo={phaseInfo} phaseEdit={phaseEdit} setPhaseEdit={setPhaseEdit} closePhaseModal={closePhaseModal} />
         </Modal.Content>
       </Modal>
 
