@@ -82,6 +82,34 @@ const MyCalendar = () => {
     },
   });
 
+  const [phaseEdit, setPhaseEdit] = useState(false);
+  const [phaseInfo, setPhaseInfo] = useState({
+    id: null,
+    calendarId: null,
+    title: "",
+    body: "",
+    location: "",
+    attendees: [],
+    start_date: new Date(),
+    end_date: new Date(),
+    start_time: new Date(),
+    end_time: new Date(),
+    color: "#ffffff",
+    bgColor: '#000000',
+    raw: {
+      type: "",
+      address: {
+        id: null,
+        main: "",
+        additional: "",
+        zip_code: "",
+        city: "",
+      },
+      tech_manager_contact: "",
+      provider_contact:""
+    },
+  });
+
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
 
@@ -462,10 +490,12 @@ const MyCalendar = () => {
         </Modal.Content>
       </Modal>
 
-      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
-        <Modal.Header>Créer une phase</Modal.Header>
+      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen} size='large'>
+        <Modal.Header>
+          {phaseEdit ? "Modifier une phase" : "Créer une phase"}
+        </Modal.Header>
         <Modal.Content>
-          <PhaseForm />
+          <PhaseForm phaseInfo={phaseInfo} phaseEdit={phaseEdit} setPhaseEdit={setPhaseEdit} closePhaseModal={closePhaseModal} />
         </Modal.Content>
       </Modal>
 

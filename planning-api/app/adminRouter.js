@@ -19,6 +19,7 @@ router.patch('/phases/:id(\\d+)', phaseController.editPhase);
 router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
 
 router.get('/users', userController.getAllUsers);
+router.get('/usersjob', userController.getAllUsersWithJob);
 router.post('/users', validateBody(userSchema), userController.addUser);
 router.get('/users/:id(\\d+)', userController.getOneUser);
 router.patch('/users/:id(\\d+)', userController.editUser);

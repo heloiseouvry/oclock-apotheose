@@ -107,6 +107,7 @@ router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
  * @returns {Array<User>} 200 - An array of Users
  */
 router.get('/users', userController.getAllUsers);
+router.get('/usersjob', userController.getAllUsersWithJob);
 
 /**
  * Expected json object in request body
