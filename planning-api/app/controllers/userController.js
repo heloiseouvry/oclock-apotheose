@@ -18,6 +18,10 @@ const userController = {
         res.json(await User.findAll());
     },
 
+    getAllUsersWithJob : async (req, res) => {
+        res.json(await User.findAllWithJob());
+    },
+
     getOneUser : async (req, res) => {
         try {
             const userById = await User.findById(req.params.id);

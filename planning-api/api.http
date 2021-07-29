@@ -83,6 +83,10 @@ Content-Type: application/json
 
 GET {{baseUrl}}/users
 
+### Get all users with job
+
+GET {{baseUrl}}/usersjob
+
 ### Get an user by his id
 
 GET {{baseUrl}}/users/15

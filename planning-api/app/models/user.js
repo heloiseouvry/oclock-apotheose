@@ -101,6 +101,14 @@ class User extends CoreModel {
         return data.map(d => new User(d));
     }
 
+    static async findAllWithJob() {
+        const data = await CoreModel.fetch(`
+            SELECT "user".*, job.type FROM "user"
+            JOIN user_has_job ON user_has_job.user_id = "user".id
+            JOIN job ON user_has_job.job_id = job.id;`);
+        return data.map(d => new User(d));
+    }
+
     /**
      * Fetches a single user from the database
      * @param {Number} id 
