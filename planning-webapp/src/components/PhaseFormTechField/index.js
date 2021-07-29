@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dropdown,
@@ -13,31 +13,27 @@ import {
 
 import "./styles.scss";
 
-function PhaseFormTechField() {
+function PhaseFormTechField({type, options, techsSelected, setTechsSelected}) {
+
+  const [tech, setTech] = useState("");
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Field className="techInput">
-        <Label>Technicien Son </Label>
+      <Form.Field>
+        <Label>Technicien {type}</Label>
         <Dropdown
           search
           selection
-          options={techsFormatDropdown}
-          placeholder="Liste des Tech"
+          options={options}
+          placeholder="Sélectionner un technicien"
+          onChange={(event) => setTech(event.target.innerText)}
         />
-        <Form.Group>
-          <Input type="number" placeholder="Salaire" />
-          {/* <Input placeholder="Cachet" /> */}
-          <Input placeholder="Contact" /> {/* info recuperer dans la bdd */}
-        </Form.Group>
+        <Input type="number" placeholder="Salaire" min="0" step="10"/>
         <Button
-          onClick={(e) => console.log(e)}
-          type="submit"
-          className="button"
-          content="Ajouter un technicien son"
+          onClick={(e) => setTechsSelected([...techsSelected, tech])}
+          content={`Ajouter un technicien ${type}`}
           secondary
         />
       </Form.Field>
-    </Form>
   );
 }
 

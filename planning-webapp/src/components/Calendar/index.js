@@ -490,7 +490,7 @@ const MyCalendar = () => {
         </Modal.Content>
       </Modal>
 
-      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
+      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen} size='large'>
         <Modal.Header>
           {phaseEdit ? "Modifier une phase" : "Créer une phase"}
         </Modal.Header>

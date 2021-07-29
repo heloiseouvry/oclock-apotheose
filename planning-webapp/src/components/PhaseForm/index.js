@@ -30,6 +30,10 @@ const phaseTypes = [
 // getAllUsersWithJob();
 let users;
 let usersFormatDropdown = [];
+let soundUsersFormatDropdown = [];
+let lightUsersFormatDropdown = [];
+let videoUsersFormatDropdown = [];
+let otherUsersFormatDropdown = [];
 (async () => {
   const response = await axios.get(`${base_url}/usersjob`, {
     headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
@@ -40,7 +44,39 @@ let usersFormatDropdown = [];
       key: user.id,
       text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
       value: user.id
-    })
+    });
+    switch(user.type){
+      case "son":
+        soundUsersFormatDropdown.push({
+          key: user.id,
+          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+          value: user.id
+        });
+        break;
+      case "lumière":
+        lightUsersFormatDropdown.push({
+          key: user.id,
+          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+          value: user.id
+        });
+        break;
+      case "vidéo":
+        videoUsersFormatDropdown.push({
+          key: user.id,
+          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+          value: user.id
+        });
+        break;
+      case "autres":
+        otherUsersFormatDropdown.push({
+          key: user.id,
+          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+          value: user.id
+        });
+        break;
+      default:
+        break;
+    }
   }
 })();
 
@@ -53,22 +89,23 @@ function PhaseForm ({phaseInfo, phaseEdit, setPhaseEdit, closePhaseModal}) {
   const end_date = `${phaseInfo.end_date.getFullYear()}-${("0" + (phaseInfo.end_date.getMonth() + 1)).slice(-2)}-${("0" + phaseInfo.end_date.getDate()).slice(-2)}`;
   const end_time = `${("0" + phaseInfo.end_date.getHours()).slice(-2)}:${("0" + phaseInfo.end_date.getMinutes()).slice(-2)}`;
 
-  const [sound, setSound] = useState();
-  const [light, setLight] = useState();
-  const [video, setVideo] = useState();
+  const [soundTechsSelected, setSoundTechsSelected] = useState([]);
+  const [lightTechsSelected, setLightTechsSelected] = useState([]);
+  const [videoTechsSelected, setVideoTechsSelected] = useState([]);
   const [techs, setTechs] = useState(users);
   const [techsFormatDropdown, setTechsFormatDropdown] = useState(usersFormatDropdown);
-  const [soundTech, setSoundTech] = useState([]);
-  const [lightTech, setLightTech] = useState([]);
-  const [videoTech, setVideoTech] = useState([]);
+  const [soundTechsFormatDropdown, setSoundTechsFormatDropdown] = useState(soundUsersFormatDropdown);
+  const [lightTechsFormatDropdown, setLightTechsFormatDropdown] = useState(lightUsersFormatDropdown);
+  const [videoTechsFormatDropdown, setVideoTechsFormatDropdown] = useState(videoUsersFormatDropdown);
+  const [otherTechsFormatDropdown, setOtherTechsFormatDropdown] = useState(otherUsersFormatDropdown);
   const [startDate, setStarDate] = useState();
 
   const [phaseForm, setPhaseForm] = useState({ ...phaseInfo, start_date, end_date, start_time, end_time });
 
-  console.log("techs", techs);
+  // console.log("techs", techs);
+  console.log("soundTechsSelected", soundTechsSelected);
 
 useEffect(() => { 
-
 
  }, []);
 
@@ -95,7 +132,7 @@ const handleSubmit = async (event) => {
               type="date"
               min="1900-01-01"
               max="2100-12-31"
-              onChange={console.log("change")}/>
+              onChange={console.log("")}/>
           </FormField>
           <FormField required>
             <label htmlFor="start_hour">Heure de début</label>
@@ -121,115 +158,22 @@ const handleSubmit = async (event) => {
         <TextArea rows={2} placeholder="Commentaire" />
 
         <Divider />
+        <Form.Group>
+          <PhaseFormTechField type={"son"} options={soundTechsFormatDropdown} techsSelected={soundTechsSelected} setTechsSelected={setSoundTechsSelected} />
+          <PhaseFormTechField type={"lumière"} options={lightTechsFormatDropdown} techsSelected={lightTechsSelected} setTechsSelected={setLightTechsSelected} />
+          <PhaseFormTechField type={"vidéo"} options={videoTechsFormatDropdown} techsSelected={videoTechsSelected} setTechsSelected={setVideoTechsSelected} />
+        </Form.Group>
+        <Form.Group>
+          {soundTechsSelected.map((tech, index) => <PhaseFormTechField key={index} type={"son"} options={soundTechsFormatDropdown} techsSelected={soundTechsSelected} setTechsSelected={setSoundTechsSelected} />)}
+          {lightTechsSelected.map((tech, index) => <PhaseFormTechField key={index} type={"lumière"} options={lightTechsFormatDropdown} techsSelected={lightTechsSelected} setTechsSelected={setLightTechsSelected} />)}
+          {videoTechsSelected.map((tech, index) => <PhaseFormTechField key={index} type={"vidéo"} options={videoTechsFormatDropdown} techsSelected={videoTechsSelected} setTechsSelected={setVideoTechsSelected} />)}
+        </Form.Group>
 
-          <Form.Field className="techInput">
-            <Label>Technicien Son </Label>
-            <Dropdown
-              search
-              selection
-              options={techsFormatDropdown}
-              placeholder="Liste des Tech"
-            />
-            <Form.Group>
-              <Input type="number" placeholder="Salaire" />
-              {/* <Input placeholder="Cachet" /> */}
-              <Input placeholder="Contact" /> {/* info recuperer dans la bdd */}
-            </Form.Group>
-            <Button
-              onClick={(e) => console.log(e)}
-              type="submit"
-              className="button"
-              content="Ajouter un technicien son"
-              secondary
-            />
-          </Form.Field>
-          {/* {
-                        sounds.map((sound, indexSound)=>{
-                            return(
-                        <Form.Field key={indexSound} className='techInput'>
-                        <Label >Technicien Son </Label>
-                        <Dropdown selection options={soundTechs} placeholder='Liste des Tech' />
-                        <Input  placeholder="Nombre d'heure" />
-                        <Input  placeholder='Cachet' />
-                        <Input  placeholder='Contact' />
-                        <Button inverted color='red' onClick={() => this.handleRemoveSound(indexSound)} type='submit' className='button' content="Supprimer"  />
-                        </Form.Field>)})
-                    } */}
-          <hr></hr>
-
-          <Form.Field className="techInput">
-            <Label>Technicien lumière</Label>
-            <Dropdown
-              search
-              selection
-              options={techsFormatDropdown}
-              placeholder="Liste des Tech"
-            />
-            <Input placeholder="Nombre d'heure" />
-            <Input placeholder="Cachet" />
-            <Input placeholder="Contact" /> {/* info recuperer dans la bdd */}
-            <Button
-              onClick={(e) => console.log(e)}
-              type="submit"
-              className="button"
-              content="Ajouter un technicien lumière"
-              secondary
-            />
-          </Form.Field>
-          {/* {
-                        lights.map((light, indexLight)=>{
-                            return(
-                        <Form.Field key={indexLight} className='techInput'>
-                        <Label >Technicien Lumière </Label>
-                        <Dropdown selection options={lightTechs} placeholder='Liste des Tech' />
-                        <Input  placeholder="Nombre d'heure" />
-                        <Input  placeholder='Cachet' />
-                        <Input  placeholder='Contact' />
-                        <Button inverted color='red' onClick={() => this.handleRemoveLight(indexLight)} type='submit' className='button' content="Supprimer" />
-                        </Form.Field>)})
-                    } */}
-          <hr></hr>
-
-          <Form.Field className="techInput">
-            <Label>Techniciens vidéo </Label>
-            <Dropdown
-              search
-              selection
-              options={techsFormatDropdown}
-              placeholder="Liste des Tech"
-            />
-            <Input placeholder="Nombre d'heure" />
-            <Input placeholder="Cachet" />
-            <Input placeholder="Contact" /> {/* info recuperer dans la bdd */}
-            <Button
-              onClick={(e) => console.log(e)}
-              type="submit"
-              className="button"
-              content="Ajouter un technicien vidéo"
-              secondary
-            />
-          </Form.Field>
-          {/* {
-                        videos.map((video, indexVideo)=>{
-                            return(
-                        <Form.Field key={indexVideo} className='techInput'>
-                        <Label >Technicien vidéo </Label>
-                        <Dropdown selection options={videoTechs} placeholder='Liste des Tech' />
-                        <Input  placeholder="Nombre d'heure" />
-                        <Input  placeholder='Cachet' />
-                        <Input  placeholder='Contact' />
-                        <Button inverted color='red' onClick={() => this.handleRemoveVideo(indexVideo)} type='submit' className='button' content="Supprimer"  />
-                        </Form.Field>)})
-                    } */}
-
-          <div className="Submit-Phase">
-            <Button
-              type="submit"
-              className="button"
-              content="Créer la phase"
-              primary
-            />
-          </div>
+        <Button
+          type="submit"
+          content="Créer la phase"
+          primary
+        />
         </Form>
     );
 }
