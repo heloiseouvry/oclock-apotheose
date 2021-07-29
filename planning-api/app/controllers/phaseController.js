@@ -6,7 +6,8 @@ const phaseController = {
   },
 
   addPhase: async (req, res) => {
-    const { title, start_date, end_date, type, number_fee, event_id, user_id } = req.body;
+    const { title, start_date, end_date, type, number_fee, event_id } = req.body;
+    const user_id = req.body.user_id ? req.body.user_id : req.user.userID;
     const newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
     try {
       await newPhase.save();

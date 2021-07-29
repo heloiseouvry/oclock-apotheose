@@ -12,11 +12,38 @@ const base_url = `http://${host}:${port}/${router}`;
 function AddTech () {
 
   const [error, setError] = useState("");
-  const [addTechForm, setAddTech] = useState({ lastname: "", firstname: "", phone_number: "", role: "", email: "", password: "", status: "", birth_date: "", birth_city: "", birth_department: "", ssn: "", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "", emergency_phone_number: "", comments:""});
+  const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980/11/29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
+  const [addJob, setAddJob] = useState({});
+  const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
 
-  const handleSubmit = async (event) => {};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      });
+      addTechForm.address_id = addressResponse.data.id;
+      console.log(addTechForm);
+      const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      });
+      const user_id = userResponse.data.id;
+      const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, addJob,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      })
 
-  const [radioButton, setButton] = useState({intermittentDisable:false, prestataireDisable:false})
+      console.log(userHasJobResponse)
+      
+    } catch (error) {
+    console.error(error);
+    setError("Les informations sont incorrectes !");
+    }
+  };
+  
+  const [interChecked, setInterChecked] = useState(true)
+  const [prestaChecked, setPrestaChecked] = useState(false)
+  
+  
 
     return(
         <div className='CreateTech'>
@@ -41,12 +68,16 @@ function AddTech () {
                   <input id="email" type='email' value={addTechForm.email} onChange={(event) => setAddTech({ ...addTechForm, email: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
+                  <label htmlFor="password">Mot de passe</label>
+                  <input id="password" type='text' value={addTechForm.password} onChange={(event) => setAddTech({ ...addTechForm, password: event.target.value })}/>               
+                </Form.Field>
+                <Form.Field required>
                   <label htmlFor="ssn">N° de sécurité sociale</label>
                   <input id="ssn" type='text' value={addTechForm.ssn} onChange={(event) => setAddTech({ ...addTechForm, ssn: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="role">Rôle</label>
-                  <input id="role" type='text' value={addTechForm.role} onChange={(event) => setAddTech({ ...addTechForm, role: event.target.value })}/>               
+                  <input id="role" type='text' value={addTechForm.role} disabled onChange={(event) => setAddTech({ ...addTechForm, role: event.target.value })}/>               
                 </Form.Field>
               </Form.Group>
 
@@ -77,38 +108,47 @@ function AddTech () {
               <Form.Group >
                 <Form.Field required>
                   <label htmlFor="main">Adresse principale</label>
-                  <input id="main" type='text' value={addTechForm.main} onChange={(event) => setAddTech({ ...addTechForm, main: event.target.value })}/>               
+                  <input id="main" type='text' value={addAddress.main} onChange={(event) => setAddAddress({ ...addAddress, main: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field >
                   <label htmlFor="additional">Complément d'adresse</label>
-                  <input id="additional" type='text' value={addTechForm.additional} onChange={(event) => setAddTech({ ...addTechForm, additional: event.target.value })}/>               
+                  <input id="additional" type='text' value={addAddress.additional} onChange={(event) => setAddAddress({ ...addAddress, additional: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="zip_code">Code postal</label>
-                  <input id="zip_code" type='text' value={addTechForm.zip_code} onChange={(event) => setAddTech({ ...addTechForm, zip_code: event.target.value })}/>               
+                  <input id="zip_code" type='text' value={addAddress.zip_code} onChange={(event) => setAddAddress({ ...addAddress, zip_code: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="city">Ville</label>
-                  <input id="city" type='text' value={addTechForm.city} onChange={(event) => setAddTech({ ...addTechForm, city: event.target.value })}/>               
+                  <input id="city" type='text' value={addAddress.city} onChange={(event) => setAddAddress({ ...addAddress, city: event.target.value })}/>               
                 </Form.Field>
               </Form.Group>
 
-              <Form.Group inline>
+              <Form.Group >
                 <label><h3>Le statut :</h3></label>
                   <Form.Field>
                     <Radio
-                    id='intermittent' name='radioGroup' label= 'Intermittent' value={addTechForm.status} onChange={(event) => {
-                      setAddTech({ ...addTechForm, status: event.target.value });
-                      
-                      setButton(radioButton.intermittentDisable=false, radioButton.prestataireDisable=true);
+                    id='intermittent' name='radioGroup' label= 'Intermittent' checked ={interChecked} onChange={(event) => {
+                      setAddTech({ ...addTechForm, status: event.target.id });
+                      console.log(event.target.checked);
+                      // setSwitchStatus({intermittent:true, prestataire:false});
+                      // isChecked();
+                      setInterChecked(true);
+                      setPrestaChecked(false);
+                      // console.log(interChecked,prestaChecked);
+                      // setIsIntermittent();
                     }}  />
                   </Form.Field>
                   <Form.Field>
                     <Radio
-                    id='prestataire' name='radioGroup' label='Prestataire' value={addTechForm.status} onChange={(event) => {
-                      setAddTech({ ...addTechForm, status: event.target.value });
-                      
-                      setButton(radioButton.intermittentDisable=true, radioButton.prestataireDisable=false);
+                    id='prestataire' name='radioGroup' label='Prestataire' checked={prestaChecked}  onChange={(event) => {
+                      setAddTech({ ...addTechForm, status: event.target.id });
+                      console.log(event.target);
+                      // setSwitchStatus({intermittent:false, prestataire:true});
+                      //isChecked();
+                      setInterChecked(false);
+                      setPrestaChecked(true);
+                     // setIsIntermittent();
                     }}  />
                   </Form.Field>
               </Form.Group>
@@ -116,19 +156,27 @@ function AddTech () {
               <Form.Group>
                 <Form.Field name='prestataire'>
                   <label htmlFor="legal_entity">Raison social</label>
-                  <input id="legal_entity" type='text' disabled={radioButton.prestataireDisable} value={addTechForm.legal_entity}  onChange={(event) => setAddTech({ ...addTechForm, legal_entity: event.target.value })} />               
+                  <input id="legal_entity" type='text' disabled={interChecked} value={addTechForm.legal_entity}  onChange={(event) => setAddTech({ ...addTechForm, legal_entity: event.target.value })} />               
                   
                 </Form.Field>
                 <Form.Field name='prestataire'>
                   <label htmlFor="siret">N° de siret</label>
-                  <input id="siret" type='text' value={addTechForm.siret} disabled={radioButton.prestataireDisable} onChange={(event) => setAddTech({ ...addTechForm, siret: event.target.value })} />               
+                  <input id="siret" type='text' value={addTechForm.siret} disabled={interChecked} onChange={(event) => setAddTech({ ...addTechForm, siret: event.target.value })} />               
                 </Form.Field>
                 <Form.Field name='intermittent'>
                   <label htmlFor="intermittent_registration">N° Congé Spectacle</label>
-                  <input id="intermittent_registration" type='text' value={addTechForm.intermittent_registration} disabled={radioButton.intermittentDisable} onChange={(event) => setAddTech({ ...addTechForm, intermittent_registration: event.target.value })}/>               
+                  <input id="intermittent_registration" type='text' value={addTechForm.intermittent_registration} disabled={prestaChecked} onChange={(event) => setAddTech({ ...addTechForm, intermittent_registration: event.target.value })}/>               
                 </Form.Field>
               </Form.Group>
-                    
+              <Form.Group inline>
+                <label><h3>Métier :</h3></label>
+                  <Form.Field>
+                  <Checkbox label='Son' value='1' onChange={(event)=>setAddJob(event.target.value)} />
+                  <Checkbox label='Lumière' value='2' onChange={(event)=>setAddJob(event.target.value)} />
+                  <Checkbox label='Vidéo' value='3' onChange={(event)=>setAddJob(event.target.value)} />
+                  <Checkbox label='Autre' value='4' onChange={(event)=>setAddJob(event.target.value)} />
+                  </Form.Field>
+              </Form.Group>
               <Form.Group >
                 <Form.Field>
                   <label>Commentaires / Remarques</label>
