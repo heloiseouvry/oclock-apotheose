@@ -9,7 +9,7 @@ import axios from "axios";
 import ConnectedHeader from "../ConnectedHeader";
 import Form from "../Form";
 import EventForm from "../EventForm";
-import PhaseForm from "../PhaseForm"
+import PhaseForm from "../PhaseForm";
 import data from "../../data/data.js";
 
 // import Calendar from '@toast-ui/react-calendar';
@@ -69,7 +69,7 @@ const MyCalendar = () => {
     start_time: new Date(),
     end_time: new Date(),
     color: "#ffffff",
-    bgColor: '#000000',
+    bgColor: "#000000",
     raw: {
       type: "",
       address: {
@@ -95,7 +95,7 @@ const MyCalendar = () => {
     start_time: new Date(),
     end_time: new Date(),
     color: "#ffffff",
-    bgColor: '#000000',
+    bgColor: "#000000",
     raw: {
       type: "",
       address: {
@@ -106,7 +106,7 @@ const MyCalendar = () => {
         city: "",
       },
       tech_manager_contact: "",
-      provider_contact:""
+      provider_contact: "",
     },
   });
 
@@ -148,10 +148,25 @@ const MyCalendar = () => {
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
-          // console.log("phaseBack", phaseBack);
+          console.log("phaseBack", phaseBack);
+          const techInfoResponse = await axios.get(
+            `${base_url}/phases/${phaseBack.id}/techsinfo`,
+            {
+              headers: {
+                Authorization: `bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          let attendees = [];
+          if(techInfoResponse.data){
+            for (const tech of techInfoResponse.data) {
+              attendees.push(`${tech.firstname} ${tech.lastname[0]}. (${tech.phone_number})`);
+            }
+          }
+
           const start_date = new Date(phaseBack.start_date);
           const end_date = new Date(phaseBack.end_date);
-          let category,
+          let category, location,
             isAllDay = null;
           if (phaseBack.type === "event") {
             category = "allday";
@@ -159,13 +174,17 @@ const MyCalendar = () => {
           } else {
             category = "time";
             isAllDay = false;
+            location = phaseBack.internal_location
           }
+
           let phaseFront = {
             id: phaseBack.id.toString(),
             calendarId: phaseBack.event_id.toString(),
+            attendees,
             category: category,
             isVisible: true,
             isAllDay,
+            location,
             title: phaseBack.title,
             body: phaseBack.comments,
             start: start_date,
@@ -181,10 +200,9 @@ const MyCalendar = () => {
               },
             },
             color: "#ffffff",
-            bgColor: phaseBack.color
+            bgColor: phaseBack.color,
           };
-          // console.log("phaseFront", phaseFront);
-          // console.log("phaseFront address", phaseFront["raw"]["address"]);
+          console.log("phaseFront", phaseFront);
 
           phasesToAdd.push(phaseFront);
         }
@@ -251,7 +269,7 @@ const MyCalendar = () => {
   }
 
   function toggleEvent(e, button) {
-    if(e.target.dataset.visible){
+    if (e.target.dataset.visible) {
       cal.current.calendarInst.toggleSchedules(button.content, true);
       e.target.dataset.visible = false;
     } else {
@@ -302,8 +320,14 @@ const MyCalendar = () => {
 
     const { schedule, changes } = event;
     setEventEdit(true);
-    if(changes){
+    setPhaseEdit(true);
+    if (changes) {
       setEventInfo({
+        ...schedule,
+        start_date: changes.start.toDate(),
+        end_date: changes.end.toDate(),
+      });
+      setPhaseInfo({
         ...schedule,
         start_date: changes.start.toDate(),
         end_date: changes.end.toDate(),
@@ -314,13 +338,13 @@ const MyCalendar = () => {
         start_date: schedule.start.toDate(),
         end_date: schedule.end.toDate(),
       });
+      setPhaseInfo({
+        ...schedule,
+        start_date: schedule.start.toDate(),
+        end_date: schedule.end.toDate(),
+      });
     }
-    openEventModal();
-    // console.log("eventInfo", eventInfo);
-
-    //TODO décaler ce qu'il y a en dessous dans le onSubmit
-    //il va falloir détecter si je suis en train de modifier ou de créer
-    // rappel : si editingPhase est null alors je crée, si editingPhase contient des données alors je suis en train de modifier
+    schedule.raw.type === "event" ? openEventModal() : openPhaseModal();
   }, []);
 
   function getFormattedTime(time) {
@@ -355,93 +379,6 @@ const MyCalendar = () => {
 
     return html.join("");
   }
-
-  // const onSubmitCreate = (eventFromForm) => {
-  //   var schedule = {
-  //     id: String(Math.random()),
-  //     title: eventFromForm.target.name.value,
-  //     isAllDay: false,
-  //     // les 2 lignes d'après sont attribuées dans onCreateSchedule
-  //     //TODO à récupérer depuis le event.target
-  //     start: modalStartDate,
-  //     end: modalEndDate,
-  //     category: "time",
-  //     // Dans l'objet raw je place les données qui ne sont pas prévues par la librairie et que je vais rendre via le template
-  //     // Exemple : salaire, véhicule
-  //     raw: {
-  //       techID: parseInt(eventFromForm.target.techName.value, 10),
-  //     },
-  //     calendarId: "1",
-  //     // Schedule.body is basic text, not possible to put anything but string
-  //     body: "test",
-  //   };
-  //   /* step2. save schedule */
-  //   // @ts-ignore: Object is possibly 'null'.
-
-  //   // TODO ici je dois prévoir d'envoyer le schedule à sauvegarder en BDD
-  //   //potientiellement ajax.post
-  //   //avec une fausse ID
-  //   //auquel je passe une callback avec ce qu'il y a à executer en cas de retour valide j'execute le createschedule (ligne juste en dessous) qui comportera tous l'objet schedule definitif avec l'ID généré par le back
-  //   cal.current.calendarInst.createSchedules([schedule]);
-  // };
-
-  // const onSubmitUpdate = (eventFromForm) => {
-  //   console.log(
-  //     "eventFromForm.target.IDHidden.value",
-  //     parseFloat(eventFromForm.target.IDHidden.value)
-  //   );
-  //   console.log(
-  //     "eventFromForm.target.calendarIdHidden.value",
-  //     eventFromForm.target.calendarIdHidden.value
-  //   );
-  //   console.log(
-  //     "eventFromForm.target.name.value",
-  //     eventFromForm.target.name.value
-  //   );
-  //   console.log(
-  //     "eventFromForm.target.techName.value",
-  //     eventFromForm.target.techName.value
-  //   );
-
-  //   // TODO check informations I send
-  //   cal.current.calendarInst.updateSchedule(
-  //     parseFloat(eventFromForm.target.IDHidden.value),
-  //     parseInt(eventFromForm.target.calendarIdHidden.value, 10),
-  //     {
-  //       title: eventFromForm.target.name.value,
-  //       raw: {
-  //         techID: parseInt(eventFromForm.target.techName.value, 10),
-  //       },
-  //     }
-  //   );
-  // };
-
-  // const onSubmitEvent = useCallback((event) => {
-  //   event.preventDefault(event);
-  //   // ici avec event.target.techName.value je récupère l'ID de mon tech depuis le select du Form.js
-  //   console.log(
-  //     "je suis event.target.techName.value",
-  //     event.target.techName.value
-  //   );
-  //   console.log("je suis modalStartDate", modalStartDate);
-  //   console.log("je suis modalEndDate", modalEndDate);
-
-  //   //TODO faure le test pour appeler le bon onSubmit
-
-  //   console.log(
-  //     "event.target.createHidden.value",
-  //     event.target.createHidden.value
-  //   );
-  //   if (event.target.createHidden.value == "false") {
-  //     console.log("uptdate");
-  //     onSubmitUpdate(event);
-  //   } else {
-  //     console.log("create");
-  //     onSubmitCreate(event);
-  //   }
-  //   setEditingPhase(null);
-  //   closeChoiceModal();
-  // }, []);
 
   // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
   const templates = {
@@ -491,28 +428,53 @@ const MyCalendar = () => {
           {eventEdit ? "Modifier un événement" : "Créer un événement"}
         </Modal.Header>
         <Modal.Content>
-          <EventForm eventInfo={eventInfo} eventEdit={eventEdit} setEventEdit={setEventEdit} closeEventModal={closeEventModal} />
+          <EventForm
+            eventInfo={eventInfo}
+            eventEdit={eventEdit}
+            setEventEdit={setEventEdit}
+            closeEventModal={closeEventModal}
+          />
         </Modal.Content>
       </Modal>
 
-      <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen} size='large'>
+      <Modal
+        onClose={closePhaseModal}
+        onOpen={openPhaseModal}
+        open={phaseOpen}
+        size="large"
+      >
         <Modal.Header>
           {phaseEdit ? "Modifier une phase" : "Créer une phase"}
         </Modal.Header>
         <Modal.Content>
-          <PhaseForm events={events} phaseInfo={phaseInfo} phaseEdit={phaseEdit} setPhaseEdit={setPhaseEdit} closePhaseModal={closePhaseModal} />
+          <PhaseForm
+            events={events}
+            phaseInfo={phaseInfo}
+            phaseEdit={phaseEdit}
+            setPhaseEdit={setPhaseEdit}
+            closePhaseModal={closePhaseModal}
+          />
         </Modal.Content>
       </Modal>
 
-      <Button size='mini' content="<" secondary onClick={prevView} />
-      <Button size='mini' content="Jour" secondary onClick={dayView} />
-      <Button size='mini' content="Semaine" secondary onClick={weekView} />
-      <Button size='mini' content="Mois" secondary onClick={monthView} />
-      <Button size='mini' content=">" secondary onClick={nextView} />
-      <Button size='mini' content="Aujourd'hui" secondary onClick={todayView} />
-      
-      {events.map((e) => <Button key={e.id} size='mini' content={e.id} circular data-visible={true} onClick={toggleEvent} />)}
-      
+      <Button size="mini" content="<" secondary onClick={prevView} />
+      <Button size="mini" content="Jour" secondary onClick={dayView} />
+      <Button size="mini" content="Semaine" secondary onClick={weekView} />
+      <Button size="mini" content="Mois" secondary onClick={monthView} />
+      <Button size="mini" content=">" secondary onClick={nextView} />
+      <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
+
+      {events.map((e) => (
+        <Button
+          key={e.id}
+          size="mini"
+          content={e.id}
+          circular
+          data-visible={true}
+          onClick={toggleEvent}
+        />
+      ))}
+
       <TUICalendar
         ref={cal}
         height="600px"

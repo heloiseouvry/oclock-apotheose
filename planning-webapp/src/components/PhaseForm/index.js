@@ -188,23 +188,16 @@ function PhaseForm({
         const phaseResponse = await axios.post(`${base_url}/phases`, phaseBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
-        console.log("phaseResponse", phaseResponse);
-
         for (const type in techsSelected) {
           console.log("type", type);
           const techsByType = techsSelected[type];
-          // console.log("techsByType", techsByType);
           for (const tech of techsByType) {
-            console.log("tech", tech);
-            console.log("tech salary", salaryForm[tech.id]);
             let salaryBody = {tech_id: tech.id, salary: salaryForm[tech.id]}
             await axios.post(`${base_url}/phases/${phaseResponse.data.id}/assign`, salaryBody, {
               headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
             });
           }
-
         }
-        
       }
       closePhaseModal();
     } catch (error) {
