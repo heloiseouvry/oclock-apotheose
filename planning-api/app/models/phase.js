@@ -34,6 +34,18 @@ class Phase extends CoreModel{
         return data.map(d => new Phase(d));
     }
 
+    static async findAllWithUsersAndSalary() {
+        const data = await CoreModel.fetch(`SELECT p.*, p.id, e.title AS event_title, e.start_date AS event_start_date, e.end_date AS event_end_date, e.address_id, e.color, 
+        a.main, a.additional, a.zip_code, a.city,
+        array_agg(phu.user_id) AS techs, array_agg(phu.salary) AS salary
+        FROM phase AS p 
+        JOIN event AS e ON e.id = p.event_id 
+        JOIN address AS a ON a.id = e.address_id
+        JOIN phase_has_user AS phu ON phu.phase_id = p.id
+        GROUP BY p.id, e.title, e.start_date, e.end_date, e.address_id, e.color, a.main, a.additional, a.zip_code, a.city;`);
+        return data.map(d => new Phase(d));
+    }
+
     /**
      * Fetches a single phase from the database
      * @param {Number} id 
@@ -104,6 +116,26 @@ class Phase extends CoreModel{
                 values: [id, this.id, salary]
             };
             await db.query(preparedQuery);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
+
+    async getTechsInfo(){
+        try {
+            const preparedQuery = {
+                text: `SELECT phase_has_user.salary, "user".id, "user".lastname, "user".firstname, "user".phone_number from phase_has_user
+                JOIN "user" ON phase_has_user.user_id = "user".id
+                WHERE phase_has_user.phase_id = $1;`,
+                values: [this.id]
+            };
+            const data = await db.query(preparedQuery);
+            if (data.rows.length === 0) {
+                return null;
+            } else {
+                return data.rows.map(d => new Phase(d));
+            }
         } catch (error) {
             console.error(error);
             throw new Error(error.detail);

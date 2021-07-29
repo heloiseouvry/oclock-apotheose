@@ -114,9 +114,12 @@ function PhaseForm({
   ).slice(-2)}`;
 
   const [error, setError] = useState("");
-  const [soundTechsSelected, setSoundTechsSelected] = useState([]);
-  const [lightTechsSelected, setLightTechsSelected] = useState([]);
-  const [videoTechsSelected, setVideoTechsSelected] = useState([]);
+  const [techsSelected, setTechsSelected] = useState({
+    sound: [],
+    light: [],
+    video: [],
+    other: [],
+  });
   const [soundTechsFormatDropdown, setSoundTechsFormatDropdown] = useState(
     soundUsersFormatDropdown
   );
@@ -148,12 +151,17 @@ function PhaseForm({
     event.preventDefault();
     console.log("phaseForm", phaseForm);
     console.log("salaryForm", salaryForm);
+    console.log("techsSelected", techsSelected);
 
     try {
-      const startParsedDate = new Date(Date.parse(`${phaseForm.start_date}T${phaseForm.start_time}:00`));
-      const endParsedDate = new Date(Date.parse(`${phaseForm.end_date}T${phaseForm.end_time}:00`));
-      
-      const phaseBody = {...phaseForm};
+      const startParsedDate = new Date(
+        Date.parse(`${phaseForm.start_date}T${phaseForm.start_time}:00`)
+      );
+      const endParsedDate = new Date(
+        Date.parse(`${phaseForm.end_date}T${phaseForm.end_time}:00`)
+      );
+
+      const phaseBody = { ...phaseForm };
       phaseBody.start_date = startParsedDate;
       phaseBody.end_date = endParsedDate;
       phaseBody.type = phaseForm.raw.type;
@@ -165,8 +173,8 @@ function PhaseForm({
       phaseBody.event_id = phaseForm.calendarId;
 
       console.log("phaseBody", phaseBody);
-      if(phaseEdit){
-        // const phaseBody = {...phaseBody, 
+      if (phaseEdit) {
+        // const phaseBody = {...phaseBody,
         //   event_id: eventResponse.data.event_id,
         //   type: 'event',
         //   number_fee: '0',
@@ -177,10 +185,19 @@ function PhaseForm({
         // });
         setPhaseEdit(false);
       } else {
-        const response = await axios.post(`${base_url}/phases`, phaseBody, {
+        const phaseResponse = await axios.post(`${base_url}/phases`, phaseBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
-        console.log("response", response);
+        for (const type in techsSelected) {
+          console.log("type", type);
+          const techsByType = techsSelected[type];
+          for (const tech of techsByType) {
+            let salaryBody = {tech_id: tech.id, salary: salaryForm[tech.id]}
+            await axios.post(`${base_url}/phases/${phaseResponse.data.id}/assign`, salaryBody, {
+              headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+            });
+          }
+        }
       }
       closePhaseModal();
     } catch (error) {
@@ -211,7 +228,7 @@ function PhaseForm({
           options={phaseTypes}
           // defaultValue={1}
           value={phaseForm.raw.type}
-          onChange={(_,data) =>
+          onChange={(_, data) =>
             setPhaseForm({
               ...phaseForm,
               raw: { ...phaseForm.raw, type: data.value },
@@ -312,7 +329,10 @@ function PhaseForm({
             onChange={(event) =>
               setPhaseForm({
                 ...phaseForm,
-                raw: { ...phaseForm.raw, tech_manager_contact: event.target.value },
+                raw: {
+                  ...phaseForm.raw,
+                  tech_manager_contact: event.target.value,
+                },
               })
             }
           />
@@ -336,26 +356,32 @@ function PhaseForm({
 
       <Form.Group>
         <PhaseFormTechField
-          type={"son"}
+          key="1"
+          type={"sound"}
+          typeFR={"son"}
           options={soundTechsFormatDropdown}
-          techsSelected={soundTechsSelected}
-          setTechsSelected={setSoundTechsSelected}
+          techsSelected={techsSelected}
+          setTechsSelected={setTechsSelected}
         />
         <PhaseFormTechField
-          type={"lumière"}
+          key="2"
+          type={"light"}
+          typeFR={"lumière"}
           options={lightTechsFormatDropdown}
-          techsSelected={lightTechsSelected}
-          setTechsSelected={setLightTechsSelected}
+          techsSelected={techsSelected}
+          setTechsSelected={setTechsSelected}
         />
         <PhaseFormTechField
-          type={"vidéo"}
+          key="3"
+          type={"video"}
+          typeFR={"vidéo"}
           options={videoTechsFormatDropdown}
-          techsSelected={videoTechsSelected}
-          setTechsSelected={setVideoTechsSelected}
+          techsSelected={techsSelected}
+          setTechsSelected={setTechsSelected}
         />
       </Form.Group>
       <Form.Group>
-        {soundTechsSelected.map((tech, index) => (
+        {techsSelected.sound?.map((tech, index) => (
           <Form.Input
             key={index}
             type="number"
@@ -364,11 +390,11 @@ function PhaseForm({
             step="10"
             value={salaryForm[tech.id] ? salaryForm[tech.id] : 0}
             onChange={(event) =>
-              setSalaryForm({...salaryForm, [tech.id]: event.target.value})
+              setSalaryForm({ ...salaryForm, [tech.id]: event.target.value })
             }
           />
         ))}
-        {lightTechsSelected.map((tech, index) => (
+        {techsSelected.light?.map((tech, index) => (
           <Form.Input
             key={index}
             type="number"
@@ -377,20 +403,20 @@ function PhaseForm({
             step="10"
             value={salaryForm[tech.id] ? salaryForm[tech.id] : 0}
             onChange={(event) =>
-              setSalaryForm({...salaryForm, [tech.id]: event.target.value})
+              setSalaryForm({ ...salaryForm, [tech.id]: event.target.value })
             }
           />
         ))}
-        {videoTechsSelected.map((tech, index) => (
+        {techsSelected.video?.map((tech, index) => (
           <Form.Input
             key={index}
             type="number"
             placeholder={`Salaire ${tech.name.split("(")[0]}`}
             min="0"
             step="10"
-            value={100}
+            value={salaryForm[tech.id] ? salaryForm[tech.id] : 0}
             onChange={(event) =>
-              setSalaryForm({...salaryForm, [tech.id]: event.target.value})
+              setSalaryForm({ ...salaryForm, [tech.id]: event.target.value })
             }
           />
         ))}

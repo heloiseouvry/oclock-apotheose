@@ -60,6 +60,7 @@ router.delete('/events/:id(\\d+)', eventController.deleteEvent);
  * @returns {Array<Phase>} 200 - An array of phases
  */
 router.get('/phases', phaseController.getAllPhases);
+router.get('/phaseswithusersandsalary', phaseController.getAllPhasesWithUsersAndSalary);
 
 /**
  * Expected json object in request body
@@ -88,6 +89,7 @@ router.get('/phases', phaseController.getAllPhases);
  */
 router.post('/phases', phaseController.addPhase);
 router.post('/phases/:id(\\d+)/assign', phaseController.assignTech);
+router.get('/phases/:id(\\d+)/techsinfo', phaseController.techsInfo);
 
 /**
  * Responds with one event from database
