@@ -9,6 +9,7 @@ import axios from "axios";
 import ConnectedHeader from "../ConnectedHeader";
 import Form from "../Form";
 import EventForm from "../EventForm";
+import PhaseForm from "../PhaseForm"
 import data from "../../data/data.js";
 
 // import Calendar from '@toast-ui/react-calendar';
@@ -20,7 +21,7 @@ import "tui-time-picker/dist/tui-time-picker.css";
 
 const host = "localhost";
 const port = "4000";
-const router = "v1";
+const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
 const myTheme = {
@@ -221,6 +222,16 @@ const MyCalendar = () => {
     cal.current.calendarInst.next();
   }
 
+  function toggleEvent(e, button) {
+    if(e.target.dataset.visible){
+      cal.current.calendarInst.toggleSchedules(button.content, true);
+      e.target.dataset.visible = false;
+    } else {
+      cal.current.calendarInst.toggleSchedules(button.content, false);
+      e.target.dataset.visible = true;
+    }
+  }
+
   const onClickSchedule = useCallback((e) => {
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
@@ -281,8 +292,8 @@ const MyCalendar = () => {
 
   function getFormattedTime(time) {
     const date = new Date(time);
-    const h = date.getHours();
-    const m = date.getMinutes();
+    const h = ("0" + date.getHours()).slice(-2);
+    const m = ("0" + date.getMinutes()).slice(-2);
 
     return `${h}:${m}`;
   }
@@ -447,30 +458,26 @@ const MyCalendar = () => {
           {eventEdit ? "Modifier un événement" : "Créer un événement"}
         </Modal.Header>
         <Modal.Content>
-          {/* <EventForm startTime={startTime} endTime={endTime} closeEventModal={closeEventModal} /> */}
           <EventForm eventInfo={eventInfo} eventEdit={eventEdit} setEventEdit={setEventEdit} closeEventModal={closeEventModal} />
         </Modal.Content>
-        {/* <Modal.Actions>
-          <Button icon="check" onClick={onSubmitEvent} />
-          <Button icon="close" closeEventModal={closeEventModal} />
-        </Modal.Actions> */}
       </Modal>
 
       <Modal onClose={closePhaseModal} onOpen={openPhaseModal} open={phaseOpen}>
         <Modal.Header>Créer une phase</Modal.Header>
-        {/* <Modal.Actions>
-          <Button icon="check" onClick={onSubmitEvent} /> //TODO : onSubmitPhase
-          <Button icon="close" onClick={closePhaseModal} />
-        </Modal.Actions> */}
+        <Modal.Content>
+          <PhaseForm />
+        </Modal.Content>
       </Modal>
 
-      <Button content="<" secondary onClick={prevView} />
-      <Button content="Jour" secondary onClick={dayView} />
-      <Button content="Semaine" secondary onClick={weekView} />
-      <Button content="Mois" secondary onClick={monthView} />
-      <Button content=">" secondary onClick={nextView} />
-      <Button content="Aujourd'hui" secondary onClick={todayView} />
-
+      <Button size='mini' content="<" secondary onClick={prevView} />
+      <Button size='mini' content="Jour" secondary onClick={dayView} />
+      <Button size='mini' content="Semaine" secondary onClick={weekView} />
+      <Button size='mini' content="Mois" secondary onClick={monthView} />
+      <Button size='mini' content=">" secondary onClick={nextView} />
+      <Button size='mini' content="Aujourd'hui" secondary onClick={todayView} />
+      
+      {events.map((e) => <Button key={e.id} size='mini' content={e.id} circular data-visible={true} onClick={toggleEvent} />)}
+      
       <TUICalendar
         ref={cal}
         height="600px"

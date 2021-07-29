@@ -8,26 +8,31 @@ const { validateBody } = require('./middlewares/validator');
 
 router.get('/events', eventController.getAllEvents);
 router.post('/events', eventController.addEvent);
-router.get('/events/:id', eventController.getOneEvent);
-router.patch('/events/:id', eventController.editEvent);
-router.delete('/events/:id', eventController.deleteEvent);
+router.get('/events/:id(\\d+)', eventController.getOneEvent);
+router.patch('/events/:id(\\d+)', eventController.editEvent);
+router.delete('/events/:id(\\d+)', eventController.deleteEvent);
 
 router.get('/phases', phaseController.getAllPhases);
 router.post('/phases', phaseController.addPhase);
-router.get('/phases/:id', phaseController.getOnePhase);
-router.patch('/phases/:id', phaseController.editPhase);
-router.delete('/phases/:id', phaseController.deletePhase);
+router.get('/phases/:id(\\d+)', phaseController.getOnePhase);
+router.patch('/phases/:id(\\d+)', phaseController.editPhase);
+router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
 
 router.get('/users', userController.getAllUsers);
 router.post('/users', validateBody(userSchema), userController.addUser);
-router.get('/users/:id', userController.getOneUser);
-router.patch('/users/:id', userController.editUser);
-router.delete('/users/:id', userController.deleteUser);
+router.get('/users/:id(\\d+)', userController.getOneUser);
+router.patch('/users/:id(\\d+)', userController.editUser);
+router.delete('/users/:id(\\d+)', userController.deleteUser);
 
 router.get('/address', addressController.getAllAddresses);
 router.post('/address', addressController.addAddress);
-router.get('/address/:id', addressController.getAddressById);
-router.patch('/address/:id', addressController.editAddress);
-router.delete('/address/:id', addressController.deleteAddress);
+router.get('/address/:id(\\d+)', addressController.getAddressById);
+router.patch('/address/:id(\\d+)', addressController.editAddress);
+router.delete('/address/:id(\\d+)', addressController.deleteAddress);
+
+router.get('/users/planning', userController.getUserPlanning);
+router.get('/users/:type', userController.getUsersByType);
+router.get('/available_users', userController.getAvailableUsers);
+router.get('/available_users/:type', userController.getAvailableUsersByType);
 
 module.exports = router;
