@@ -15,15 +15,15 @@ import "./styles.scss";
 
 function PhaseFormTechField({
   type,
+  typeFR,
   options,
   techsSelected,
   setTechsSelected,
 }) {
-  const [tech, setTech] = useState("");
 
   return (
     <Form.Field>
-      <Label>Technicien {type}</Label>
+      <Label>Technicien {typeFR}</Label>
       <Dropdown
         multiple
         search
@@ -39,7 +39,9 @@ function PhaseFormTechField({
               name: techFound.text,
             });
           }
-          setTechsSelected(techsSelection);
+          let newTechsSelected = JSON.parse(JSON.stringify(techsSelected));
+          newTechsSelected[type] = techsSelection;
+          setTechsSelected(newTechsSelected);
         }}
       />
     </Form.Field>

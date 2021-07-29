@@ -14,6 +14,7 @@ router.delete('/events/:id(\\d+)', eventController.deleteEvent);
 
 router.get('/phases', phaseController.getAllPhases);
 router.post('/phases', phaseController.addPhase);
+router.post('/phases/:id(\\d+)/assign', phaseController.assignTech);
 router.get('/phases/:id(\\d+)', phaseController.getOnePhase);
 router.patch('/phases/:id(\\d+)', phaseController.editPhase);
 router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
