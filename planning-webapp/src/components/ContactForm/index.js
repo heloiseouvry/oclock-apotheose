@@ -1,14 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Checkbox } from "semantic-ui-react";
-//import EmailJS
-import emailjs from 'emailjs-com';
-
+import emailjs from "emailjs-com";
 
 import "./styles.scss";
-  
-const ContactForm = () =>{ 
+
+const ContactForm = () => {
+  const history = useHistory();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -19,9 +18,8 @@ const ContactForm = () =>{
       e.target,
       "user_G9TPGoLJfduwUzmSUTmvP"
     );
-
-    }
-  
+    history.push("/homepage");
+  }
 
   return (
     <div className="LoginForm">
@@ -72,19 +70,10 @@ const ContactForm = () =>{
           placeholder="Laissez un commentaire (500 charactère maximum)"
           maxLength="2000"
         />
-        <Link to="/homepage">
         <div className="connect">
-          <Button
-            type="submit"
-            className="button"
-            content="Envoyer"
-            primary
-          />
+          <Button type="submit" className="button" content="Envoyer" primary />
         </div>
-        </Link>
       </form>
-
-      
 
       <div className="demo">
         <p>Vous avez déjà un compte? Connectez-vous!</p>
@@ -94,6 +83,6 @@ const ContactForm = () =>{
       </div>
     </div>
   );
-}
+};
 
 export default ContactForm;
