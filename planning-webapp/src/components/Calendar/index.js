@@ -396,18 +396,6 @@ const MyCalendar = () => {
       // console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
       ret += "<ul>";
-
-      //Sert à afficher les prénom et le nom du technicien sélectionné dans le form de la modal
-      var techFound = data.find((elementTech) => {
-        // console.log("tech Find=", elementTech);
-        // console.log("elementTech.id=", elementTech.id);
-        // console.log("phaseDetails.raw.techID=", phaseDetails.raw?.techID);
-        return elementTech.id === phaseDetails.raw?.techID;
-      });
-      // console.log("techFound=", techFound);
-
-      ret += "<li>" + techFound?.prenom + " " + techFound?.nom + "</li>";
-
       ret += "</ul>";
       ret += "</div>";
       return ret;

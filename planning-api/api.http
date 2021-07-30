@@ -87,6 +87,16 @@ GET {{baseUrl}}/users
 
 GET {{baseUrl}}/usersjob
 
+### Get all users' salary
+
+GET {{baseUrl}}/userssalary
+Content-Type: application/json
+
+{
+  "start_date": "2021-07-20",
+  "end_date": "2021-07-25"
+}
+
 ### Get an user by his id
 
 GET {{baseUrl}}/users/15
