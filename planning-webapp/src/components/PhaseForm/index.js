@@ -82,15 +82,17 @@ function PhaseForm({
     video: [],
     other: [],
   };
+  let salaryAssigned = {};
   if (phaseInfo.raw.techInfo) {
     for (const info of phaseInfo.raw.techInfo) {
+      console.log("info", info);
       techsAssigned[info.type].push({
         id: info.id,
         name: `${info.firstname} ${info.lastname[0]}. (${info.phone_number})`,
       });
+      salaryAssigned[info.id] = info.salary;
     }
   }
-  console.log("techsAssigned", techsAssigned);
 
   const [error, setError] = useState("");
   const [techsSelected, setTechsSelected] = useState({
@@ -121,9 +123,11 @@ function PhaseForm({
     start_time,
     end_time,
   });
-  const [salaryForm, setSalaryForm] = useState({});
+  const [salaryForm, setSalaryForm] = useState(
+    phaseEdit ? salaryAssigned : {}
+    );
 
-  // console.log("phaseForm", phaseForm);
+  console.log("phaseForm", phaseForm);
   // console.log("techs", techs);
 
   const handleSubmit = async (event) => {
@@ -151,30 +155,30 @@ function PhaseForm({
       phaseBody.comments = phaseForm.body;
       phaseBody.event_id = phaseForm.calendarId;
 
-      console.log("phaseBody", phaseBody);
       if (phaseEdit) {
-        // const phaseBody = {...phaseBody,
-        //   event_id: eventResponse.data.event_id,
-        //   type: 'event',
-        //   number_fee: '0',
-        //   user_id: eventResponse.data.user_id
-        // };
-        // await axios.patch(`${base_url}/phases/${eventResponse.data.id}`, phaseBody, {
-        //   headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-        // });
+        const phaseResponse = await axios.patch(`${base_url}/phases/${phaseBody.id}`, phaseBody, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        await axios.delete(`${base_url}/phases/${phaseBody.id}/unassign`, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+        for (const type in techsSelected) {
+          const techsByType = techsSelected[type];
+          for (const tech of techsByType) {
+            let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
+            await axios.post(`${base_url}/phases/${phaseResponse.data.id}/assign`, salaryBody, {
+                headers: {
+                  Authorization: `bearer ${localStorage.getItem("token")}`,
+            }});
+          }
+        }
         setPhaseEdit(false);
       } else {
-        const phaseResponse = await axios.post(
-          `${base_url}/phases`,
-          phaseBody,
-          {
+        const phaseResponse = await axios.post(`${base_url}/phases`, phaseBody, {
             headers: {
               Authorization: `bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        }});
         for (const type in techsSelected) {
-          console.log("type", type);
           const techsByType = techsSelected[type];
           for (const tech of techsByType) {
             let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
@@ -316,7 +320,7 @@ function PhaseForm({
             id="tech_manager_contact"
             placeholder="ex: Chuck Norris 0658759564"
             name="tech_manager_contact"
-            value={phaseForm.tech_manager_contact}
+            value={phaseForm.raw.tech_manager_contact}
             onChange={(event) =>
               setPhaseForm({
                 ...phaseForm,
@@ -334,7 +338,7 @@ function PhaseForm({
             id="provider_contact"
             placeholder="ex: Barack Obama 0695741206"
             name="provider_contact"
-            value={phaseForm.provider_contact}
+            value={phaseForm.raw.provider_contact}
             onChange={(event) =>
               setPhaseForm({
                 ...phaseForm,
@@ -428,7 +432,7 @@ function PhaseForm({
         }
       />
 
-      <Button type="submit" content="Créer la phase" primary />
+      <Button type="submit" primary>{phaseEdit ? "Modifier la phase" : "Créer la phase"}</Button>
     </Form>
   );
 }

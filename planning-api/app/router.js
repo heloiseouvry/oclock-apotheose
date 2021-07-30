@@ -89,6 +89,7 @@ router.get('/phaseswithusersandsalary', phaseController.getAllPhasesWithUsersAnd
  */
 router.post('/phases', phaseController.addPhase);
 router.post('/phases/:id(\\d+)/assign', phaseController.assignTech);
+router.delete('/phases/:id(\\d+)/unassign', phaseController.deleteTechAssigned);
 router.get('/phases/:id(\\d+)/techsinfo', phaseController.techsInfo);
 
 /**

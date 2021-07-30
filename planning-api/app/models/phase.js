@@ -122,6 +122,19 @@ class Phase extends CoreModel{
         }
     }
 
+    async deleteTechAssigned(){
+        try {
+            const preparedQuery = {
+                text: 'DELETE FROM phase_has_user WHERE phase_id = $1;',
+                values: [this.id]
+            };
+            await db.query(preparedQuery);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
+
     async getTechsInfo(){
         try {
             const preparedQuery = {

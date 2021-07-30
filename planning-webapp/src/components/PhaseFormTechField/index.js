@@ -22,10 +22,6 @@ function PhaseFormTechField({
   setTechsSelected,
 }) {
 
-console.log("type", type);
-console.log("defaultValue", defaultValue);
-console.log("options", options);
-
   return (
     <Form.Field>
       <Label>Technicien {typeFR}</Label>
@@ -47,7 +43,7 @@ console.log("options", options);
           }
           let newTechsSelected = JSON.parse(JSON.stringify(techsSelected));
           newTechsSelected[type] = techsSelection;
-          console.log("newTechsSelected", newTechsSelected);
+          // console.log("newTechsSelected", newTechsSelected);
           setTechsSelected(newTechsSelected);
         }}
       />

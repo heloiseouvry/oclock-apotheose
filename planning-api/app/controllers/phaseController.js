@@ -57,10 +57,15 @@ const phaseController = {
 
   editPhase: async (req, res) => {
     try {
-      const { title, start_date, end_date, type, number_fee, event_id, user_id } = req.body;
-      const phaseToEdit = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+      const { title, start_date, end_date, type, number_fee, event_id, tech_manager_contact, provider_contact, internal_location, comments } = req.body;
+      const user_id = req.body.user_id ? req.body.user_id : req.user.userID;
+      let phaseToEdit;
+      if(type==="event"){
+        phaseToEdit = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+      } else {
+        phaseToEdit = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id, tech_manager_contact, provider_contact, internal_location, comments });
+      }
       phaseToEdit.id = parseInt(req.params.id);
-      console.log("dans le controller : ", phaseToEdit);
       await phaseToEdit.save();
       res.status(200).json(phaseToEdit);
     } catch (error) {
@@ -75,6 +80,16 @@ const phaseController = {
       
       phase.assignTech(tech_id, salary);
       res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  deleteTechAssigned: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      phase.deleteTechAssigned();
+      res.status(200).json({ message: "Phase - Suppression des assignements effectuée avec succès." });
     } catch (error) {
       res.status(500).json(error.message);
     }
