@@ -2,13 +2,12 @@ import React from "react";
 import { Link }   from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Checkbox } from "semantic-ui-react";
-//import EmailJS
-import emailjs from 'emailjs-com';
-
+import emailjs from "emailjs-com";
 
 import "./styles.scss";
-  
-const ContactForm = () =>{ 
+
+const ContactForm = () => {
+  const history = useHistory();
 
 
   function handleSubmit(e) {
@@ -75,17 +74,10 @@ const ContactForm = () =>{
         />
         
         <div className="connect">
-          <Button
-            type="submit"
-            className="button"
-            content="Envoyer"
-            primary
-          />
+          <Button type="submit" className="button" content="Envoyer" primary />
         </div>
         
       </form>
-
-      
 
       <div className="demo">
         <p>Vous avez déjà un compte? Connectez-vous!</p>
@@ -95,6 +87,6 @@ const ContactForm = () =>{
       </div>
     </div>
   );
-}
+};
 
 export default ContactForm;
