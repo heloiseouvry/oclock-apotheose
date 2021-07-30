@@ -2,12 +2,26 @@ const { Phase, Event } = require("../models");
 
 const phaseController = {
   getAllPhases: async (req, res, next) => {
-    res.json(await Phase.findAll());
+    res.status(200).json(await Phase.findAll());
+  },
+
+  getAllPhasesWithUsersAndSalary: async (req, res) => {
+    try {
+      res.status(200).json(await Phase.findAllWithUsersAndSalary());
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
   },
 
   addPhase: async (req, res) => {
-    const { title, start_date, end_date, type, number_fee, event_id, user_id } = req.body;
-    const newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+    const { title, start_date, end_date, type, number_fee, event_id, tech_manager_contact, provider_contact, internal_location, comments } = req.body;
+    const user_id = req.body.user_id ? req.body.user_id : req.user.userID;
+    let newPhase;
+    if(type==="event"){
+      newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+    } else {
+      newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id, tech_manager_contact, provider_contact, internal_location, comments });
+    }
     try {
       await newPhase.save();
       res.status(201).json(newPhase);
@@ -19,7 +33,7 @@ const phaseController = {
   getOnePhase: async (req, res) => {
     try {
       const phaseById = await Phase.findById(req.params.id);
-      res.status(201).json(phaseById);
+      res.status(200).json(phaseById);
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -61,6 +75,16 @@ const phaseController = {
       
       phase.assignTech(tech_id, salary);
       res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  techsInfo: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      const techsInfo = await phase.getTechsInfo();
+      res.status(200).json(techsInfo);
     } catch (error) {
       res.status(500).json(error.message);
     }
