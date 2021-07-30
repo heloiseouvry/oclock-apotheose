@@ -29,10 +29,8 @@ function AddTech () {
       });
       const user_id = userResponse.data.id;
       console.log("addJob", addJob);
-      // soit je fait 1 appel à UserAsJob pour chaque job qu'il a : jobId
-      // soit je fait 1 appel à UserAsJob auquel je passe 1 liste de tous les jobs [jobId, jobId]
+
       let finalJobs = [];
-      // si mon booleen est true alors je le push dans l'array
 
       for (const [key, value] of Object.entries(addJob)) {
         if (value === true)

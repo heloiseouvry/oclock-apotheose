@@ -63,6 +63,7 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
         const eventResponse = await axios.post(`${base_url}/events`, eventBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
+
         const phaseBody = {...eventBody, 
           event_id: eventResponse.data.id,
           type: 'event',
@@ -73,6 +74,7 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
       }
+      
       closeEventModal();
     } catch (error) {
       console.error(error);

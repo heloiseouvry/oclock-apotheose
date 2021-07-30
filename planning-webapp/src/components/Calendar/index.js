@@ -114,118 +114,119 @@ const MyCalendar = () => {
   const [phases, setPhases] = useState([]);
   const [usersWithJob, setUsersWithJob] = useState([]);
 
-  useEffect(() => {
-    const getAllEvents = async () => {
-      try {
-        // get all events from the API
-        const response = await axios.get(`${base_url}/events`, {
-          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-        });
-        let eventsToAdd = [];
-        // loop through the array of events we get in response.data
-        for (const eventBack of response.data) {
-          // for each event we get from the API we create an object eventFront that has the right structure for the library
-          let eventFront = {
-            id: eventBack.id.toString(),
-            name: eventBack.title,
-            color: "#ffffff",
-            bgColor: eventBack.color,
-            dragBgColor: "#00a9ff",
-            borderColor: "#001247",
-          };
-          eventsToAdd.push(eventFront);
-        }
-        // we update the props events with this array of all the eventFront
-        setEvents(eventsToAdd);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const getAllPhases = async () => {
-      try {
-        const response = await axios.get(`${base_url}/phases`, {
-          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-        });
-        let phasesToAdd = [];
-        for (const phaseBack of response.data) {
-          // console.log("phaseBack", phaseBack);
-          const techInfoResponse = await axios.get(
-            `${base_url}/phases/${phaseBack.id}/techsinfo`,
-            {
-              headers: {
-                Authorization: `bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-          let attendees = [];
-          if (techInfoResponse.data) {
-            for (const tech of techInfoResponse.data) {
-              attendees.push(
-                `${tech.firstname} ${tech.lastname[0]}. (${tech.phone_number})`
-              );
-            }
-          }
-
-          const start_date = new Date(phaseBack.start_date);
-          const end_date = new Date(phaseBack.end_date);
-          let category,
-            location,
-            isAllDay = null;
-          if (phaseBack.type === "event") {
-            category = "allday";
-            isAllDay = true;
-          } else {
-            category = "time";
-            isAllDay = false;
-            location = phaseBack.internal_location;
-          }
-
-          let phaseFront = {
-            id: phaseBack.id.toString(),
-            calendarId: phaseBack.event_id.toString(),
-            attendees,
-            category: category,
-            isVisible: true,
-            isAllDay,
-            location,
-            title: phaseBack.title,
-            body: phaseBack.comments,
-            start: start_date,
-            end: end_date,
-            raw: {
-              type: phaseBack.type,
-              address: {
-                id: phaseBack.address_id,
-                main: phaseBack.main,
-                additional: phaseBack.additional,
-                zip_code: phaseBack.zip_code,
-                city: phaseBack.city,
-              },
-              tech_manager_contact: phaseBack.tech_manager_contact,
-              provider_contact: phaseBack.provider_contact,
-              techInfo: techInfoResponse.data,
-            },
-            color: "#ffffff",
-            bgColor: phaseBack.color,
-          };
-          // console.log("phaseFront", phaseFront);
-
-          phasesToAdd.push(phaseFront);
-        }
-        setPhases(phasesToAdd);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // getAllUsersWithJob();
-    const getAllUsersWithJob = async () => {
-      const response = await axios.get(`${base_url}/usersjob`, {
+  const getAllEvents = async () => {
+    try {
+      // get all events from the API
+      const response = await axios.get(`${base_url}/events`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
-      setUsersWithJob(response.data);
-    };
+      let eventsToAdd = [];
+      // loop through the array of events we get in response.data
+      for (const eventBack of response.data) {
+        // for each event we get from the API we create an object eventFront that has the right structure for the library
+        let eventFront = {
+          id: eventBack.id.toString(),
+          name: eventBack.title,
+          color: "#ffffff",
+          bgColor: eventBack.color,
+          dragBgColor: "#00a9ff",
+          borderColor: "#001247",
+        };
+        eventsToAdd.push(eventFront);
+      }
+      // we update the props events with this array of all the eventFront
+      setEvents(eventsToAdd);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getAllPhases = async () => {
+    try {
+      const response = await axios.get(`${base_url}/phases`, {
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+      });
+      let phasesToAdd = [];
+      for (const phaseBack of response.data) {
+        // console.log("phaseBack", phaseBack);
+        const techInfoResponse = await axios.get(
+          `${base_url}/phases/${phaseBack.id}/techsinfo`,
+          {
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        let attendees = [];
+        if (techInfoResponse.data) {
+          for (const tech of techInfoResponse.data) {
+            attendees.push(
+              `${tech.firstname} ${tech.lastname[0]}. (${tech.phone_number})`
+            );
+          }
+        }
+
+        const start_date = new Date(phaseBack.start_date);
+        const end_date = new Date(phaseBack.end_date);
+        let category,
+          location,
+          isAllDay = null;
+        if (phaseBack.type === "event") {
+          category = "allday";
+          isAllDay = true;
+        } else {
+          category = "time";
+          isAllDay = false;
+          location = phaseBack.internal_location;
+        }
+
+        let phaseFront = {
+          id: phaseBack.id.toString(),
+          calendarId: phaseBack.event_id.toString(),
+          attendees,
+          category: category,
+          isVisible: true,
+          isAllDay,
+          location,
+          title: phaseBack.title,
+          body: phaseBack.comments,
+          start: start_date,
+          end: end_date,
+          raw: {
+            type: phaseBack.type,
+            address: {
+              id: phaseBack.address_id,
+              main: phaseBack.main,
+              additional: phaseBack.additional,
+              zip_code: phaseBack.zip_code,
+              city: phaseBack.city,
+            },
+            tech_manager_contact: phaseBack.tech_manager_contact,
+            provider_contact: phaseBack.provider_contact,
+            techInfo: techInfoResponse.data,
+          },
+          color: "#ffffff",
+          bgColor: phaseBack.color,
+        };
+        // console.log("phaseFront", phaseFront);
+
+        phasesToAdd.push(phaseFront);
+      }
+      setPhases(phasesToAdd);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // getAllUsersWithJob();
+  const getAllUsersWithJob = async () => {
+    const response = await axios.get(`${base_url}/usersjob`, {
+      headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+    });
+    setUsersWithJob(response.data);
+  };
+
+  useEffect(() => {
     getAllEvents();
     getAllPhases();
     getAllUsersWithJob();
@@ -253,10 +254,13 @@ const MyCalendar = () => {
   }
 
   function closeEventModal() {
+    getAllEvents();
+    getAllPhases();
     setEventOpen(false);
   }
 
   function closePhaseModal() {
+    getAllPhases();
     setPhaseOpen(false);
   }
 
@@ -405,6 +409,7 @@ const MyCalendar = () => {
     popupDetailBody: (phaseDetails) => {
       // console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
+      ret += "<p><strong>" + phaseDetails.raw?.type + "</strong></p>";
       ret += "<ul>";
 
       //Sert à afficher les prénom et le nom du technicien sélectionné dans le form de la modal
@@ -421,7 +426,7 @@ const MyCalendar = () => {
       ret += "</ul>";
       ret += "</div>";
       return ret;
-    },
+    }
   };
 
   return (
