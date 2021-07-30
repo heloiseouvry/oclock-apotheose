@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import "./styles.scss";
 
-<<<<<<< HEAD
 import Header from "../Header";
 import ConnectedHeader from "../ConnectedHeader";
 import Login from "../Login";
@@ -19,19 +18,9 @@ import ProtectedRoute from "../ProtectedRoute";
 import EventForm from '../EventForm'
 import PhaseForm from '../PhaseForm'
 import TransportForm from "../TransportForm";
-=======
-import Header from '../Header';
-import ConnectedHeader from '../ConnectedHeader';
-import LoginApp from '../Login/loginApp'
-import ContactForm from '../ContactForm'
-import ThankYou from '../ThankYou';
-import Homepage from '../Homepage';
-import MyCalendar from '../Calendar';
-import AddTech from '../AddTech';
-import Footer from '../Footer';
-import ConnectedFooter from '../ConnectedFooter';
-import PageNotFound from '../PageNotFound';
->>>>>>> main
+
+
+
 
 const isLogged = !!localStorage.getItem("token");
 
@@ -59,7 +48,6 @@ const App = () => {
           {/* <Footer /> */}
         </Route>
 
-<<<<<<< HEAD
         <Route path="/calendar">
           <ConnectedHeader />
           <MyCalendar />
@@ -72,31 +60,12 @@ const App = () => {
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
 
-        <Route path="/eventform"> 
-=======
-        <Route path="/homepage"> 
-          <ThankYou />
-          {/* <Footer /> */}
-        </Route>
-        
-      <Route path="/Calendar"> 
->>>>>>> main
-          <ConnectedHeader />
-          <EventForm /> 
-          {/* <ConnectedFooter /> */}
-        </Route>
-
-        <Route path="/phaseform"> 
-          <ConnectedHeader />
-          <PhaseForm /> 
-          {/* <ConnectedFooter /> */}
-        </Route>
-
-        <Route path="/transportform"> 
+        {/* <Route path="/transportform"> 
           <ConnectedHeader />
           <TransportForm /> 
           {/* <ConnectedFooter /> */}
-        </Route>
+        {/* </Route>   */}
+        
         
         <Route path="/addtech">
           <ConnectedHeader />

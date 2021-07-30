@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link }   from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Checkbox } from "semantic-ui-react";
 //import EmailJS
@@ -10,6 +10,7 @@ import "./styles.scss";
   
 const ContactForm = () =>{ 
 
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -19,8 +20,8 @@ const ContactForm = () =>{
       e.target,
       "user_G9TPGoLJfduwUzmSUTmvP"
     );
-
-    }
+    e.target.reset(); 
+  }
   
 
   return (
@@ -72,7 +73,7 @@ const ContactForm = () =>{
           placeholder="Laissez un commentaire (500 charactère maximum)"
           maxLength="2000"
         />
-        <Link to="/homepage">
+        
         <div className="connect">
           <Button
             type="submit"
@@ -81,7 +82,7 @@ const ContactForm = () =>{
             primary
           />
         </div>
-        </Link>
+        
       </form>
 
       
