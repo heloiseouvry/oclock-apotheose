@@ -93,13 +93,16 @@ const userController = {
 
     matchUserJob : async (req, res) => {
         try {
-            const user_id = req.params.id;
-            
-            const { job_id } = req.body;
-            console.log(job_id);
+            const user = await User.findById(req.params.id);
+            // const user_id = req.params.id;
+            req.body.forEach(async id => {
+                const userJob = await user.jobToTech(id);
+                
+            });
+            console.log(req.body);
       
+            res.status(200).json({ message: "Job - Assignement effectué avec succès." });
             
-            res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
         } catch (error) {
             res.status(500).json(error.message)
         }
