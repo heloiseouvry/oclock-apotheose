@@ -27,60 +27,8 @@ const phaseTypes = [
   { key: 4, text: "Démontage", value: "demontage" },
 ];
 
-// getAllUsersWithJob();
-let users;
-let usersFormatDropdown = [];
-let soundUsersFormatDropdown = [];
-let lightUsersFormatDropdown = [];
-let videoUsersFormatDropdown = [];
-let otherUsersFormatDropdown = [];
-(async () => {
-  const response = await axios.get(`${base_url}/usersjob`, {
-    headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-  });
-  users = response.data;
-  for (const user of users) {
-    usersFormatDropdown.push({
-      key: user.id,
-      text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-      value: user.id,
-    });
-    switch (user.type) {
-      case "son":
-        soundUsersFormatDropdown.push({
-          key: user.id,
-          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id,
-        });
-        break;
-      case "lumière":
-        lightUsersFormatDropdown.push({
-          key: user.id,
-          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id,
-        });
-        break;
-      case "vidéo":
-        videoUsersFormatDropdown.push({
-          key: user.id,
-          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id,
-        });
-        break;
-      case "autres":
-        otherUsersFormatDropdown.push({
-          key: user.id,
-          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-          value: user.id,
-        });
-        break;
-      default:
-        break;
-    }
-  }
-})();
-
 function PhaseForm({
+  users,
   events,
   phaseInfo,
   phaseEdit,
@@ -88,6 +36,21 @@ function PhaseForm({
   closePhaseModal,
 }) {
   // console.log("phaseInfo", phaseInfo);
+
+  let usersFormatDropdown = {
+    sound: [],
+    light: [],
+    video: [],
+    other: [],
+  };
+  for (const user of users) {
+    usersFormatDropdown[user.type].push({
+      key: user.id,
+      text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+      value: user.id,
+    });
+  }
+
   let eventsFormatted = [];
   for (const event of events) {
     eventsFormatted.push({
@@ -113,24 +76,40 @@ function PhaseForm({
     "0" + phaseInfo.end_date.getMinutes()
   ).slice(-2)}`;
 
-  const [error, setError] = useState("");
-  const [techsSelected, setTechsSelected] = useState({
+  let techsAssigned = {
     sound: [],
     light: [],
     video: [],
     other: [],
+  };
+  if (phaseInfo.raw.techInfo) {
+    for (const info of phaseInfo.raw.techInfo) {
+      techsAssigned[info.type].push({
+        id: info.id,
+        name: `${info.firstname} ${info.lastname[0]}. (${info.phone_number})`,
+      });
+    }
+  }
+  console.log("techsAssigned", techsAssigned);
+
+  const [error, setError] = useState("");
+  const [techsSelected, setTechsSelected] = useState({
+    sound: phaseEdit ? techsAssigned.sound : [],
+    light: phaseEdit ? techsAssigned.light : [],
+    video: phaseEdit ? techsAssigned.video : [],
+    other: phaseEdit ? techsAssigned.other : [],
   });
   const [soundTechsFormatDropdown, setSoundTechsFormatDropdown] = useState(
-    soundUsersFormatDropdown
+    usersFormatDropdown.sound
   );
   const [lightTechsFormatDropdown, setLightTechsFormatDropdown] = useState(
-    lightUsersFormatDropdown
+    usersFormatDropdown.light
   );
   const [videoTechsFormatDropdown, setVideoTechsFormatDropdown] = useState(
-    videoUsersFormatDropdown
+    usersFormatDropdown.video
   );
   const [otherTechsFormatDropdown, setOtherTechsFormatDropdown] = useState(
-    otherUsersFormatDropdown
+    usersFormatDropdown.other
   );
   const [eventsFormatDropdown, seteventsFormatDropdown] =
     useState(eventsFormatted);
@@ -185,17 +164,29 @@ function PhaseForm({
         // });
         setPhaseEdit(false);
       } else {
-        const phaseResponse = await axios.post(`${base_url}/phases`, phaseBody, {
-          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-        });
+        const phaseResponse = await axios.post(
+          `${base_url}/phases`,
+          phaseBody,
+          {
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         for (const type in techsSelected) {
           console.log("type", type);
           const techsByType = techsSelected[type];
           for (const tech of techsByType) {
-            let salaryBody = {tech_id: tech.id, salary: salaryForm[tech.id]}
-            await axios.post(`${base_url}/phases/${phaseResponse.data.id}/assign`, salaryBody, {
-              headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-            });
+            let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
+            await axios.post(
+              `${base_url}/phases/${phaseResponse.data.id}/assign`,
+              salaryBody,
+              {
+                headers: {
+                  Authorization: `bearer ${localStorage.getItem("token")}`,
+                },
+              }
+            );
           }
         }
       }
@@ -359,6 +350,7 @@ function PhaseForm({
           key="1"
           type={"sound"}
           typeFR={"son"}
+          defaultValue={techsSelected.sound.map((tech) => tech.id)}
           options={soundTechsFormatDropdown}
           techsSelected={techsSelected}
           setTechsSelected={setTechsSelected}
@@ -367,6 +359,7 @@ function PhaseForm({
           key="2"
           type={"light"}
           typeFR={"lumière"}
+          defaultValue={techsSelected.light.map((tech) => tech.id)}
           options={lightTechsFormatDropdown}
           techsSelected={techsSelected}
           setTechsSelected={setTechsSelected}
@@ -375,6 +368,7 @@ function PhaseForm({
           key="3"
           type={"video"}
           typeFR={"vidéo"}
+          defaultValue={techsSelected.video.map((tech) => tech.id)}
           options={videoTechsFormatDropdown}
           techsSelected={techsSelected}
           setTechsSelected={setTechsSelected}
@@ -383,11 +377,11 @@ function PhaseForm({
       <Form.Group>
         {techsSelected.sound?.map((tech, index) => (
           <Form.Input
+            icon='euro'
+            label={`Salaire ${tech.name.split("(")[0]}`}
             key={index}
             type="number"
-            placeholder={`Salaire ${tech.name.split("(")[0]}`}
             min="0"
-            step="10"
             value={salaryForm[tech.id] ? salaryForm[tech.id] : 0}
             onChange={(event) =>
               setSalaryForm({ ...salaryForm, [tech.id]: event.target.value })
@@ -396,11 +390,11 @@ function PhaseForm({
         ))}
         {techsSelected.light?.map((tech, index) => (
           <Form.Input
+            icon='euro'
+            label={`Salaire ${tech.name.split("(")[0]}`}
             key={index}
             type="number"
-            placeholder={`Salaire ${tech.name.split("(")[0]}`}
             min="0"
-            step="10"
             value={salaryForm[tech.id] ? salaryForm[tech.id] : 0}
             onChange={(event) =>
               setSalaryForm({ ...salaryForm, [tech.id]: event.target.value })
@@ -409,11 +403,11 @@ function PhaseForm({
         ))}
         {techsSelected.video?.map((tech, index) => (
           <Form.Input
+            icon='euro'
+            label={`Salaire ${tech.name.split("(")[0]}`}
             key={index}
             type="number"
-            placeholder={`Salaire ${tech.name.split("(")[0]}`}
             min="0"
-            step="10"
             value={salaryForm[tech.id] ? salaryForm[tech.id] : 0}
             onChange={(event) =>
               setSalaryForm({ ...salaryForm, [tech.id]: event.target.value })

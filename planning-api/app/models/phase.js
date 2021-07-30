@@ -125,8 +125,11 @@ class Phase extends CoreModel{
     async getTechsInfo(){
         try {
             const preparedQuery = {
-                text: `SELECT phase_has_user.salary, "user".id, "user".lastname, "user".firstname, "user".phone_number from phase_has_user
+                text: `SELECT phase_has_user.salary, "user".id, "user".lastname, "user".firstname, "user".phone_number, job.type
+                from phase_has_user
                 JOIN "user" ON phase_has_user.user_id = "user".id
+                JOIN user_has_job ON user_has_job.user_id = "user".id
+                JOIN job ON user_has_job.job_id = job.id
                 WHERE phase_has_user.phase_id = $1;`,
                 values: [this.id]
             };

@@ -16,10 +16,15 @@ import "./styles.scss";
 function PhaseFormTechField({
   type,
   typeFR,
+  defaultValue,
   options,
   techsSelected,
   setTechsSelected,
 }) {
+
+console.log("type", type);
+console.log("defaultValue", defaultValue);
+console.log("options", options);
 
   return (
     <Form.Field>
@@ -28,6 +33,7 @@ function PhaseFormTechField({
         multiple
         search
         selection
+        defaultValue={defaultValue}
         options={options}
         placeholder="Sélectionner un/des technicien(s)"
         onChange={(_, data) => {
@@ -41,6 +47,7 @@ function PhaseFormTechField({
           }
           let newTechsSelected = JSON.parse(JSON.stringify(techsSelected));
           newTechsSelected[type] = techsSelection;
+          console.log("newTechsSelected", newTechsSelected);
           setTechsSelected(newTechsSelected);
         }}
       />

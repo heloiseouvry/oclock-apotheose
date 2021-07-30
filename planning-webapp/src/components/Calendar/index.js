@@ -112,6 +112,7 @@ const MyCalendar = () => {
 
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
+  const [usersWithJob, setUsersWithJob] = useState([]);
 
   useEffect(() => {
     const getAllEvents = async () => {
@@ -148,7 +149,7 @@ const MyCalendar = () => {
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
-          console.log("phaseBack", phaseBack);
+          // console.log("phaseBack", phaseBack);
           const techInfoResponse = await axios.get(
             `${base_url}/phases/${phaseBack.id}/techsinfo`,
             {
@@ -158,15 +159,18 @@ const MyCalendar = () => {
             }
           );
           let attendees = [];
-          if(techInfoResponse.data){
+          if (techInfoResponse.data) {
             for (const tech of techInfoResponse.data) {
-              attendees.push(`${tech.firstname} ${tech.lastname[0]}. (${tech.phone_number})`);
+              attendees.push(
+                `${tech.firstname} ${tech.lastname[0]}. (${tech.phone_number})`
+              );
             }
           }
 
           const start_date = new Date(phaseBack.start_date);
           const end_date = new Date(phaseBack.end_date);
-          let category, location,
+          let category,
+            location,
             isAllDay = null;
           if (phaseBack.type === "event") {
             category = "allday";
@@ -174,7 +178,7 @@ const MyCalendar = () => {
           } else {
             category = "time";
             isAllDay = false;
-            location = phaseBack.internal_location
+            location = phaseBack.internal_location;
           }
 
           let phaseFront = {
@@ -198,11 +202,14 @@ const MyCalendar = () => {
                 zip_code: phaseBack.zip_code,
                 city: phaseBack.city,
               },
+              tech_manager_contact: phaseBack.tech_manager_contact,
+              provider_contact: phaseBack.provider_contact,
+              techInfo: techInfoResponse.data,
             },
             color: "#ffffff",
             bgColor: phaseBack.color,
           };
-          console.log("phaseFront", phaseFront);
+          // console.log("phaseFront", phaseFront);
 
           phasesToAdd.push(phaseFront);
         }
@@ -211,8 +218,17 @@ const MyCalendar = () => {
         console.error(error);
       }
     };
+
+    // getAllUsersWithJob();
+    const getAllUsersWithJob = async () => {
+      const response = await axios.get(`${base_url}/usersjob`, {
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+      });
+      setUsersWithJob(response.data);
+    };
     getAllEvents();
     getAllPhases();
+    getAllUsersWithJob();
   }, []);
 
   const cal = useRef(null);
@@ -448,6 +464,7 @@ const MyCalendar = () => {
         </Modal.Header>
         <Modal.Content>
           <PhaseForm
+            users={usersWithJob}
             events={events}
             phaseInfo={phaseInfo}
             phaseEdit={phaseEdit}
@@ -464,7 +481,7 @@ const MyCalendar = () => {
       <Button size="mini" content=">" secondary onClick={nextView} />
       <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
 
-      {events.map((e) => (
+      {/* {events.map((e) => (
         <Button
           key={e.id}
           size="mini"
@@ -473,7 +490,7 @@ const MyCalendar = () => {
           data-visible={true}
           onClick={toggleEvent}
         />
-      ))}
+      ))} */}
 
       <TUICalendar
         ref={cal}
