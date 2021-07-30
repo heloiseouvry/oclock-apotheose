@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Dropdown,
-  Form,
-  FormField,
-  Input,
-  Checkbox,
-  Label,
-  TextArea,
-  Divider,
-} from "semantic-ui-react";
+import { Button, Form, FormField, TextArea } from "semantic-ui-react";
 import axios from "axios";
 import PhaseFormTechField from "../PhaseFormTechField";
 
@@ -27,15 +17,7 @@ const phaseTypes = [
   { key: 4, text: "Démontage", value: "demontage" },
 ];
 
-function PhaseForm({
-  users,
-  events,
-  phaseInfo,
-  phaseEdit,
-  setPhaseEdit,
-  closePhaseModal,
-}) {
-  // console.log("phaseInfo", phaseInfo);
+function PhaseForm({ users, events, phaseInfo, phaseEdit, setPhaseEdit, closePhaseModal }) {
 
   let usersFormatDropdown = {
     sound: [],
@@ -123,9 +105,7 @@ function PhaseForm({
     start_time,
     end_time,
   });
-  const [salaryForm, setSalaryForm] = useState(
-    phaseEdit ? salaryAssigned : {}
-    );
+  const [salaryForm, setSalaryForm] = useState(phaseEdit ? salaryAssigned : {});
 
   console.log("phaseForm", phaseForm);
   // console.log("techs", techs);
@@ -156,9 +136,15 @@ function PhaseForm({
       phaseBody.event_id = phaseForm.calendarId;
 
       if (phaseEdit) {
-        const phaseResponse = await axios.patch(`${base_url}/phases/${phaseBody.id}`, phaseBody, {
-          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
-        });
+        const phaseResponse = await axios.patch(
+          `${base_url}/phases/${phaseBody.id}`,
+          phaseBody,
+          {
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         await axios.delete(`${base_url}/phases/${phaseBody.id}/unassign`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
@@ -166,18 +152,28 @@ function PhaseForm({
           const techsByType = techsSelected[type];
           for (const tech of techsByType) {
             let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
-            await axios.post(`${base_url}/phases/${phaseResponse.data.id}/assign`, salaryBody, {
+            await axios.post(
+              `${base_url}/phases/${phaseResponse.data.id}/assign`,
+              salaryBody,
+              {
                 headers: {
                   Authorization: `bearer ${localStorage.getItem("token")}`,
-            }});
+                },
+              }
+            );
           }
         }
         setPhaseEdit(false);
       } else {
-        const phaseResponse = await axios.post(`${base_url}/phases`, phaseBody, {
+        const phaseResponse = await axios.post(
+          `${base_url}/phases`,
+          phaseBody,
+          {
             headers: {
               Authorization: `bearer ${localStorage.getItem("token")}`,
-        }});
+            },
+          }
+        );
         for (const type in techsSelected) {
           const techsByType = techsSelected[type];
           for (const tech of techsByType) {
@@ -381,7 +377,7 @@ function PhaseForm({
       <Form.Group>
         {techsSelected.sound?.map((tech, index) => (
           <Form.Input
-            icon='euro'
+            icon="euro"
             label={`Salaire ${tech.name.split("(")[0]}`}
             key={index}
             type="number"
@@ -394,7 +390,7 @@ function PhaseForm({
         ))}
         {techsSelected.light?.map((tech, index) => (
           <Form.Input
-            icon='euro'
+            icon="euro"
             label={`Salaire ${tech.name.split("(")[0]}`}
             key={index}
             type="number"
@@ -407,7 +403,7 @@ function PhaseForm({
         ))}
         {techsSelected.video?.map((tech, index) => (
           <Form.Input
-            icon='euro'
+            icon="euro"
             label={`Salaire ${tech.name.split("(")[0]}`}
             key={index}
             type="number"
@@ -432,7 +428,9 @@ function PhaseForm({
         }
       />
 
-      <Button type="submit" primary>{phaseEdit ? "Modifier la phase" : "Créer la phase"}</Button>
+      <Button type="submit" primary>
+        {phaseEdit ? "Modifier la phase" : "Créer la phase"}
+      </Button>
     </Form>
   );
 }

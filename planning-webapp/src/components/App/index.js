@@ -15,9 +15,10 @@ import Footer from "../Footer";
 import ConnectedFooter from "../ConnectedFooter";
 import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
-import EventForm from '../EventForm'
-import PhaseForm from '../PhaseForm'
 import TransportForm from "../TransportForm";
+
+
+
 
 const isLogged = !!localStorage.getItem("token");
 
@@ -57,23 +58,12 @@ const App = () => {
           {/* <ConnectedFooter /> */}
         </ProtectedRoute>
 
-        <Route path="/eventform"> 
-          <ConnectedHeader />
-          <EventForm /> 
-          {/* <ConnectedFooter /> */}
-        </Route>
-
-        <Route path="/phaseform"> 
-          <ConnectedHeader />
-          <PhaseForm /> 
-          {/* <ConnectedFooter /> */}
-        </Route>
-
-        <Route path="/transportform"> 
+        {/* <Route path="/transportform"> 
           <ConnectedHeader />
           <TransportForm /> 
           {/* <ConnectedFooter /> */}
-        </Route>
+        {/* </Route>   */}
+        
         
         <Route path="/addtech">
           <ConnectedHeader />

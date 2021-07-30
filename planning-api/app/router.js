@@ -111,6 +111,7 @@ router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
  */
 router.get('/users', userController.getAllUsers);
 router.get('/usersjob', userController.getAllUsersWithJob);
+router.get('/userssalary', userController.getAllUsersSalary);
 
 /**
  * Expected json object in request body

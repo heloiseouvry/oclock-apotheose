@@ -341,27 +341,17 @@ const MyCalendar = () => {
     const { schedule, changes } = event;
     setEventEdit(true);
     setPhaseEdit(true);
-    if (changes) {
-      setEventInfo({
-        ...schedule,
-        start_date: changes.start.toDate(),
-        end_date: changes.end.toDate(),
-      });
-      setPhaseInfo({
-        ...schedule,
-        start_date: changes.start.toDate(),
-        end_date: changes.end.toDate(),
+    const newStartDate = changes.start ? changes.start.toDate() : schedule.start.toDate();
+    const newEndDate = changes.end ? changes.end.toDate() : schedule.end.toDate();
+    if (schedule.raw.type === "event") {
+      setEventInfo({...schedule,
+        start_date: newStartDate,
+        end_date: newEndDate,
       });
     } else {
-      setEventInfo({
-        ...schedule,
-        start_date: schedule.start.toDate(),
-        end_date: schedule.end.toDate(),
-      });
-      setPhaseInfo({
-        ...schedule,
-        start_date: schedule.start.toDate(),
-        end_date: schedule.end.toDate(),
+      setPhaseInfo({...schedule,
+        start_date: newStartDate,
+        end_date: newEndDate,
       });
     }
     schedule.raw.type === "event" ? openEventModal() : openPhaseModal();
@@ -411,18 +401,6 @@ const MyCalendar = () => {
       var ret = "<div>" + phaseDetails.body;
       ret += "<p><strong>" + phaseDetails.raw?.type + "</strong></p>";
       ret += "<ul>";
-
-      //Sert à afficher les prénom et le nom du technicien sélectionné dans le form de la modal
-      var techFound = data.find((elementTech) => {
-        // console.log("tech Find=", elementTech);
-        // console.log("elementTech.id=", elementTech.id);
-        // console.log("phaseDetails.raw.techID=", phaseDetails.raw?.techID);
-        return elementTech.id === phaseDetails.raw?.techID;
-      });
-      // console.log("techFound=", techFound);
-
-      ret += "<li>" + techFound?.prenom + " " + techFound?.nom + "</li>";
-
       ret += "</ul>";
       ret += "</div>";
       return ret;

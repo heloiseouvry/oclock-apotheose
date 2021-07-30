@@ -22,6 +22,16 @@ const userController = {
         res.json(await User.findAllWithJob());
     },
 
+    getAllUsersSalary : async (req, res) => {
+        try {
+            const { start_date, end_date } = req.body;
+            const usersSalary = await User.getAllUsersSalary(start_date, end_date)
+            res.status(200).json(usersSalary);
+          } catch (error) {
+            res.status(500).json(error.message);
+          }
+    },
+
     getOneUser : async (req, res) => {
         try {
             const userById = await User.findById(req.params.id);
@@ -106,7 +116,9 @@ const userController = {
         } catch (error) {
             res.status(500).json(error.message)
         }
-    }
+    },
+
+
 
 }
 
