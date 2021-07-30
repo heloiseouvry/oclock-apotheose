@@ -1,10 +1,10 @@
 BEGIN;
 
 INSERT INTO job (type) VALUES
-('son'),
-('lumière'),
-('vidéo'),
-('autres');
+('sound'),
+('light'),
+('video'),
+('other');
 
 INSERT INTO public."user" (lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments) VALUES
 ('Cormier', 'Capucine', '01.92.73.82.78', 'cdp', 'cormier_capucine@gmail.com', '$2y$10$mSwqe61uq0GbEYxwJjZXTOQhVXcYc2yQisSDihy69Y6yLDnnD6z6K', 'intermittent', '1962-12-02', 'Muscourt', '02', '2 60 52 91 449 491 84', '1003', null, null, 'Seguin Mattéo', '06 76 24 32 74', null),
