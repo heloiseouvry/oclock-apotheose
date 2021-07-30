@@ -7,6 +7,7 @@ import Header from '../Header';
 import ConnectedHeader from '../ConnectedHeader';
 import LoginApp from '../Login/loginApp'
 import ContactForm from '../ContactForm'
+import ThankYou from '../ThankYou';
 import Homepage from '../Homepage';
 import MyCalendar from '../Calendar';
 import AddTech from '../AddTech';
@@ -35,6 +36,11 @@ const App = () => (
       <Route path="/Contact"> 
           <Header />
           <ContactForm />
+          {/* <Footer /> */}
+        </Route>
+
+        <Route path="/homepage"> 
+          <ThankYou />
           {/* <Footer /> */}
         </Route>
         
