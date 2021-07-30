@@ -18,6 +18,7 @@ const schema = Joi.object({
   emergency_contact: Joi.string().allow(null, ''),
   emergency_phone_number: Joi.string().allow(null, ''),
   comments: Joi.string().allow(null, ''),
+  address_id: Joi.number().allow(null)
 });
 
 module.exports = schema;

@@ -198,6 +198,19 @@ class User extends CoreModel {
             throw new Error(error.detail);
         }
     }
+
+    async jobToTech(id){
+        try {
+            const preparedQuery = {
+                text: 'INSERT INTO user_has_job (user_id, job_id) VALUES ($1, $2);',
+                values: [this.id, id]
+            };
+            await db.query(preparedQuery);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
 }
 
 module.exports = User;

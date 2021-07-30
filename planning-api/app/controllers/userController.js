@@ -89,6 +89,20 @@ const userController = {
         } catch (error) {
             res.status(500).json(error.message);
         }
+    },
+
+    matchUserJob : async (req, res) => {
+        try {
+            const user_id = req.params.id;
+            
+            const { job_id } = req.body;
+            console.log(job_id);
+      
+            
+            res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
+        } catch (error) {
+            res.status(500).json(error.message)
+        }
     }
 
 }

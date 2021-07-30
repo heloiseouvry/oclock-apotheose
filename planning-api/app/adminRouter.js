@@ -24,6 +24,7 @@ router.post('/users', validateBody(userSchema), userController.addUser);
 router.get('/users/:id(\\d+)', userController.getOneUser);
 router.patch('/users/:id(\\d+)', userController.editUser);
 router.delete('/users/:id(\\d+)', userController.deleteUser);
+router.post('/userhasjob/:id(\\d+)', userController.matchUserJob)
 
 router.get('/address', addressController.getAllAddresses);
 router.post('/address', addressController.addAddress);
