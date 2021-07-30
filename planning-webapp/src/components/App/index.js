@@ -16,6 +16,7 @@ import ConnectedFooter from "../ConnectedFooter";
 import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
 import TransportForm from "../TransportForm";
+import SalaryReport from "../SalaryReport";
 
 
 
@@ -68,6 +69,12 @@ const App = () => {
         <Route path="/addtech">
           <ConnectedHeader />
           <AddTech />
+        {/* <ConnectedFooter /> */}
+        </Route>
+
+        <Route path="/salaryreport">
+          <ConnectedHeader />
+          <SalaryReport />
         {/* <ConnectedFooter /> */}
         </Route>
 
