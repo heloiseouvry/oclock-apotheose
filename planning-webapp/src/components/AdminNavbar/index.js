@@ -14,6 +14,9 @@ const AdminNavbar= () => {
         <Link to ="/addtech">
           <Button className='addtech' content="Ajouter un technicien" />
         </Link>
+        <Link to ="/viewtech">
+          <Button className='viewtech' content="Consulter le profil d'un technicien" />
+        </Link>
         <Link to ="/salaryreport">
           <Button className='salaryreport' content="Synthèse des salaires" />
         </Link>
