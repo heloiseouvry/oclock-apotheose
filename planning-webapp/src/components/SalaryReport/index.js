@@ -15,29 +15,34 @@ const SalaryReport = () => {
   const [endDate, setEndDate] = useState("2021-08-31");
   const [salaryData, setSalaryData] = useState([]);
 
-  const processSalaries = (data) => {
-    let salaryData = [];
-    data.forEach(function (item) {
-      if (salaryData.hasOwnProperty(item.id)) {
-        salaryData[item.id].salary += item.salary;
+  const processData = (data) => {
+    console.log("data", data);
+    const processedData = data.reduce((acc, val) => {
+      acc[val.id] = acc[val.id] || {};
+      acc[val.id].id = val.id;
+      acc[val.id].lastname = val.lastname;
+      acc[val.id].firstname = val.firstname;
+      if (acc[val.id].hasOwnProperty("total")) {
+        acc[val.id].total += val.salary;
       } else {
-        salaryData[item.id] = { ...item };
+        acc[val.id].total = val.salary;
       }
-    });
-
-    console.log(Object.values(salaryData));
-    setSalaryData(Object.values(salaryData));
-    console.log("salarydata", salaryData);
+      acc[val.id].phases = acc[val.id].phases || [];
+      acc[val.id].phases.push({
+        title: val.title,
+        type: val.type,
+        start_date: val.start_date,
+        end_date: val.end_date,
+        salary: val.salary,
+      });
+      return acc;
+    }, {});
+    console.log("reduce to array", Object.values(processedData));
+    setSalaryData(Object.values(processedData));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("dates choisies");
-
-    const requestBody = {
-      start_date: startDate,
-      end_date: endDate,
-    };
 
     try {
       const response = await axios.get(
@@ -46,10 +51,8 @@ const SalaryReport = () => {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         }
       );
-
-      console.log(response.data);
-
-      processSalaries(response.data);
+      // console.log("response.data", response.data);
+      processData(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -96,20 +99,32 @@ const SalaryReport = () => {
           <Grid.Column width={3}>Total</Grid.Column>
         </Grid.Row>
 
+        {salaryData.map((tech) => (
+          <Grid.Row key={tech.id}>
+            <Grid.Column width={3}>
+              {tech.firstname} {tech.lastname}
+            </Grid.Column>
+            <Grid.Column width={10}>
+              <ul>
+                {tech.phases.map((phase) => (
+                  <li key={phase.title}>
+                    {phase.title} - {phase.salary}€
+                  </li>
+                ))}
+              </ul>
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <p>{tech.phases.length} jours travaillés</p>
+              <p>{tech.total} €</p>
+            </Grid.Column>
+          </Grid.Row>
+        ))}
         <Grid.Row>
           <Grid.Column width={3}></Grid.Column>
           <Grid.Column width={10}></Grid.Column>
           <Grid.Column width={3}></Grid.Column>
         </Grid.Row>
       </Grid>
-      )
-      <ul>
-        {salaryData.map((tech) => (
-          <li key={`tech-${tech.id}`}>
-            {tech.firstname} {tech.lastname} - {tech.type} - {tech.salary} €
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

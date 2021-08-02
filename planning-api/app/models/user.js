@@ -111,13 +111,14 @@ class User extends CoreModel {
 
     static async getAllUsersSalary(start_date, end_date) {
         const data = await CoreModel.fetch(`
-        SELECT "user".id, "user".lastname, "user".firstname, job.type, phase.start_date, phase.end_date, phase_has_user.salary 
+        SELECT "user".id, "user".lastname, "user".firstname, job.type, phase.start_date, phase.end_date, phase.title, phase_has_user.salary 
         from phase_has_user
         JOIN phase ON phase_has_user.phase_id = phase.id
         JOIN "user" ON phase_has_user.user_id = "user".id
         JOIN user_has_job ON user_has_job.user_id = "user".id
         JOIN job ON user_has_job.job_id = job.id
         WHERE phase.start_date >= $1 AND phase.start_date < $2;`, [start_date, end_date]);
+        console.log("data", data);
         return data.map(d => new User(d));
     }
 

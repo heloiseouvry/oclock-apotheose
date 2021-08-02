@@ -26,6 +26,7 @@ const userController = {
         try {
             const { start_date, end_date } = req.query;
             const usersSalary = await User.getAllUsersSalary(start_date, end_date)
+            console.log("usersSalary", usersSalary);
             res.status(200).json(usersSalary);
           } catch (error) {
             res.status(500).json(error.message);
