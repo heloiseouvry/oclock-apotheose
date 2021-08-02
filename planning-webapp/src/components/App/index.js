@@ -16,6 +16,7 @@ import ConnectedFooter from "../ConnectedFooter";
 import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
 import TransportForm from "../TransportForm";
+import ViewTech from "../ViewTech"
 import SalaryReport from "../SalaryReport";
 import DelTech from "../DelTech";
 

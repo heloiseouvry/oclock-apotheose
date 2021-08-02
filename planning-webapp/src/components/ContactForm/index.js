@@ -7,9 +7,7 @@ import emailjs from "emailjs-com";
 import "./styles.scss";
 
 const ContactForm = () => {
-  const history = useHistory();
-
-
+  
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -20,6 +18,7 @@ const ContactForm = () => {
       "user_G9TPGoLJfduwUzmSUTmvP"
     );
     e.target.reset(); 
+    document.getElementById("successMessage").style.display="block"
   }
   
 
@@ -75,6 +74,9 @@ const ContactForm = () => {
         
         <div className="connect">
           <Button type="submit" className="button" content="Envoyer" primary />
+        </div>
+        <div id='successMessage' className='successMessage'>
+          <p>Votre message a bien été envoyé</p>
         </div>
         
       </form>
