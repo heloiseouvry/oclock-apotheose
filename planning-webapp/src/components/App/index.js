@@ -1,67 +1,99 @@
-import React from 'react';
-import { BrowserRouter, Switch , Route } from 'react-router-dom';
+import React, {useState} from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
-import './styles.scss';
+import "./styles.scss";
 
-import Header from '../Header';
-import ConnectedHeader from '../ConnectedHeader';
-import LoginApp from '../Login/loginApp'
-import ContactForm from '../ContactForm'
-import Homepage from '../Homepage';
-import MyCalendar from '../Calendar';
-import AddTech from '../AddTech';
-import Footer from '../Footer';
-import ConnectedFooter from '../ConnectedFooter';
-import PageNotFound from '../PageNotFound';
+import Header from "../Header";
+import ConnectedHeader from "../ConnectedHeader";
+import Login from "../Login";
+import ContactForm from "../ContactForm";
+import Homepage from "../Homepage";
+import MyCalendar from "../Calendar";
+import TechCalendar from "../TechCalendar";
+import AddTech from "../AddTech";
+import Footer from "../Footer";
+import ConnectedFooter from "../ConnectedFooter";
+import PageNotFound from "../PageNotFound";
+import ProtectedRoute from "../ProtectedRoute";
+import TransportForm from "../TransportForm";
+import ViewTech from "../ViewTech"
+import SalaryReport from "../SalaryReport";
+import DelTech from "../DelTech";
 
-const App = () => (
+
+
+
+const isLogged = !!localStorage.getItem("token");
+
+const App = () => {
+
+  return (
   //We use the router method to switch from a component to another
-  <BrowserRouter >
+  <BrowserRouter>
     <div className="app">
-    {/* Here we show the Homepage */}
       <Switch>
-        <Route exact path="/"> 
+        <Route exact path="/">
           <Homepage />
           {/* <Footer /> */}
         </Route>
 
-        {/* Here we show the Login page */}
-        <Route path="/login"> 
+        <Route path="/login">
           <Header />
-          <LoginApp />
+          <Login />
           {/* <Footer /> */}
         </Route>
 
-      <Route path="/Contact"> 
+        <Route path="/contact">
           <Header />
           <ContactForm />
           {/* <Footer /> */}
         </Route>
+
+        <Route path="/calendar">
+          <ConnectedHeader />
+          <MyCalendar />
+          {/* <ConnectedFooter /> */}
+        </Route>
+
+        <ProtectedRoute path="/tech/calendar">
+          <ConnectedHeader />
+          <TechCalendar />
+          {/* <ConnectedFooter /> */}
+        </ProtectedRoute>
+
+        {/* <Route path="/transportform"> 
+          <ConnectedHeader />
+          <TransportForm /> 
+          {/* <ConnectedFooter /> */}
+        {/* </Route>   */}
         
-      <Route path="/Calendar"> 
+        
+        <Route path="/addtech">
           <ConnectedHeader />
-          <MyCalendar /> 
-          {/* <ConnectedFooter /> */}
+          <AddTech />
+        {/* <ConnectedFooter /> */}
         </Route>
 
-        <Route path="/AddTech"> 
+        <Route path="/viewtech">
           <ConnectedHeader />
-          <AddTech /> 
-          {/* <ConnectedFooter /> */}
+          <ViewTech />
+        {/* <ConnectedFooter /> */}
         </Route>
 
+        <Route path="/salaryreport">
+          <ConnectedHeader />
+          <SalaryReport />
+        {/* <ConnectedFooter /> */}
+        </Route>
 
-        <Route path='*'>
+        <Route path="*">
           <Header />
           <PageNotFound />
           {/* <Footer /> */}
         </Route>
-      
-
-      </Switch> 
-          
+      </Switch>
     </div>
   </BrowserRouter>
-);
+)};
 
 export default App;

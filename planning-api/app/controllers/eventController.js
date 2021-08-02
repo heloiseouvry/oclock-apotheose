@@ -6,24 +6,13 @@ const eventController = {
   },
 
   addEvent : async (req, res, next) => {
-    const newEvent = new Event(req.body);
-    console.log(newEvent);
+    const { title, start_date, end_date, color, address_id} = req.body;
     try {
+      const newEvent = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id});
       await newEvent.save();
-      
-      const newPhase = new Phase({
-        title: newEvent.title,
-        start_date: newEvent.start_date,
-        duration: newEvent.duration,
-        type: 'event',
-        number_fee: '0',
-        event_id: newEvent.id,
-        user_id: newEvent.user_id
-      });
-      await newPhase.save();
-      
       res.status(201).json(newEvent);
     } catch (error) {
+      console.error(error);
       res.status(500).json(error.message);
     }
   },
@@ -31,10 +20,12 @@ const eventController = {
 
   editEvent : async (req, res, next) => {
     try {
-      const eventToEdit = new Event(req.body);
-      eventToEdit.id = req.params.id;
+      const { title, start_date, end_date, color, address_id} = req.body;
+
+      const eventToEdit = new Event({title, start_date, end_date, color, user_id: req.user.userID, address_id});
+      eventToEdit.id = parseInt(req.params.id);
       await eventToEdit.save();
-      res.status(201).json(eventToEdit);
+      res.status(200).json(await Phase.findEventPhaseByEventId(eventToEdit.id));
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -42,9 +33,9 @@ const eventController = {
 
   deleteEvent : async (req, res) => {
     try {
-        const eventToDelete = await Event.findById(req.params.id);
+        const eventToDelete = await Event.findById(parseInt(req.params.id));
         await eventToDelete.delete()
-        res.status(201).json({message : "Supression effectuée avec succès."})
+        res.status(204).json({message : "Event - Supression effectuée avec succès."})
     } catch (error) {
         res.status(500).json(error.message);
     }

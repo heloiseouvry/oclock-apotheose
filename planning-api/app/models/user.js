@@ -1,4 +1,5 @@
 const CoreModel = require('./coreModel');
+const Phase = require('./phase');
 const db = require('../database.js');
 
 /**
@@ -66,8 +67,8 @@ class User extends CoreModel {
             
             try {
                 const preparedQuery = {
-                    text:`UPDATE "user" SET (lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments)=($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
-                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.password, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments]
+                    text:`UPDATE "user" SET (lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments)=($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) WHERE id = $18`,
+                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.password, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments, this.id]
                 }
                 const { rows } = await db.query(preparedQuery);
                  
@@ -100,6 +101,26 @@ class User extends CoreModel {
         return data.map(d => new User(d));
     }
 
+    static async findAllWithJob() {
+        const data = await CoreModel.fetch(`
+            SELECT "user".*, job.type FROM "user"
+            JOIN user_has_job ON user_has_job.user_id = "user".id
+            JOIN job ON user_has_job.job_id = job.id;`);
+        return data.map(d => new User(d));
+    }
+
+    static async getAllUsersSalary(start_date, end_date) {
+        const data = await CoreModel.fetch(`
+        SELECT "user".id, "user".lastname, "user".firstname, job.type, phase.start_date, phase.end_date, phase_has_user.salary 
+        from phase_has_user
+        JOIN phase ON phase_has_user.phase_id = phase.id
+        JOIN "user" ON phase_has_user.user_id = "user".id
+        JOIN user_has_job ON user_has_job.user_id = "user".id
+        JOIN job ON user_has_job.job_id = job.id
+        WHERE phase.start_date >= $1 AND phase.start_date < $2;`, [start_date, end_date]);
+        return data.map(d => new User(d));
+    }
+
     /**
      * Fetches a single user from the database
      * @param {Number} id 
@@ -107,6 +128,53 @@ class User extends CoreModel {
      */
     static async findById(id){
         return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
+    }
+
+    static async findUsersByType(type) {
+        const data = await CoreModel.fetch(`
+        SELECT "user".*, job.type FROM "user"
+        JOIN user_has_job ON user_has_job.user_id = "user".id
+        JOIN job ON user_has_job.job_id = job.id
+        WHERE job.type = $1;`, [type]);
+        return data.map(d => new User(d));
+    }
+
+    static async findAvailableUsers(new_start_date, new_end_date) {
+        const data = await CoreModel.fetch(`
+        WITH conflict_phases AS (
+            SELECT id from phase
+            WHERE start_date <= $2 AND end_date >= $1
+        ),
+        conflict_techs AS (
+            SELECT DISTINCT user_id FROM phase_has_user 
+            JOIN conflict_phases ON conflict_phases.id = phase_has_user.phase_id
+        )
+        SELECT "user".* FROM "user"
+        LEFT JOIN conflict_techs ON "user".id = conflict_techs.user_id
+        WHERE conflict_techs.user_id IS NULL;`, [new_start_date, new_end_date]);
+        return data.map(d => new User(d));
+    }
+
+    static async findAvailableUsersByType(type, new_start_date, new_end_date) {
+        const data = await CoreModel.fetch(`
+        WITH conflict_phases AS (
+            SELECT id from phase
+            WHERE start_date <= $3 AND end_date >= $2
+        ),
+        conflict_techs AS (
+            SELECT DISTINCT user_id FROM phase_has_user 
+            JOIN conflict_phases ON conflict_phases.id = phase_has_user.phase_id
+        ),
+        available_techs AS (
+            SELECT "user".* FROM "user"
+            LEFT JOIN conflict_techs ON "user".id = conflict_techs.user_id
+            WHERE conflict_techs.user_id IS NULL
+        )
+        SELECT available_techs.* FROM available_techs
+        JOIN user_has_job ON user_has_job.user_id = available_techs.id
+        JOIN job ON user_has_job.job_id = job.id
+        WHERE job.type = $1;`, [type, new_start_date, new_end_date]);
+        return data.map(d => new User(d));
     }
 
     /**
@@ -122,6 +190,34 @@ class User extends CoreModel {
             };
             await db.query(preparedQuery);
 
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
+
+    async findPlanning() {
+        try {
+            const data = await CoreModel.fetch(
+                `SELECT phase.* 
+                FROM phase_has_user 
+                JOIN phase ON phase.id = phase_has_user.phase_id
+                WHERE phase_has_user.user_id = $1;`, 
+                [this.id]);
+            return data.map(d => new Phase(d));
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
+
+    async jobToTech(id){
+        try {
+            const preparedQuery = {
+                text: 'INSERT INTO user_has_job (user_id, job_id) VALUES ($1, $2);',
+                values: [this.id, id]
+            };
+            await db.query(preparedQuery);
         } catch (error) {
             console.error(error);
             throw new Error(error.detail);

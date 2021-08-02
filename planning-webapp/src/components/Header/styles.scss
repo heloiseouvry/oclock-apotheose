@@ -1,6 +1,5 @@
 .header{
     display: flex;
-    align-items: center;   
     background-color: whitesmoke;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
@@ -12,8 +11,4 @@
     font-size: 3rem;
     margin-left: 1rem;
     font-family: "Source Sans Pro", sans-serif
-}
-
-.logout{
-  height: 50%;
 }

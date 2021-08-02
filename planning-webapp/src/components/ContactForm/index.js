@@ -1,44 +1,94 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import 'semantic-ui-css/semantic.min.css';
-import { Button, Checkbox } from 'semantic-ui-react';
+import React from "react";
+import { Link }   from "react-router-dom";
+import "semantic-ui-css/semantic.min.css";
+import { Button, Checkbox } from "semantic-ui-react";
+import emailjs from "emailjs-com";
 
-import './styles.scss';
+import "./styles.scss";
 
-function ContactForm () {
+const ContactForm = () => {
+  
+  function handleSubmit(e) {
+    e.preventDefault();
 
-    return(
-        <div className='LoginForm'>
-        <h1 className='title'>Nous contacter</h1>
+    emailjs.sendForm(
+      "service_kapouevent",
+      "template_6nihwuo",
+      e.target,
+      "user_G9TPGoLJfduwUzmSUTmvP"
+    );
+    e.target.reset(); 
+    document.getElementById("successMessage").style.display="block"
+  }
+  
 
-            <form className='inputForm' method="POST"> 
-                <div classname='contactDiv'>
-                    <div className='contactInfo'>
-                        <input type='text' placeholder='Votre nom'/>
-                        <input type='text' placeholder='Votre prenom'/> 
-                        <input type='email' placeholder='Votre email'/>
-                    </div> 
-                    <div className='contactInfo'>
-                        <input type='text' placeholder='Votre numéro'/>
-                        <input type="password" placeholder='Mot de passe'/>
-                        <input type="password" placeholder='Confirmez le mot de passe'/>
-                    </div>
-                </div>
-                <textarea className='comment' type='text' placeholder='Laissez un commentaire (500 charactère maximum)' maxlength = "500"/> 
+  return (
+    <div className="LoginForm">
+      <h1 className="title">Nous contacter</h1>
 
-                <div className='connect' >
-                    <Button type='submit' className='button' content='Envoyer' primary />
-                </div>
-            </form>
-
-            <div className='demo'>
-                <p>Vous avez déjà un compte? Connectez-vous!</p>
-                <Link to ="/login">   
-                <Button content='Se connecter' secondary /> 
-                </Link>
-            </div>
+      <form onSubmit={handleSubmit} className="inputForm" method="POST">
+        <div className="contactDiv">
+          <div className="contactInfo">
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Votre nom"
+            />
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="Votre prenom"
+            />
+            <input
+              type="text"
+              id="company"
+              name="company"
+              placeholder="Votre entreprise"
+            />
+          </div>
+          <div className="contactInfo">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Votre email"
+            />
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              placeholder="Votre numéro"
+            />
+          </div>
         </div>
-    )
+        <textarea
+          className="comment"
+          type="text"
+          id="message"
+          name="message"
+          placeholder="Laissez un commentaire (500 charactère maximum)"
+          maxLength="2000"
+        />
+        
+        <div className="connect">
+          <Button type="submit" className="button" content="Envoyer" primary />
+        </div>
+        <div id='successMessage' className='successMessage'>
+          <p>Votre message a bien été envoyé</p>
+        </div>
+        
+      </form>
+
+      <div className="demo">
+        <p>Vous avez déjà un compte? Connectez-vous!</p>
+        <Link to="/login">
+          <Button content="Se connecter" secondary />
+        </Link>
+      </div>
+    </div>
+  );
 };
 
 export default ContactForm;

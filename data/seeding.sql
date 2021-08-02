@@ -1,10 +1,10 @@
 BEGIN;
 
 INSERT INTO job (type) VALUES
-('son'),
-('lumière'),
-('vidéo'),
-('autres');
+('sound'),
+('light'),
+('video'),
+('other');
 
 INSERT INTO public."user" (lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments) VALUES
 ('Cormier', 'Capucine', '01.92.73.82.78', 'cdp', 'cormier_capucine@gmail.com', '$2y$10$mSwqe61uq0GbEYxwJjZXTOQhVXcYc2yQisSDihy69Y6yLDnnD6z6K', 'intermittent', '1962-12-02', 'Muscourt', '02', '2 60 52 91 449 491 84', '1003', null, null, 'Seguin Mattéo', '06 76 24 32 74', null),
@@ -64,15 +64,15 @@ INSERT INTO vehicle (vehicle_plate, brand, model, volume, comments) VALUES
 ('AT-709-DS', 'Citroen', 'Jumper', 8, null),
 ('MP-655-HF', 'Renault', 'Trafic', 4, null);
 
-INSERT INTO event (title, start_date, duration, color, user_id, address_id) VALUES
-('Festival de Néoules', '2021-07-20 09:00:00', '5 days', '#AB0000', 1, 14),
-('Au Pont du Rock', '2021-07-28 07:30:00', '1 week', '#068603', 1, 16),
-('Mens Alors', '2021-08-02 06:00:00', '1 week', '#002BAB', 1, 3);
+INSERT INTO event (title, start_date, end_date, color, user_id, address_id) VALUES
+('Festival de Néoules', '2021-07-20 09:00:00', '2021-07-25 09:00:00', '#AB0000', 1, 14),
+('Au Pont du Rock', '2021-07-28 07:30:00', '2021-08-03 07:30:00', '#068603', 1, 16),
+('Mens Alors', '2021-08-02 06:00:00', '2021-08-09 06:00:00', '#002BAB', 1, 3);
 
-INSERT INTO phase (title, start_date, duration, type, internal_location, tech_manager_contact, provider_contact, number_fee, comments, event_id, vehicle_id, user_id) VALUES
-('Montage scène principale', '2021-07-20 10:15:00', '8 hours', 'montage', 'scène principale', 'Lila Bianchi', 'Manuel Gérard', 1, null, 1, null, 1),
-('Montage village enfants', '2021-07-21 09:30:00', '5 hours', 'montage', 'village enfants', 'Lila Bianchi', 'Manuel Gérard', 0.5, null, 1, null, 1),
-('Montage scène principale', '2021-07-22 07:30:00', '6 hours', 'montage', 'scène principale', 'Barack Obama', 'Paruet Michel', 1, null, 2, null, 1);
+INSERT INTO phase (title, start_date, end_date, type, internal_location, tech_manager_contact, provider_contact, number_fee, comments, event_id, vehicle_id, user_id) VALUES
+('Montage scène principale', '2021-07-20 10:15:00', '2021-07-20 18:15:00', 'montage', 'scène principale', 'Lila Bianchi', 'Manuel Gérard', 1, null, 1, null, 1),
+('Montage village enfants', '2021-07-21 09:30:00', '2021-07-21 14:30:00', 'montage', 'village enfants', 'Lila Bianchi', 'Manuel Gérard', 0.5, null, 1, null, 1),
+('Montage scène principale', '2021-07-22 07:30:00', '2021-07-22 13:30:00', 'montage', 'scène principale', 'Barack Obama', 'Paruet Michel', 1, null, 2, null, 1);
 
 INSERT INTO phase_has_user (phase_id, user_id, salary) VALUES
 (1, 2, 250),

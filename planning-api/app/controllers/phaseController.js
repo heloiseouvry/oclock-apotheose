@@ -1,12 +1,27 @@
-const { Phase } = require("../models");
+const { Phase, Event } = require("../models");
 
 const phaseController = {
   getAllPhases: async (req, res, next) => {
-    res.json(await Phase.findAll());
+    res.status(200).json(await Phase.findAll());
+  },
+
+  getAllPhasesWithUsersAndSalary: async (req, res) => {
+    try {
+      res.status(200).json(await Phase.findAllWithUsersAndSalary());
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
   },
 
   addPhase: async (req, res) => {
-    const newPhase = new Phase(req.body);
+    const { title, start_date, end_date, type, number_fee, event_id, tech_manager_contact, provider_contact, internal_location, comments } = req.body;
+    const user_id = req.body.user_id ? req.body.user_id : req.user.userID;
+    let newPhase;
+    if(type==="event"){
+      newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+    } else {
+      newPhase = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id, tech_manager_contact, provider_contact, internal_location, comments });
+    }
     try {
       await newPhase.save();
       res.status(201).json(newPhase);
@@ -18,7 +33,7 @@ const phaseController = {
   getOnePhase: async (req, res) => {
     try {
       const phaseById = await Phase.findById(req.params.id);
-      res.status(201).json(phaseById);
+      res.status(200).json(phaseById);
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -27,8 +42,14 @@ const phaseController = {
   deletePhase: async (req, res) => {
     try {
       const phaseToDelete = await Phase.findById(req.params.id);
-      await phaseToDelete.delete();
-      res.status(201).json({ message: "Supression effectuée avec succès." });
+      if (phaseToDelete.type === "event") {
+        const eventToDelete = await Event.findById(phaseToDelete.event_id);
+        await phaseToDelete.delete();
+        await eventToDelete.delete();
+      } else {
+        await phaseToDelete.delete();
+      }
+      res.status(204).json({ message: "Phase - Supression effectuée avec succès." });
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -36,11 +57,49 @@ const phaseController = {
 
   editPhase: async (req, res) => {
     try {
-      const phaseToEdit = new Phase(req.body);
-      phaseToEdit.id = req.params.id;
-      console.log("dans le controller : ", phaseToEdit);
+      const { title, start_date, end_date, type, number_fee, event_id, tech_manager_contact, provider_contact, internal_location, comments } = req.body;
+      const user_id = req.body.user_id ? req.body.user_id : req.user.userID;
+      let phaseToEdit;
+      if(type==="event"){
+        phaseToEdit = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id });
+      } else {
+        phaseToEdit = new Phase({ title, start_date, end_date, type, number_fee, event_id, user_id, tech_manager_contact, provider_contact, internal_location, comments });
+      }
+      phaseToEdit.id = parseInt(req.params.id);
       await phaseToEdit.save();
-      res.status(201).json(phaseToEdit);
+      res.status(200).json(phaseToEdit);
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  assignTech: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      const { tech_id, salary } = req.body;
+      
+      phase.assignTech(tech_id, salary);
+      res.status(200).json({ message: "Phase - Assignement effectué avec succès." });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  deleteTechAssigned: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      phase.deleteTechAssigned();
+      res.status(200).json({ message: "Phase - Suppression des assignements effectuée avec succès." });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  techsInfo: async (req, res) => {
+    try {
+      const phase = await Phase.findById(req.params.id);
+      const techsInfo = await phase.getTechsInfo();
+      res.status(200).json(techsInfo);
     } catch (error) {
       res.status(500).json(error.message);
     }

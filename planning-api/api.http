@@ -16,7 +16,7 @@ Content-Type: application/json
 {
   "title": "Fête de l'Huma",
   "start_date": "2021-07-19 08:00:00",
-  "duration": "5 days",
+  "end_date": "2021-07-24 08:00:00",
   "color": "#fefefe",
   "user_id": "1",
   "address_id": "1"
@@ -30,7 +30,7 @@ Content-Type: application/json
 {
   "title": "Fête de l'Huma",
   "start_date": "2022-09-10 08:00:00",
-  "duration": "5 days",
+  "end_date": "2022-09-15 08:00:00",
   "color": "#f0f",
   "user_id": "1",
   "address_id": "1"
@@ -83,6 +83,20 @@ Content-Type: application/json
 
 GET {{baseUrl}}/users
 
+### Get all users with job
+
+GET {{baseUrl}}/usersjob
+
+### Get all users' salary
+
+GET {{baseUrl}}/userssalary
+Content-Type: application/json
+
+{
+  "start_date": "2021-07-20",
+  "end_date": "2021-07-25"
+}
+
 ### Get an user by his id
 
 GET {{baseUrl}}/users/15
@@ -116,6 +130,22 @@ Content-Type: application/json
   "comments": "ne s'entend pas avec Jean-Jacques ni michel d'ailleurs, mais bosse super bien avec Jean Eudes !"
 }
 
+### Get a user's planning
+
+GET {{baseUrl}}/users/planning
+
+### Get users by type
+
+GET {{baseUrl}}/users/son
+
+### Get available users
+
+GET {{baseUrl}}/available_users
+
+### Get available users by type
+
+GET {{baseUrl}}/available_users/son
+
 ### Get all phases
 
 GET {{baseUrl}}/phases
@@ -126,17 +156,17 @@ POST {{baseUrl}}/phases
 Content-Type: application/json
 
 {
-  "title": "montage-scène principale",
-  "start_date": "2021-09-09 08:00:00",
-  "duration": "6 hours",
+  "title": "Débrief",
+  "start_date": "2021-07-26 14:00:00",
+  "end_date": "2021-07-26 18:00:00",
   "type": "montage",
-  "internal_location": "scène 1",
+  "internal_location": "salle du fond",
   "tech_manager_contact": "Céline",
   "provider_contact": "Robert B",
   "number_fee": 1,
-  "comments": "Attention, il faudrait prévoir des parpaing pour caler la scène",
-  "event_id" : 1,
-  "vehicle_id": 1,
+  "comments": "",
+  "event_id" : 12,
+  "vehicle_id": null,
   "user_id": 1
 }
 
@@ -156,7 +186,7 @@ Content-Type: application/json
 {
   "title": "montage-scène principale",
   "start_date": "2021-09-09 08:00:00",
-  "duration": "8 hours",
+  "end_date": "2021-09-09 16:00:00",
   "type": "montage",
   "internal_location": "scène 1",
   "tech_manager_contact": "Céline",
@@ -167,3 +197,45 @@ Content-Type: application/json
   "vehicle_id": 1,
   "user_id": 1
 }
+
+### Assign a tech to a phase
+
+POST {{baseUrl}}/phases/13/assign
+Content-Type: application/json
+
+{
+  "tech_id": "14",
+  "salary": "100"
+}
+
+### Get all address
+
+GET {{baseUrl}}/address
+
+### Creation of an address
+
+POST {{baseUrl}}/address
+Content-Type: application/json
+
+{
+  "main": "Rue de la Soif",
+  "additional": null,
+  "zip_code": "35000",
+  "city": "Rennes"
+}
+
+### Edit an address
+
+PATCH {{baseUrl}}/address/21
+Content-Type: application/json
+
+{
+  "main": "Chez ouat",
+  "additional": null,
+  "zip_code": "28000",
+  "city": "Toulouse"
+}
+
+### Delete an address
+
+DELETE {{baseUrl}}/address/23
