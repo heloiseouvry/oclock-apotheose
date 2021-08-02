@@ -7,7 +7,7 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const host = "localhost";
+const host = "100.25.136.194";
 const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
@@ -30,7 +30,7 @@ function Login() {
       if (response.data.role === "tech") {
         history.push('/tech/calendar')
       }
-      else  {
+      else {
         history.push('/calendar');
       }
     } catch (error) {

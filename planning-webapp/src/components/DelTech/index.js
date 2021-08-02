@@ -7,7 +7,7 @@ import PhaseFormTechField from "../PhaseFormTechField";
 
 import './styles.scss';
 
-const host = "localhost";
+const host = "100.25.136.194";
 const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
