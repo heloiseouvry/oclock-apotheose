@@ -19,7 +19,6 @@ import TransportForm from "../TransportForm";
 import ViewTech from "../ViewTech"
 import SalaryReport from "../SalaryReport";
 import DelTech from "../DelTech";
-import ViewTech from "../ViewTech";
 
 
 
