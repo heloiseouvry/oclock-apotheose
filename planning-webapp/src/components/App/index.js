@@ -18,6 +18,7 @@ import ProtectedRoute from "../ProtectedRoute";
 import TransportForm from "../TransportForm";
 import SalaryReport from "../SalaryReport";
 import DelTech from "../DelTech";
+import ViewTech from "../ViewTech";
 
 
 

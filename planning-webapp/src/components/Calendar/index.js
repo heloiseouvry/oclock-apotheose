@@ -19,7 +19,7 @@ import "tui-calendar/dist/tui-calendar.css";
 import "tui-date-picker/dist/tui-date-picker.css";
 import "tui-time-picker/dist/tui-time-picker.css";
 
-const host = "localhost";
+const host = "100.25.136.194";
 const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
