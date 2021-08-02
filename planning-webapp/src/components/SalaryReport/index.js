@@ -14,6 +14,9 @@ const SalaryReport = () => {
   const [startDate, setStartDate] = useState("2021-07-01");
   const [endDate, setEndDate] = useState("2021-08-31");
   const [salaryData, setSalaryData] = useState([]);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  let phase;
 
   const eventColorStyle = (backgroundColor) => {
     return {
@@ -25,9 +28,16 @@ const SalaryReport = () => {
     };
   };
 
+  let processSelectedDates = [];
+
   const processData = (data) => {
     console.log("data", data);
+
     const processedData = data.reduce((acc, val) => {
+      if (!processSelectedDates.find((element) => element === val.start_date)) {
+        processSelectedDates.push(val.start_date);
+      }
+
       acc[val.id] = acc[val.id] || {};
       acc[val.id].id = val.id;
       acc[val.id].lastname = val.lastname;
@@ -52,12 +62,24 @@ const SalaryReport = () => {
       return acc;
     }, {});
     console.log("reduce to array", Object.values(processedData));
+    console.log("processSelectedDates", processSelectedDates);
+    processSelectedDates = processSelectedDates.sort((a, b) => {
+      if (a < b) {
+        return -1;
+      } else if (a == b) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });
+
     setSalaryData(Object.values(processedData));
+    setSelectedDates(processSelectedDates);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    // noDays = Math.ceil((Date.parse(endDate) - Date.parse(startDate))/1000/3600/24);
     try {
       const response = await axios.get(
         `${base_url}/userssalary/?start_date=${startDate}&end_date=${endDate}`,
@@ -107,38 +129,55 @@ const SalaryReport = () => {
         </Form.Group>
       </Form>
 
+      {selectedDates.length && 
       <Grid textAlign="center" columns="equal" celled="internally">
         <Grid.Row>
-          <Grid.Column width={2}>Technicien</Grid.Column>
-          <Grid.Column width={10}>Date</Grid.Column>
-          <Grid.Column width={2}>Total</Grid.Column>
+          <Grid.Column width={1}>Technicien</Grid.Column>
+          {selectedDates.map((date) => (
+            <Grid.Column key={date}>
+              <p>{`${new Date(date).toLocaleDateString()}`}</p>
+              <p>
+                {`${("0" + new Date(date).getHours()).slice(-2)}h${(
+                  "0" + new Date(date).getMinutes()
+                ).slice(-2)}`}
+              </p>
+            </Grid.Column>
+          ))}
+          {/* const date = (new Date(val.start_date)).toLocaleDateString(); */}
+          <Grid.Column width={1}>Total</Grid.Column>
         </Grid.Row>
 
         {salaryData.map((tech) => (
           <Grid.Row key={tech.id}>
-            <Grid.Column width={2}>
+            <Grid.Column width={1}>
               {tech.firstname} {tech.lastname}
             </Grid.Column>
 
-            {tech.phases.map((phase) => (
-              <Grid.Column key={phase.title}>
-                <div>
-                  <div style={eventColorStyle(phase.color)}>&nbsp;</div>{" "}
-                  {phase.event_title}
-                </div>
-                <div>{phase.title}</div>
-                <div>
-                  {phase.duration}h - {phase.salary}€
-                </div>
+            {selectedDates.map((date) => (
+              <Grid.Column key={date}>
+                {tech.phases.find((elem) => {if(elem.start_date === date) {phase=elem; return elem;}}) ? (
+                  <React.Fragment>
+                    <div>
+                      <div style={eventColorStyle(phase.color)}>&nbsp;</div>{" "}
+                      {phase.event_title}
+                    </div>
+                    <div>{phase.title}</div>
+                    <div>
+                      {phase.duration}h - {phase.salary}€
+                    </div>
+                  </React.Fragment>
+                ) : null}
               </Grid.Column>
             ))}
-            <Grid.Column width={2}>
+
+            <Grid.Column width={1}>
               <p>{tech.phases.length} jours travaillés</p>
               <p>{tech.total} €</p>
             </Grid.Column>
           </Grid.Row>
         ))}
       </Grid>
+      }
     </div>
   );
 };
