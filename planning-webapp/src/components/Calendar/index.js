@@ -227,6 +227,7 @@ const MyCalendar = () => {
   };
 
   useEffect(() => {
+    console.log("useEffect");
     getAllEvents();
     getAllPhases();
     getAllUsersWithJob();
@@ -341,8 +342,18 @@ const MyCalendar = () => {
     const { schedule, changes } = event;
     setEventEdit(true);
     setPhaseEdit(true);
-    const newStartDate = changes.start ? changes.start.toDate() : schedule.start.toDate();
-    const newEndDate = changes.end ? changes.end.toDate() : schedule.end.toDate();
+
+    let newStartDate, newEndDate;
+
+    if (!changes) {
+      newStartDate = schedule.start.toDate();
+      newEndDate = schedule.end.toDate();
+    }
+    else {
+      newStartDate = changes.start ? changes.start.toDate() : schedule.start.toDate();
+      newEndDate = changes.end ? changes.end.toDate() : schedule.end.toDate();
+    }
+
     if (schedule.raw.type === "event") {
       setEventInfo({...schedule,
         start_date: newStartDate,

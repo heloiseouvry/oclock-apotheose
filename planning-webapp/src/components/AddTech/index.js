@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Checkbox, Form, FormGroup, Radio, TextArea } from 'semantic-ui-react';
 import axios from "axios";
 
@@ -9,12 +9,75 @@ const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
-function AddTech () {
+function AddTech ({tech, onDelete}) {
+  console.log("tech", tech);
 
   const [error, setError] = useState("");
   const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980-11-29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
   const [addJob, setAddJob] = useState({1: false, 2: false, 3: false, 4: false});
   const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
+
+  // google research : load data in use state by props react
+  // https://stackoverflow.com/questions/54865764/react-usestate-does-not-reload-state-from-props
+
+  useEffect(()=>{
+    console.log("AddTech::use Effect");
+    if(tech) {
+      setAddTech({
+        lastname: tech.lastname,
+        firstname: tech.firstname,
+        phone_number: tech.phone_number,
+        role: tech.role,
+        email: tech.email,
+        password: tech.password,
+        status: tech.status,
+        birth_date: tech.birth_date,
+        birth_city: tech.birth_city,
+        birth_department: tech.birth_department,
+        ssn: tech.ssn,
+        intermittent_registration: tech.intermittent_registration,
+        legal_entity: tech.legal_entity,
+        siret: tech.siret,
+        emergency_contact: tech.emergency_contact,
+        emergency_phone_number: tech.emergency_phone_number,
+        comments: tech.comments,
+        address_id: tech.address_id
+      });
+      initAddJob(tech);
+      setAddAddress(tech);
+    }
+  },[tech]);
+
+  // TODO
+  const initAddJob = async (tech) => {
+    // TODO récupérer les jobs du user et les set
+    /*
+    try {
+      const addressResponse = await axios.get(`${base_url}/METTRE LA ROUTE DES JOBS`, addAddress,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      });
+    } catch (error) {
+    console.error(error);
+    setError("Les informations sont incorrectes !");
+    }
+    */
+    setAddJob({1: false, 2: false, 3: false, 4: false});
+  };
+
+  const initAddAddress = async (tech) => {
+    // TODO récupérer l'adresse du user et les set
+    try {
+      const addressResponse = await axios.get(`${base_url}/address/${tech.address_id}`,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      });
+    } catch (error) {
+    console.error(error);
+    setError("Les informations sont incorrectes !");
+    }
+
+
+    setAddAddress({main: " ", additional: " ", zip_code: " ", city: " "});
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -198,10 +261,14 @@ function AddTech () {
                 
             
                 <div className='Submit-Tech' >
-                    <Button type='submit' className='button' content='Valider' primary />
-                    
+                  <Button type='submit' className='button' content='Valider' primary />
                 </div>
             </Form>
+            <div>
+              <Button className='button' content='Supprimer' 
+                style={!tech ? {display: "none"} : {} }
+                onClick={() => onDelete(tech)} />
+            </div>
         </div>
     )
 };

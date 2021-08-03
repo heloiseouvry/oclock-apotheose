@@ -5,14 +5,16 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
+const host = "localhost";
 const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
 const SalaryReport = () => {
-  const [startDate, setStartDate] = useState("2021-07-01");
-  const [endDate, setEndDate] = useState("2021-08-31");
+  const currentMonth = new Date().getMonth();
+  const nextMonth = new Date().getMonth() + 1;
+  const [startDate, setStartDate] = useState(`${new Date().getFullYear()}-${("0" + currentMonth).slice(-2)}-01`);
+  const [endDate, setEndDate] = useState(`${new Date().getFullYear()}-${("0" + nextMonth).slice(-2)}-01`);
   const [salaryData, setSalaryData] = useState([]);
   const [selectedDates, setSelectedDates] = useState([]);
 
@@ -31,8 +33,6 @@ const SalaryReport = () => {
   let processSelectedDates = [];
 
   const processData = (data) => {
-    console.log("data", data);
-
     const processedData = data.reduce((acc, val) => {
       if (!processSelectedDates.find((element) => element === val.start_date)) {
         processSelectedDates.push(val.start_date);
@@ -56,13 +56,12 @@ const SalaryReport = () => {
         start_date: val.start_date,
         end_date: val.end_date,
         duration:
-          (Date.parse(val.end_date) - Date.parse(val.start_date)) / 1000 / 3600,
+          Math.floor((Date.parse(val.end_date) - Date.parse(val.start_date)) / 1000 / 3600),
         salary: val.salary,
       });
       return acc;
     }, {});
-    console.log("reduce to array", Object.values(processedData));
-    console.log("processSelectedDates", processSelectedDates);
+
     processSelectedDates = processSelectedDates.sort((a, b) => {
       if (a < b) {
         return -1;
@@ -79,7 +78,6 @@ const SalaryReport = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // noDays = Math.ceil((Date.parse(endDate) - Date.parse(startDate))/1000/3600/24);
     try {
       const response = await axios.get(
         `${base_url}/userssalary/?start_date=${startDate}&end_date=${endDate}`,
@@ -87,7 +85,6 @@ const SalaryReport = () => {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         }
       );
-      // console.log("response.data", response.data);
       processData(response.data);
     } catch (error) {
       console.error(error);
@@ -129,7 +126,7 @@ const SalaryReport = () => {
         </Form.Group>
       </Form>
 
-      {selectedDates.length && 
+      {selectedDates.length ?
       <Grid textAlign="center" columns="equal" celled="internally">
         <Grid.Row>
           <Grid.Column width={1}>Technicien</Grid.Column>
@@ -177,7 +174,7 @@ const SalaryReport = () => {
           </Grid.Row>
         ))}
       </Grid>
-      }
+      : null }
     </div>
   );
 };
