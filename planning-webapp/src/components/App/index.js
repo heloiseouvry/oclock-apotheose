@@ -6,6 +6,7 @@ import "./styles.scss";
 import Header from "../Header";
 import ConnectedHeader from "../ConnectedHeader";
 import Login from "../Login";
+import ForgotPassword from "../ForgotPassword"
 import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
@@ -43,17 +44,23 @@ const App = () => {
           {/* <Footer /> */}
         </Route>
 
+        <Route path="/forgottenPassword">
+          <Header />
+          <ForgotPassword />
+          {/* <Footer /> */}
+        </Route>
+
         <Route path="/contact">
           <Header />
           <ContactForm />
           {/* <Footer /> */}
         </Route>
 
-        <Route path="/calendar">
+        <ProtectedRoute path="/calendar">
           <ConnectedHeader />
           <MyCalendar />
           {/* <ConnectedFooter /> */}
-        </Route>
+        </ProtectedRoute>
 
         <ProtectedRoute path="/tech/calendar">
           <ConnectedHeader />
