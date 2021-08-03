@@ -1,7 +1,7 @@
 import React from "react";
 import { Link }   from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Checkbox } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import emailjs from "emailjs-com";
 
 import "./styles.scss";
@@ -23,7 +23,7 @@ const ContactForm = () => {
   
 
   return (
-    <div className="LoginForm">
+    <div className="ContactForm">
       <h1 className="title">Nous contacter</h1>
 
       <form onSubmit={handleSubmit} className="inputForm" method="POST">
@@ -34,13 +34,13 @@ const ContactForm = () => {
               id="lastName"
               name="lastName"
               placeholder="Votre nom"
-            />
+              required/>
             <input
               type="text"
               id="firstName"
               name="firstName"
               placeholder="Votre prenom"
-            />
+              required/>
             <input
               type="text"
               id="company"
@@ -54,13 +54,13 @@ const ContactForm = () => {
               id="email"
               name="email"
               placeholder="Votre email"
-            />
+              required/>
             <input
               type="text"
               id="phone"
               name="phone"
               placeholder="Votre numéro"
-            />
+              required/>
           </div>
         </div>
         <textarea
