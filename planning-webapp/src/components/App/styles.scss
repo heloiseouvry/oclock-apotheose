@@ -1,4 +1,6 @@
+@use '../../styles/vars';
+
 body {
-    background-color: white;
+    background-color: vars.$bg-color;
     font-family: "Source Sans Pro", sans-serif;
 }

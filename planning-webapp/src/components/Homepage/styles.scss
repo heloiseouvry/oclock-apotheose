@@ -1,41 +1,41 @@
+@use '../../styles/vars';
 
 .homepage {
-    background-color: white;
-    margin: auto -16px;
-    padding: 16px 32px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-    text-align: center;
-    height: 14rem;    
+  background: vars.$bg-color center / cover no-repeat
+    url("../../assets/nightgig.jpg");
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: vars.$text-color;
+  text-shadow: 0 0 5px #000;
+}
+
+.homepage h1 {
+  font-size: 6em;
+}
+
+.homepage h2 {
+  font-size: 3em;
+}
+
+@media screen and (max-width: 480px) {
+  .homepage h1 {
+    font-size: 2em;
   }
-  
-div h1 {
-    color: rgb(0, 0, 0);
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 500;
-    font-size: 3rem;
-    
+
+  .homepage h2 {
+    font-size: 1em;
   }
- 
-.logo {
-    margin: 1.5rem;
-    
 }
 
-.slogan {
-    color: rgb(0, 0, 0);
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 100;
-    font-size: 1.5rem;
-    margin: 1.5rem;
+@media screen and (max-width: 1024px) {
+  .homepage h1 {
+    font-size: 3em;
+  }
+
+  .homepage h2 {
+    font-size: 2em;
+  }
 }
-
-.image-exemple {
-    width: 45rem;
-}
-
-.button{
-    margin: 2rem;
-}
-
-
-

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { Button, Form  } from 'semantic-ui-react';
-// import SemanticDatepicker from 'semantic-ui-calendar';
 import axios from "axios";
 
 import './styles.scss';
