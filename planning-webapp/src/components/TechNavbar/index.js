@@ -11,6 +11,9 @@ const TechNavbar= () => {
         <Link to ="/tech/calendar">
           <Button className='calendar' content="Planning" />
         </Link>
+        <Link to ="/tech/salaryreport">
+          <Button className='salaryreport' content="Synthèse des salaires" />
+        </Link>
       </nav>
     )
 };
