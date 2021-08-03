@@ -17,8 +17,14 @@ const phaseTypes = [
   { key: 4, text: "Démontage", value: "demontage" },
 ];
 
-function PhaseForm({ users, events, phaseInfo, phaseEdit, setPhaseEdit, closePhaseModal }) {
-
+function PhaseForm({
+  users,
+  events,
+  phaseInfo,
+  phaseEdit,
+  setPhaseEdit,
+  closePhaseModal,
+}) {
   let usersFormatDropdown = {
     sound: [],
     light: [],
@@ -219,12 +225,13 @@ function PhaseForm({ users, events, phaseInfo, phaseEdit, setPhaseEdit, closePha
           options={phaseTypes}
           // defaultValue={1}
           value={phaseForm.raw.type}
-          onChange={(_, data) =>
+          onChange={(_, data) => {     
             setPhaseForm({
               ...phaseForm,
+              title: `${data.options.filter(d => d.value === data.value)[0].text} - `,
               raw: { ...phaseForm.raw, type: data.value },
-            })
-          }
+            });
+          }}
         ></Form.Dropdown>
         <FormField required>
           <label htmlFor="start_date">Date de début</label>
