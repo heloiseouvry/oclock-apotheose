@@ -9,7 +9,7 @@ const Header= () => {
         <Link to ="/">
         <header className='header'>
           <img src="https://img.icons8.com/ios/100/000000/health-calendar.png"/>    
-          <h1 className="title">Kapouévent</h1>
+          <h1>Kapouévent</h1>
         </header>
         </Link>
 

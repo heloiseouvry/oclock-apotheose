@@ -1,14 +1,9 @@
+@use '../../styles/vars';
+
 .header{
     display: flex;
-    background-color: whitesmoke;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-}
-
-.title{
-    color: rgb(0, 0, 0);
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 500;
-    font-size: 3rem;
-    margin-left: 1rem;
-    font-family: "Source Sans Pro", sans-serif
+    justify-content: center;
+    align-items: center;
+    background-color: vars.$bg-color;
+    color: vars.$text-color;
 }
