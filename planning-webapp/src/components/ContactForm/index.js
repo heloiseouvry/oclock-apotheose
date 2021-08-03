@@ -1,12 +1,6 @@
 import React from "react";
-<<<<<<< HEAD
-import { Link }   from "react-router-dom";
-import "semantic-ui-css/semantic.min.css";
-import { Button } from "semantic-ui-react";
-=======
 import { Link } from "react-router-dom";
 import { Button, Checkbox } from "semantic-ui-react";
->>>>>>> 8ab6f8661febead2332e96ec2add335196d573c6
 import emailjs from "emailjs-com";
 
 import "./styles.scss";
@@ -31,26 +25,26 @@ const ContactForm = () => {
 
       <form onSubmit={handleSubmit} className="contact-form" method="POST">
         <section className="contact-info">
-          <input type="text" id="lastName" name="lastName" placeholder="Nom" />
+          <input type="text" id="lastName" name="lastName" placeholder="Nom" required/>
           <input
             type="text"
             id="firstName"
             name="firstName"
             placeholder="Prénom"
-          />
+            required/>
           <input
             type="text"
             id="company"
             name="company"
             placeholder="Nom de votre entreprise"
-          />
-          <input type="email" id="email" name="email" placeholder="Email" />
+            />
+          <input type="email" id="email" name="email" placeholder="Email" required/>
           <input
             type="text"
             id="phone"
             name="phone"
             placeholder="Numéro de téléphone"
-          />
+            required/>
         </section>
         <textarea
           type="text"
