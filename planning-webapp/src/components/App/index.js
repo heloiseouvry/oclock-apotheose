@@ -6,6 +6,7 @@ import "./styles.scss";
 import Header from "../Header";
 import ConnectedHeader from "../ConnectedHeader";
 import Login from "../Login";
+import ForgotPassword from "../ForgotPassword"
 import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
@@ -39,6 +40,12 @@ const App = () => {
         <Route path="/login">
           <Header />
           <Login />
+          {/* <Footer /> */}
+        </Route>
+
+        <Route path="/forgottenPassword">
+          <Header />
+          <ForgotPassword />
           {/* <Footer /> */}
         </Route>
 
