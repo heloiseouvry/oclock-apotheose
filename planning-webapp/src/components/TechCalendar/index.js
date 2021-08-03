@@ -14,6 +14,69 @@ const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
 
+const darkTheme = {
+  "common.border": "1px solid #03DAC6",
+  "common.backgroundColor": "#121212",
+  "common.saturday.color": "#fff",
+  "common.holiday.color": "#fff",
+  "common.dayname.color": "#fff",
+  "common.today.color": "#03DAC6",
+  // creation guide style
+  "common.creationGuide.backgroundColor": "rgba(3, 218, 198, 0.05)",
+  "common.creationGuide.border": "1px solid #03DAC6",
+  // week header 'dayname'
+  "week.dayname.height": "42px",
+  "week.dayname.borderTop": "1px solid #e5e5e5",
+  "week.dayname.borderBottom": "1px solid #e5e5e5",
+  "week.dayname.borderLeft": "inherit",
+  "week.dayname.textAlign": "center",
+  "week.today.color": "#03DAC6",
+  // week vertical panel 'vpanel'
+  "week.vpanelSplitter.border": "1px solid #fff",
+  "week.vpanelSplitter.height": "3px",
+  // week timegrid 'timegrid'
+  "week.timegridLeft.width": "72px",
+  "week.timegridLeft.backgroundColor": "#121212",
+  "week.timegridLeft.borderRight": "1px solid #e5e5e5",
+  "week.timegridLeft.fontSize": "12px",
+  "week.timegridOneHour.height": "52px",
+  "week.timegridHalfHour.height": "26px",
+  "week.timegridHalfHour.borderBottom": "1px dashed rgba(229,229,229,0.3)",
+  "week.timegridHorizontalLine.borderBottom": "1px solid #e5e5e5",
+
+  "week.timegrid.paddingRight": "8px",
+  "week.timegrid.borderRight": "1px solid #e5e5e5",
+  "week.timegridSchedule.borderRadius": "5px",
+  "week.timegridSchedule.paddingLeft": "2px",
+
+  "week.currentTime.color": "#03DAC6",
+  "week.currentTime.fontSize": "16px",
+  "week.currentTime.fontWeight": "bold",
+
+  "week.pastTime.color": "rgba(3, 218, 198, 0.95)",
+  "week.pastTime.fontWeight": "normal",
+
+  "week.futureTime.color": "rgba(3, 218, 198, 0.5)",
+  "week.futureTime.fontWeight": "normal",
+
+  "week.currentTimeLinePast.border": "1px dashed #03DAC6",
+  "week.currentTimeLineBullet.backgroundColor": "#03DAC6",
+  "week.currentTimeLineToday.border": "1px solid #03DAC6",
+  "week.currentTimeLineFuture.border": "1px dashed rgba(3, 218, 198, 0.5)",
+
+  // week creation guide style
+  "week.creationGuide.color": "#03DAC6",
+  "week.creationGuide.fontSize": "14px",
+  "week.creationGuide.fontWeight": "bold",
+
+  // week daygrid schedule style
+  "week.dayGridSchedule.borderRadius": "5px",
+  "week.dayGridSchedule.height": "24px",
+  "week.dayGridSchedule.marginTop": "2px",
+  "week.dayGridSchedule.marginLeft": "8px",
+  "week.dayGridSchedule.marginRight": "8px",
+};
+
 const TechCalendar = () => {
   const [events, setEvents] = useState([]);
   const [phases, setPhases] = useState([]);
@@ -203,31 +266,41 @@ const TechCalendar = () => {
   };
 
   return (
-    <div className="App TechCalendar">
-      <Button size="mini" content="<" secondary onClick={prevView} />
-      <Button size="mini" content="Jour" secondary onClick={dayView} />
-      <Button size="mini" content="Semaine" secondary onClick={weekView} />
-      <Button size="mini" content="Mois" secondary onClick={monthView} />
-      <Button size="mini" content=">" secondary onClick={nextView} />
-      <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
+    <div className="tech-calendar">
+      <section className="calendar-nav-views">
+        <Button size="mini" content="<" secondary onClick={prevView} />
+        <Button size="mini" content="Jour" secondary onClick={dayView} />
+        <Button size="mini" content="Semaine" secondary onClick={weekView} />
+        <Button size="mini" content="Mois" secondary onClick={monthView} />
+        <Button size="mini" content=">" secondary onClick={nextView} />
+        <Button
+          size="mini"
+          content="Aujourd'hui"
+          secondary
+          onClick={todayView}
+        />
+      </section>
 
-      <TUICalendar
-        ref={cal}
-        height="600px"
-        view="week"
-        week={{
-          startDayOfWeek: 1,
-          daynames: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
-        }}
-        isReadOnly={true}
-        taskView={false}
-        useCreationPopup={false} // "false" to use our form instead of app Popup
-        useDetailPopup={true}
-        template={templates}
-        calendars={events}
-        schedules={phases}
-        onClickSchedule={onClickSchedule}
-      />
+      <section className="tech-tui-calendar">
+        <TUICalendar
+          ref={cal}
+          height="650px"
+          view="week"
+          week={{
+            startDayOfWeek: 1,
+            daynames: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
+          }}
+          theme={darkTheme}
+          isReadOnly={true}
+          taskView={false}
+          useCreationPopup={false} // "false" to use our form instead of app Popup
+          useDetailPopup={true}
+          template={templates}
+          calendars={events}
+          schedules={phases}
+          onClickSchedule={onClickSchedule}
+        />
+      </section>
     </div>
   );
 };
