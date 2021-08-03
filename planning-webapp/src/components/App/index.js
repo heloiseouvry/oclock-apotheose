@@ -18,6 +18,7 @@ import ProtectedRoute from "../ProtectedRoute";
 import TransportForm from "../TransportForm";
 import ViewTech from "../ViewTech"
 import SalaryReport from "../SalaryReport";
+import TechSalaryReport from "../TechSalaryReport";
 import DelTech from "../DelTech";
 
 
@@ -82,6 +83,12 @@ const App = () => {
         <Route path="/salaryreport">
           <ConnectedHeader />
           <SalaryReport />
+        {/* <ConnectedFooter /> */}
+        </Route>
+
+        <Route path="/tech/salaryreport">
+          <ConnectedHeader />
+          <TechSalaryReport />
         {/* <ConnectedFooter /> */}
         </Route>
 
