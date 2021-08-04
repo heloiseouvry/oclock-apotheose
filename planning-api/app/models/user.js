@@ -154,7 +154,7 @@ class User extends CoreModel {
      * @returns an object user who matches this id
      */
     static async findById(id){
-        return(new User(await CoreModel.fetchOne('SELECT * FROM "user" WHERE id = $1;', [id])));
+        return(new User(await CoreModel.fetchOne('SELECT lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id FROM "user" WHERE id = $1;', [id])));
     }
 
     static async findUsersByType(type) {
