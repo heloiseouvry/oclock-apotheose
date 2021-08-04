@@ -12,10 +12,9 @@ import "tui-calendar/dist/tui-calendar.css";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
-const port = "4000";
+import base_base_url from "../../../config/dbConf";
 const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
+const base_url = `${base_base_url}/${router}`;
 
 const myTheme = {
   // Theme object to extends default dark theme.
