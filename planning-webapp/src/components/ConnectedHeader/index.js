@@ -16,7 +16,7 @@ const ConnectedHeader = () => {
     history.push('/login');
   }
   return (
-    <header className="connected-header">
+    <header className={ isAdmin ? "connected-header" : "dark-connected-header" }>
       <Link to="/">
         <img src="https://img.icons8.com/ios/100/000000/health-calendar.png" />
         <h1 className="title">Kapouévent</h1>
@@ -26,6 +26,7 @@ const ConnectedHeader = () => {
         className="logout"
         content="Déconnexion"
         icon="log out"
+        inverted = { isAdmin ? false : true }
         onClick={logout}
       />
     </header>

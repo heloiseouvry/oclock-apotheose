@@ -1,32 +1,30 @@
-.LoginForm {
-  font-family: "Source Sans Pro", sans-serif;
-  color: rgb(0, 0, 0);
+@use '../../styles/vars';
+
+.login-page {
+  background-color: vars.$bg-color;
+  color: vars.$text-color;
   font-size: 1.25rem;
-  background-color: whitesmoke;
-  margin-top: 1rem;
-  margin-left:40rem;
-  margin-right: 40rem;
-  margin-bottom: 1rem;
+  height: 85vh;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: 7px;
-  box-shadow: 0 2px 5px #ccc;
-  padding: 5rem;
+  align-items: center;
 }
 
-.title{
-  margin-bottom: 2rem;
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
+.login-form {
+  margin-top: 30px;
+  display: flex;
+  height: 40%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-form input {
+.login-form input {
   border: 1px solid rgba(44, 41, 41, 0.2);
-  background-color: rgba(44, 41, 41, 0.2);
   width: 250px;
   border-radius: 3px;
-  font-family: "Source Sans Pro", sans-serif;
   padding: 10px 15px;
   margin: 0 auto 10px auto;
   display: block;
@@ -36,41 +34,15 @@ form input {
   font-weight: 300;
 }
 
-.checkbox {
-  display: flex;
-  flex-direction: row;
-  padding-left: 14rem;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  justify-content: center;
-}
 
-.connect  {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 14rem;
-  padding-right: 14rem;
-
-}
 
 .error{
-  text-align: center;
-  margin:1rem;
   color:red;
 }
 
-.forgottenPassword{
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
 .demo{
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  margin-top: 2rem;
-  padding-left: 14rem;
-  padding-right: 14rem;
+  align-items: center;
 }

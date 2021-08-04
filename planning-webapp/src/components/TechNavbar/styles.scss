@@ -1,5 +1,8 @@
-.tech-navbar{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+@use '../../styles/vars';
+
+.tech-navbar {
+  background-color: vars.$bg-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

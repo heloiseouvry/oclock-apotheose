@@ -1,66 +1,61 @@
 import React from "react";
-import { useState } from "react/cjs/react.development";
 import { Link  } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import { Button } from "semantic-ui-react";
-import axios from "axios";
+import emailjs from "emailjs-com";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "v1";
-const base_url = `http://${host}:${port}/${router}`;
 
-function ForgotPassword() {
-  const [error, setError] = useState("");
-  const [details, setDetails] = useState({ email: ""});
 
-  const submitHandler = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.get(`${base_url}/users`, details);
-      
-      if ( details ) {
-        console.log('email ok');
+const ForgotPassword = () => {
+    function handleSubmit(e) {
+        e.preventDefault();
+    
+        emailjs.sendForm(
+          "service_kapouevent",
+          "template_06ycjoe",
+          e.target,
+          "user_G9TPGoLJfduwUzmSUTmvP"
+        );
+        e.target.reset(); 
+        document.getElementById("successMessage").style.display="block"
       }
-    } catch (error) {
-      console.error(error);
-      setError("Les informations sont incorrectes !");
-    }
-  };
-
-  return (
-    <div className="LoginForm">
-      <h1 className="title">Mot de passe oublié</h1>
-      {/* // (1)When the form will be submitted it will pass the pass the information to submitHandler  */}
-      <form className="inputForm" method="POST" onSubmit={submitHandler}>
-        {/* // Here we collect the detailled data of the email and password input    */}
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(event) =>
-            setDetails({ ...details, email: event.target.value })
-          }
-        />
-        <div className="connect">
-          <Button
-            type="submit"
-            className="button"
-            content="Envoyer"
-            primary
-          />
-          {error != "" ? <div className="error">{error}</div> : ""}
+      
+    
+      return (
+        <div className="ForgotForm">
+          <h1 className="title">Vous avez oublié votre mot de passe?</h1>
+    
+          <form onSubmit={handleSubmit} className="inputForm" method="POST">
+            <div className="contactDiv">
+              
+              <div className="contactInfo">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Votre email"
+                  required/>
+              </div>
+            </div>            
+            <div className="connect">
+              <Button type="submit" className="button" content="Envoyer" primary />
+            </div>
+            <div id='successMessage' className='successMessage'>
+              <p>Votre demande a bien été envoyée, nous vous contacterons dans les plus brefs délais !</p>
+            </div>
+            
+          </form>
+    
+          <div className="demo">
+            <p>Vous avez déjà un compte? Connectez-vous!</p>
+            <Link to="/login">
+              <Button content="Se connecter" secondary />
+            </Link>
+          </div>
         </div>
-      </form>
-      <div className="demo">
-        <p>Voulez-vous essayer notre application?</p>
-        <Link to="/contact">
-          <Button content="Nous contacter" secondary />
-        </Link>
-      </div>
-    </div>
-  );
-}
+      );
+    };
 
 export default ForgotPassword;
