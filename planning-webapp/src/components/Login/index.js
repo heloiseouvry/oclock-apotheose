@@ -79,7 +79,7 @@ function Login() {
           primary
         />
         {error != "" ? <div className="error">{error}</div> : ""}
-        <a className="forgottenPassword" href="/">
+        <a className="forgottenPassword" href="/forgottenpassword">
           Mot de passe oublié?
         </a>
       </form>

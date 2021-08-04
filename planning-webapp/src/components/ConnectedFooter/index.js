@@ -1,19 +1,15 @@
-import React from 'react';
+import React from "react";
 
+import "./styles.scss";
 
-import './styles.scss';
+const ConnectedFooter = () => {
+  const currentYear = new Date().getFullYear();
 
-const ConnectedFooter= () => { 
-
-    const currentYear = new Date().getFullYear();
-
-    return (
-        <footer className="copyright">
-
-        <p>Copyright ⓒ {currentYear}</p>
-
-        </footer>
-    )
+  return (
+    <footer >
+      <p className="copyright">Copyright ⓒ {currentYear}</p>
+    </footer>
+  );
 };
 
 export default ConnectedFooter;
