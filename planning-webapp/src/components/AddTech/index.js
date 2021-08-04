@@ -1,23 +1,118 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Checkbox, Form, FormGroup, Radio, TextArea } from 'semantic-ui-react';
 import axios from "axios";
 
 import './styles.scss';
 
-const host = "localhost";
+const host = "100.25.136.194";
 const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
 
-function AddTech () {
+const verifiedUserFields = ["lastname", "firstname", "phone_number", "email", "password", "birth_date", "birth_city", "birth_department", "ssn", "emergency_contact", "emergency_phone_number"];
+const verifiedAddressFields = ["main", "zip_code","city"];
 
-  const [error, setError] = useState("");
-  const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980-11-29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
+function AddTech ({tech, onDelete}) {
+  //console.log("tech", tech);
+
+  const [displayText, setDisplayText] = useState("");
+  const [addTechForm, setAddTech] = useState({ lastname: "Dcruz", firstname: "Felipe", phone_number: "06 95 87 45 36", role: "tech", email: "dcruzfelipe@gmail.com", password: "passwordfelipe", status: "intermittent", birth_date: "1982-02-02", birth_city: "Les Ulis", birth_department: "91", ssn: "1 67 81 89 660 016 81", intermittent_registration: "CD9685", legal_entity: "", siret: "", emergency_contact: "Mme Dcruz", emergency_phone_number: "07 85 96 63 25", comments:"RAS", address_id:null});
+  //const [addTechForm, setAddTech] = useState({ lastname: "", firstname: "", phone_number: "", role: "tech", email: "", password: "", status: "", birth_date: "", birth_city: "", birth_department: "", ssn: "", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "", emergency_phone_number: "", comments:"", address_id:null});
   const [addJob, setAddJob] = useState({1: false, 2: false, 3: false, 4: false});
-  const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
+  const [addAddress, setAddAddress] = useState({main: "36 rue de l'abreuvoir", additional: "", zip_code: "75000", city: "Paris"})
+
+  // google research : load data in use state by props react
+  // https://stackoverflow.com/questions/54865764/react-usestate-does-not-reload-state-from-props
+
+  useEffect(()=>{
+    console.log("AddTech::use Effect");
+    if(tech) {
+      console.log("brith_date", tech.birth_date, typeof tech.birth_date);
+      setAddTech({
+        lastname: tech.lastname,
+        firstname: tech.firstname,
+        phone_number: tech.phone_number,
+        role: tech.role,
+        email: tech.email,
+        password: tech.password,
+        status: tech.status,
+        birth_date: tech.birth_date.substring(0,10),
+        birth_city: tech.birth_city,
+        birth_department: tech.birth_department,
+        ssn: tech.ssn,
+        intermittent_registration: tech.intermittent_registration,
+        legal_entity: tech.legal_entity,
+        siret: tech.siret,
+        emergency_contact: tech.emergency_contact,
+        emergency_phone_number: tech.emergency_phone_number,
+        comments: tech.comments,
+        address_id: tech.address_id
+      });
+      console.log("après setAddTech");
+      initAddJob(tech);
+      console.log("après initAddJob");
+      initAddAddress(tech);
+    }
+  },[tech]);
+
+  // TODO
+  const initAddJob = async (tech) => {
+    // TODO récupérer les jobs du user et les set
+    /*
+    try {
+      const addressResponse = await axios.get(`${base_url}/METTRE LA ROUTE DES JOBS`, addAddress,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      });
+    } catch (error) {
+    console.error(error);
+    setDisplayText("Les informations sont incorrectes !");
+    }
+    */
+    setAddJob({1: false, 2: false, 3: false, 4: false});
+  };
+
+  const initAddAddress = async (tech) => {
+    // TODO récupérer l'adresse du user et les set
+    try {
+      const addressResponse = await axios.get(`${base_url}/address/${tech.address_id}`,{
+        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+      });
+    } catch (error) {
+    console.error(error);
+    setDisplayText("Les informations sont incorrectes !");
+    }
+
+    setAddAddress({main: " ", additional: " ", zip_code: " ", city: " "});
+  };
+
+  const checkFields = (obj, fields) => {
+    for (const el of fields) {
+      if (!obj[el]) return false;
+    }
+    return true;
+  };
+
+  const checkJobs = () => {
+    for (const [key, value] of Object.entries(addJob)) {
+      if(value) return true;
+    }
+    return false;
+  };
 
   const handleSubmit = async (event) => {
+    console.log("handleSubmit");
     event.preventDefault();
+    if(!checkFields(addTechForm, verifiedUserFields)){
+      setDisplayText("Merci de renseigner les champs obligatoires du technicien");
+      return;
+    } else if(!checkFields(addAddress, verifiedAddressFields)){
+      setDisplayText("Merci de renseigner les champs obligatoires de l'adresse du technicien");
+      return;
+    } else if(!checkJobs()){
+      setDisplayText("Merci de sélectionner au moins 1 métier");
+      return;
+    }
+
     try {
       const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
@@ -32,6 +127,7 @@ function AddTech () {
 
       let finalJobs = [];
 
+      // If value === true (checkbox checked) it push the key in the array finalJobs
       for (const [key, value] of Object.entries(addJob)) {
         if (value === true)
           finalJobs.push(key);
@@ -42,17 +138,20 @@ function AddTech () {
       });
 
       console.log(userHasJobResponse)
+
+      setDisplayText("Le technicien a bien été enregistré");
       
     } catch (error) {
     console.error(error);
-    setError("Les informations sont incorrectes !");
+    setDisplayText("Les informations sont incorrectes !");
     }
+
   };
   
-  const [interChecked, setInterChecked] = useState(true)
-  const [prestaChecked, setPrestaChecked] = useState(false)
+  const [interChecked, setInterChecked] = useState(true);
+  const [prestaChecked, setPrestaChecked] = useState(false);
   
-  
+
 
     return(
         <div className='CreateTech'>
@@ -78,7 +177,7 @@ function AddTech () {
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="password">Mot de passe</label>
-                  <input id="password" type='text' value={addTechForm.password} onChange={(event) => setAddTech({ ...addTechForm, password: event.target.value })}/>               
+                  <input id="password" disabled={tech? true : false} type={tech? "password" : "text"} value={addTechForm.password} onChange={(event) => setAddTech({ ...addTechForm, password: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="ssn">N° de sécurité sociale</label>
@@ -117,7 +216,7 @@ function AddTech () {
               <Form.Group >
                 <Form.Field required>
                   <label htmlFor="main">Adresse principale</label>
-                  <input id="main" type='text' value={addAddress.main} onChange={(event) => setAddAddress({ ...addAddress, main: event.target.value })}/>               
+                  <input id="main" type='text' value={addAddress.main} onChange={(event) => setAddAddress({ ...addAddress, main: event.target.value })}/>          
                 </Form.Field>
                 <Form.Field >
                   <label htmlFor="additional">Complément d'adresse</label>
@@ -179,12 +278,12 @@ function AddTech () {
               </Form.Group>
               <Form.Group inline>
                 <label><h3>Métier :</h3></label>
-                  <Form.Field>
+                <Form.Field>
                   <Checkbox label='Son' value='1' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Lumière' value='2' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Vidéo' value='3' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Autre' value='4' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
-                  </Form.Field>
+                </Form.Field>
               </Form.Group>
               <Form.Group >
                 <Form.Field>
@@ -194,14 +293,17 @@ function AddTech () {
                   placeholder= 'Inscrivez vos commentaires'  
                   id="comments" value={addTechForm.comments} onChange={(event) => setAddTech({ ...addTechForm, comments: event.target.value })}/> 
                              
-                </Form.Group>
-                
-            
-                <div className='Submit-Tech' >
-                    <Button type='submit' className='button' content='Valider' primary />
-                    
-                </div>
+              </Form.Group>
+              <div className='Submit-Tech' >
+                <Button type='submit' className='button' content='Valider' primary />
+                <p style={displayText ? {} : {display: "none"} }>{displayText}</p>
+              </div>
             </Form>
+            <div>
+              <Button className='button' content='Supprimer' 
+                style={!tech ? {display: "none"} : {} }
+                onClick={() => onDelete(tech)} />
+            </div>
         </div>
     )
 };

@@ -1,4 +1,21 @@
-// https://www.w3schools.com/cssref/css_selectors.asp
-div.TechCalendar div.tui-full-calendar-popup-container > div.tui-full-calendar-section-button {
+@use '../../styles/vars';
+
+div.tech-calendar div.tui-full-calendar-popup-container > div.tui-full-calendar-section-button {
   display: none;
+}
+
+.tech-calendar {
+  background-color: vars.$bg-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-nav-views {
+  margin: 10px auto;
+}
+
+.tech-tui-calendar {
+  width: 100%;
+  height: 50%;
 }

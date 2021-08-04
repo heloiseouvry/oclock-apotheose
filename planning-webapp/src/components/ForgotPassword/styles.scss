@@ -1,0 +1,67 @@
+@use '../../styles/vars';
+
+.forgot-page {
+  background-color: vars.$bg-panel-color;
+  color: vars.$text-color;
+  width: 60vw;
+  border-radius: 7px;
+  box-shadow: 0 0 5px #ccc;
+  padding: 5rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-page form input {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  width: 250px;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: black;
+  font-weight: 300;
+}
+
+.forgot-page .checkbox {
+  display: flex;
+  flex-direction: row;
+  padding-left: 14rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.forgot-page .connect {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 14rem;
+  padding-right: 14rem;
+}
+
+.forgot-page .error {
+  text-align: center;
+  margin: 1rem;
+  color: red;
+}
+
+.forgot-page .forgottenPassword {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.forgot-page .demo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-top: 2rem;
+  padding-left: 14rem;
+  padding-right: 14rem;
+}

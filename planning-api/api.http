@@ -1,5 +1,5 @@
 @protocol=http://
-@host=localhost
+@host=100.25.136.194
 @port=:4000
 @prefix=/v1
 @baseUrl={{protocol}}{{host}}{{port}}{{prefix}}
@@ -61,22 +61,23 @@ Content-Type: application/json
 
 {
   "lastname": "Obama",
-  "firstname": "Barack",
+  "firstname": "Michel",
   "phone_number": "0674965896",
-  "role": "tech",
-  "email": "bo@gmail.com",
+  "role": "cdp",
+  "email": "mo@gmail.com",
   "password": "micdrop",
   "status": "intermittent",
   "birth_date": "1962-12-02",
   "birth_city": "Auxerre",
   "birth_department": "89",
-  "ssn": "1 62 12 89 449 491 84",
+  "ssn": "2 62 12 89 449 491 84",
   "intermittent_registration": "1012",
   "legal_entity": null,
   "siret": null,
   "emergency_contact": "Pierre Dupont",
   "emergency_phone_number": "0612121212",
-  "comments": "ne s'entend pas avec Jean-Jacques"
+  "comments": "ne s'entend pas avec Jean-Jacques",
+  "address_id":8
 }
 
 ### Get all users
@@ -86,6 +87,10 @@ GET {{baseUrl}}/users
 ### Get all users with job
 
 GET {{baseUrl}}/usersjob
+
+### Get one user with job
+
+GET {{baseUrl}}/usersjob/22
 
 ### Get all users' salary
 

@@ -4,7 +4,7 @@ import axios from "axios";
 
 import './styles.scss';
 
-const host = "localhost";
+const host = "100.25.136.194";
 const port = "4000";
 const router = "admin";
 const base_url = `http://${host}:${port}/${router}`;
@@ -12,7 +12,24 @@ const base_url = `http://${host}:${port}/${router}`;
 function AddTech () {
 
   const [error, setError] = useState("");
-  const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980-11-29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
+  const [addTechForm, setAddTech] = useState({ 
+    lastname: "Martin", 
+    firstname: "Jean-Eudes", 
+    phone_number: "0606060606", 
+    role: "tech", email: "jem@gmail.com", 
+    password: "micdrop", 
+    status: "", 
+    birth_date: "1980-11-29", 
+    birth_city: "Reims", 
+    birth_department: "51", 
+    ssn: "1801151105278", 
+    intermittent_registration: "", 
+    legal_entity: "", 
+    siret: "", 
+    emergency_contact: "Obama", 
+    emergency_phone_number: "0707070707", 
+    comments:"Ras", 
+    address_id:null});
   const [addJob, setAddJob] = useState({1: false, 2: false, 3: false, 4: false});
   const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
 
@@ -22,6 +39,7 @@ function AddTech () {
       const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
+      console.log("réponse du fetch address : ",addressResponse);
       addTechForm.address_id = addressResponse.data.id;
       console.log("handlesubmit", addTechForm);
       const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
@@ -206,4 +224,4 @@ function AddTech () {
     )
 };
 
-//export default AddTech;
+export default AddTech;

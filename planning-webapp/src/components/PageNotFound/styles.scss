@@ -1,6 +1,19 @@
-.page-not-found{
+@use '../../styles/vars';
 
-    background-color: bisque;
-    font-family: "Source Sans Pro", sans-serif;
-    color: rgb(0, 0, 0);
+.page-not-found {
+  background-color: vars.$bg-color;
+  color: vars.$text-color;
+  text-align: center;
 }
+
+.page-not-found h2 {
+  font-size: 16px;
+}
+
+.page-not-found .quote-author {
+  font-size: 12px;
+  font-style: italic;
+  width: 100px;
+  margin: auto;
+}
+

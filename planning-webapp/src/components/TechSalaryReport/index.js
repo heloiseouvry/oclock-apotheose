@@ -7,10 +7,10 @@ import "./styles.scss";
 
 const host = "100.25.136.194";
 const port = "4000";
-const router = "admin";
+const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
 
-const SalaryReport = () => {
+const TechSalaryReport = () => {
   const currentMonth = new Date().getMonth();
   const nextMonth = new Date().getMonth() + 1;
   const [startDate, setStartDate] = useState(`${new Date().getFullYear()}-${("0" + currentMonth).slice(-2)}-01`);
@@ -80,7 +80,7 @@ const SalaryReport = () => {
     event.preventDefault();
     try {
       const response = await axios.get(
-        `${base_url}/userssalary/?start_date=${startDate}&end_date=${endDate}`,
+        `${base_url}/useronesalary/?start_date=${startDate}&end_date=${endDate}`,
         {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         }
@@ -179,4 +179,4 @@ const SalaryReport = () => {
   );
 };
 
-export default SalaryReport;
+export default TechSalaryReport;

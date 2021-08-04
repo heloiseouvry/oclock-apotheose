@@ -1,4 +1,15 @@
+@use '../../styles/vars';
+
 body {
-    background-color: white;
-    font-family: "Source Sans Pro", sans-serif;
+  background-color: vars.$bg-color;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.app {
+  background-color: vars.$bg-color;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
