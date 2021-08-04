@@ -4,7 +4,9 @@
   background-color: vars.$bg-color;
   color: vars.$text-color;
   font-size: 1.25rem;
-  height: 85vh;
+  // height: 65vh;
+
+  flex: 1;
 
   display: flex;
   flex-direction: column;
@@ -13,7 +15,7 @@
 }
 
 .login-form {
-  margin-top: 30px;
+  margin-top: 10px;
   display: flex;
   height: 40%;
   flex-direction: column;
@@ -21,7 +23,7 @@
   align-items: center;
 }
 
-.login-form input {
+.login-form input:not([type='checkbox']) {
   border: 1px solid rgba(44, 41, 41, 0.2);
   width: 250px;
   border-radius: 3px;
@@ -34,15 +36,25 @@
   font-weight: 300;
 }
 
-
-
-.error{
-  color:red;
+.rememberme {
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.demo{
-  margin-top: 50px;
+.error {
+  color: red;
+}
+
+.demo {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.divider {
+  width: 30vw;
+  border: 1px solid rgba(181, 181, 181, 0.712);
+  margin: 20px;
 }

@@ -24,10 +24,10 @@ const ForgotPassword = () => {
       
     
       return (
-        <div className="ForgotForm">
+        <div className="forgot-page">
           <h1 className="title">Vous avez oublié votre mot de passe?</h1>
     
-          <form onSubmit={handleSubmit} className="inputForm" method="POST">
+          <form onSubmit={handleSubmit} className="forgot-form" method="POST">
             <div className="contactDiv">
               
               <div className="contactInfo">

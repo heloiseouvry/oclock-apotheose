@@ -58,8 +58,9 @@ const ContactForm = () => {
         <p id="successMessage" className="successMessage">
           Votre message a bien été envoyé
         </p>
-        
       </form>
+
+      <hr className="divider" />
 
       <div className="demo">
         <p>Vous avez déjà un compte? Connectez-vous!</p>
