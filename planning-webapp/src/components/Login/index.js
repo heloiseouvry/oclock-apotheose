@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react/cjs/react.development";
 import { Link, useHistory } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Checkbox } from "semantic-ui-react";
+import { Button, Divider } from "semantic-ui-react";
 import axios from "axios";
 
 import "./styles.scss";
@@ -62,14 +62,16 @@ function Login() {
           }
         />
 
-        <Checkbox
-          className="rememberme"
-          label="Se souvenir de moi"
-          onChange={(_, data) =>
-            setDetails({ ...details, rememberme: data.checked })
-          }
-        />
-
+        <div className="rememberme">
+          <input
+            type="checkbox"
+            id="rememberme"
+            onChange={(_, data) =>
+              setDetails({ ...details, rememberme: data.checked })
+            }
+          />
+          <label htmlFor="rememberme">Se souvenir de moi</label>
+        </div>
 
         <Button
           type="submit"
@@ -83,12 +85,15 @@ function Login() {
         </a>
       </form>
 
+      <hr className="divider" />
+
       <div className="demo">
         <p>Voulez-vous essayer notre application?</p>
         <Link to="/contact">
           <Button content="Nous contacter" secondary />
         </Link>
       </div>
+      
     </div>
   );
 }

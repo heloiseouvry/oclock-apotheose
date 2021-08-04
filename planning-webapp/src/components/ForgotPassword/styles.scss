@@ -15,13 +15,13 @@
     padding: 5rem;
   }
   
-  .title{
+  .ForgotForm .title{
     margin-bottom: 2rem;
     text-align: center;
     font-family: "Source Sans Pro", sans-serif;
   }
   
-  form input {
+  .ForgotForm form input {
     border: 1px solid rgba(44, 41, 41, 0.2);
     background-color: rgba(44, 41, 41, 0.2);
     width: 250px;
@@ -36,7 +36,7 @@
     font-weight: 300;
   }
   
-  .checkbox {
+  .ForgotForm .checkbox {
     display: flex;
     flex-direction: row;
     padding-left: 14rem;
@@ -45,7 +45,7 @@
     justify-content: center;
   }
   
-  .connect  {
+  .ForgotForm .connect  {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -54,18 +54,18 @@
   
   }
   
-  .error{
+  .ForgotForm .error{
     text-align: center;
     margin:1rem;
     color:red;
   }
   
-  .forgottenPassword{
+  .ForgotForm .forgottenPassword{
     text-align: center;
     margin-top: 0.5rem;
   }
   
-  .demo{
+  .ForgotForm .demo{
     display: flex;
     flex-direction: column;
     justify-content: center;

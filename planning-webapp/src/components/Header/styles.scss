@@ -1,9 +1,9 @@
 @use '../../styles/vars';
 
-.header{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: vars.$bg-color;
-    color: vars.$text-color;
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: vars.$bg-color;
+  color: vars.$text-color;
 }

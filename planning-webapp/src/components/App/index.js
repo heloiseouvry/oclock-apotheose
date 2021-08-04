@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "./styles.scss";
 
@@ -16,15 +16,9 @@ import Footer from "../Footer";
 import ConnectedFooter from "../ConnectedFooter";
 import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
-import TransportForm from "../TransportForm";
 import ViewTech from "../ViewTech"
 import SalaryReport from "../SalaryReport";
 import TechSalaryReport from "../TechSalaryReport";
-import DelTech from "../DelTech";
-
-
-
-const isLogged = !!localStorage.getItem("token");
 
 const App = () => {
 
@@ -33,15 +27,15 @@ const App = () => {
   <BrowserRouter>
     <div className="app">
       <Switch>
+
         <Route exact path="/">
           <Homepage />
-          {/* <Footer /> */}
         </Route>
 
         <Route path="/login">
           <Header />
           <Login />
-          {/* <Footer /> */}
+          <Footer />
         </Route>
 
         <Route path="/forgottenPassword">

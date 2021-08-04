@@ -4,3 +4,9 @@ body {
     background-color: vars.$bg-color;
     font-family: "Source Sans Pro", sans-serif;
 }
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
