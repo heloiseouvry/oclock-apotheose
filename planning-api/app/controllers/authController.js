@@ -4,7 +4,7 @@ const jwt = require('../services/auth');
 
 const authController = {
     loginSubmit: async (req, res) => {
-        const { email, password } = req.body;
+        const { email, password, rememberme } = req.body;
         // console.log("dans le controller : ", req.body);
         const user = await User.findByEmail(email);
         // console.log("user ? ", user);
@@ -20,7 +20,7 @@ const authController = {
         }
 
         return res.status(200).json({
-            token: jwt.generateToken(user),
+            token: jwt.generateToken(user, rememberme),
             // all the needed data for front
             role: user.role
         });

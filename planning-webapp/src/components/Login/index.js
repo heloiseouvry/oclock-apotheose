@@ -7,19 +7,24 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
+const host = "localhost";
 const port = "4000";
 const router = "v1";
 const base_url = `http://${host}:${port}/${router}`;
 
 function Login() {
   const [error, setError] = useState("");
-  const [details, setDetails] = useState({ email: "", password: "" });
+  const [details, setDetails] = useState({
+    email: "",
+    password: "",
+    rememberme: false,
+  });
   const [isLogged, setIsLogged] = useState(!!localStorage.getItem("token"));
   const history = useHistory();
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    console.log(details);
     try {
       const response = await axios.post(`${base_url}/login`, details);
       // localStorage.setItem permit to stock pair key / value
@@ -57,7 +62,14 @@ function Login() {
           }
         />
 
-        <Checkbox label="Se souvenir de moi" />
+        <Checkbox
+          className="rememberme"
+          label="Se souvenir de moi"
+          onChange={(_, data) =>
+            setDetails({ ...details, rememberme: data.checked })
+          }
+        />
+
 
         <Button
           type="submit"
