@@ -325,19 +325,22 @@ const MyCalendar = () => {
     if (!changes) {
       newStartDate = schedule.start.toDate();
       newEndDate = schedule.end.toDate();
-    }
-    else {
-      newStartDate = changes.start ? changes.start.toDate() : schedule.start.toDate();
+    } else {
+      newStartDate = changes.start
+        ? changes.start.toDate()
+        : schedule.start.toDate();
       newEndDate = changes.end ? changes.end.toDate() : schedule.end.toDate();
     }
 
     if (schedule.raw.type === "event") {
-      setEventInfo({...schedule,
+      setEventInfo({
+        ...schedule,
         start_date: newStartDate,
         end_date: newEndDate,
       });
     } else {
-      setPhaseInfo({...schedule,
+      setPhaseInfo({
+        ...schedule,
         start_date: newStartDate,
         end_date: newEndDate,
       });
@@ -381,18 +384,63 @@ const MyCalendar = () => {
   // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
   const templates = {
     time: function (schedule) {
-      // console.log("time", schedule);
       return getTimeTemplate(schedule, false);
     },
+    popupDetailDate: function (isAllDay, start, end) {
+      console.log("start", start);
+      console.log("end", end);
+      const start_date = `${("0" + start.getDate()).slice(-2)}/${(
+        "0" +
+        (start.getMonth() + 1)
+      ).slice(-2)}/${start.getFullYear()}`;
+      const start_time = `${("0" + start.getHours()).slice(-2)}h${(
+        "0" + start.getMinutes()
+      ).slice(-2)}`;
+
+      const end_date = `${("0" + end.getDate()).slice(-2)}/${(
+        "0" +
+        (end.getMonth() + 1)
+      ).slice(-2)}/${end.getFullYear()}`;
+      const end_time = `${("0" + end.getHours()).slice(-2)}h${(
+        "0" + end.getMinutes()
+      ).slice(-2)}`;
+
+      console.log("start_date", start_date);
+      console.log("start_time", start_time);
+      console.log("end_date", end_date);
+      console.log("end_time", end_time);
+
+      var isSameDate = start_date === end_date ? true : false;
+      console.log("isSameDate", isSameDate);
+
+      if (isAllDay) {
+        return start_date + (isSameDate ? "" : " - " + end_date);
+      }
+
+      return (
+        `<p><strong>${start_time} - ${end_time}</strong> (${start_date + (isSameDate ? "" : " - " + end_date)})</p>`
+      );
+    },
+    popupDetailUser: (data) => {
+      var ret = "<ul>";
+      for (const [index, attendee] of data.attendees.entries()) {
+        ret += "<li>" + attendee + "</li>";
+        if (index > 3) {
+          ret += "<li>...</li>";
+          break;
+        }
+      }
+      ret += "</ul>";
+      return ret;
+    },
     popupDetailBody: (phaseDetails) => {
-      // console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
       ret += "<p><strong>" + phaseDetails.raw?.type + "</strong></p>";
       ret += "<ul>";
       ret += "</ul>";
       ret += "</div>";
       return ret;
-    }
+    },
   };
 
   return (
@@ -451,7 +499,12 @@ const MyCalendar = () => {
         <Button size="mini" content="Semaine" secondary onClick={weekView} />
         <Button size="mini" content="Mois" secondary onClick={monthView} />
         <Button size="mini" content=">" secondary onClick={nextView} />
-        <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
+        <Button
+          size="mini"
+          content="Aujourd'hui"
+          secondary
+          onClick={todayView}
+        />
       </section>
 
       <TUICalendar
