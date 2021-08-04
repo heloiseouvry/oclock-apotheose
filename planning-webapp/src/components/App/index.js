@@ -6,6 +6,7 @@ import "./styles.scss";
 import Header from "../Header";
 import ConnectedHeader from "../ConnectedHeader";
 import Login from "../Login";
+import ForgotPassword from "../ForgotPassword"
 import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
@@ -18,6 +19,7 @@ import ProtectedRoute from "../ProtectedRoute";
 import TransportForm from "../TransportForm";
 import ViewTech from "../ViewTech"
 import SalaryReport from "../SalaryReport";
+import TechSalaryReport from "../TechSalaryReport";
 import DelTech from "../DelTech";
 import FileTech from "../FileTech";
 
@@ -44,17 +46,23 @@ const App = () => {
           {/* <Footer /> */}
         </Route>
 
+        <Route path="/forgottenPassword">
+          <Header />
+          <ForgotPassword />
+          {/* <Footer /> */}
+        </Route>
+
         <Route path="/contact">
           <Header />
           <ContactForm />
           {/* <Footer /> */}
         </Route>
 
-        <Route path="/calendar">
+        <ProtectedRoute path="/calendar">
           <ConnectedHeader />
           <MyCalendar />
           {/* <ConnectedFooter /> */}
-        </Route>
+        </ProtectedRoute>
 
         <ProtectedRoute path="/tech/calendar">
           <ConnectedHeader />
@@ -84,6 +92,12 @@ const App = () => {
         <Route path="/salaryreport">
           <ConnectedHeader />
           <SalaryReport />
+        {/* <ConnectedFooter /> */}
+        </Route>
+
+        <Route path="/tech/salaryreport">
+          <ConnectedHeader />
+          <TechSalaryReport />
         {/* <ConnectedFooter /> */}
         </Route>
 

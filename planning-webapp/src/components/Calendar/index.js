@@ -1,23 +1,14 @@
 // import React from 'react';
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import TUICalendar from "@toast-ui/react-calendar";
-import { Button, Modal, Header, Image, Icon } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import axios from "axios";
 
-// Import react-modal to use it instead of app's Popup
-// import Modal from "react-modal";
-import ConnectedHeader from "../ConnectedHeader";
-import Form from "../Form";
 import EventForm from "../EventForm";
 import PhaseForm from "../PhaseForm";
-import data from "../../data/data.js";
 
 // import Calendar from '@toast-ui/react-calendar';
 import "tui-calendar/dist/tui-calendar.css";
-
-// If you use the default popups, use this.
-import "tui-date-picker/dist/tui-date-picker.css";
-import "tui-time-picker/dist/tui-time-picker.css";
 
 const host = "100.25.136.194";
 const port = "4000";
@@ -148,7 +139,6 @@ const MyCalendar = () => {
       });
       let phasesToAdd = [];
       for (const phaseBack of response.data) {
-        // console.log("phaseBack", phaseBack);
         const techInfoResponse = await axios.get(
           `${base_url}/phases/${phaseBack.id}/techsinfo`,
           {
@@ -208,7 +198,6 @@ const MyCalendar = () => {
           color: "#ffffff",
           bgColor: phaseBack.color,
         };
-        // console.log("phaseFront", phaseFront);
 
         phasesToAdd.push(phaseFront);
       }
@@ -218,7 +207,6 @@ const MyCalendar = () => {
     }
   };
 
-  // getAllUsersWithJob();
   const getAllUsersWithJob = async () => {
     const response = await axios.get(`${base_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
@@ -227,7 +215,6 @@ const MyCalendar = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect");
     getAllEvents();
     getAllPhases();
     getAllUsersWithJob();
@@ -235,7 +222,6 @@ const MyCalendar = () => {
 
   const cal = useRef(null);
 
-  // passer setIsOpen(true) passe ma variable modalIsOpen à true, je peux donc la modifier, mais je ne peux pas utliser ma variable ici, elle est passé ne props à mon composant
   function openChoiceModal() {
     setChoiceOpen(true);
   }
@@ -287,16 +273,6 @@ const MyCalendar = () => {
 
   function nextView() {
     cal.current.calendarInst.next();
-  }
-
-  function toggleEvent(e, button) {
-    if (e.target.dataset.visible) {
-      cal.current.calendarInst.toggleSchedules(button.content, true);
-      e.target.dataset.visible = false;
-    } else {
-      cal.current.calendarInst.toggleSchedules(button.content, false);
-      e.target.dataset.visible = true;
-    }
   }
 
   const onClickSchedule = useCallback((e) => {
@@ -474,17 +450,6 @@ const MyCalendar = () => {
       <Button size="mini" content="Mois" secondary onClick={monthView} />
       <Button size="mini" content=">" secondary onClick={nextView} />
       <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
-
-      {/* {events.map((e) => (
-        <Button
-          key={e.id}
-          size="mini"
-          content={e.id}
-          circular
-          data-visible={true}
-          onClick={toggleEvent}
-        />
-      ))} */}
 
       <TUICalendar
         ref={cal}

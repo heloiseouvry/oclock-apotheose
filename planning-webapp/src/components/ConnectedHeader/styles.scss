@@ -1,23 +1,42 @@
-.connected-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: whitesmoke;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+@use '../../styles/vars';
+
+.connected-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
-.connected-header>a{
+.connected-header > a {
   display: flex;
 }
 
-.title{
-    color: rgb(0, 0, 0);
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 500;
-    font-size: 3rem;
-    margin-left: 1rem;
+.connected-header h1 {
+  color: rgb(0, 0, 0);
+  font-size: 3rem;
+  font-weight: normal;
+  margin-left: 1rem;
 }
 
-.logout{
-    height: 50%;
+.logout {
+  height: 50%;
+}
+
+.dark-connected-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: vars.$bg-color;
+}
+
+.dark-connected-header > a {
+  display: flex;
+}
+
+.dark-connected-header h1 {
+  color: vars.$text-color;
+  font-size: 3rem;
+  font-weight: normal;
+  margin-left: 1rem;
 }
