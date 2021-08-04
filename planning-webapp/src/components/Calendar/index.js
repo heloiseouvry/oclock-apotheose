@@ -10,6 +10,8 @@ import PhaseForm from "../PhaseForm";
 // import Calendar from '@toast-ui/react-calendar';
 import "tui-calendar/dist/tui-calendar.css";
 
+import "./styles.scss";
+
 const host = "100.25.136.194";
 const port = "4000";
 const router = "admin";
@@ -395,7 +397,7 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className="App">
+    <div className="calendar">
       <Modal
         onClose={closeChoiceModal}
         onOpen={openChoiceModal}
@@ -444,12 +446,14 @@ const MyCalendar = () => {
         </Modal.Content>
       </Modal>
 
-      <Button size="mini" content="<" secondary onClick={prevView} />
-      <Button size="mini" content="Jour" secondary onClick={dayView} />
-      <Button size="mini" content="Semaine" secondary onClick={weekView} />
-      <Button size="mini" content="Mois" secondary onClick={monthView} />
-      <Button size="mini" content=">" secondary onClick={nextView} />
-      <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
+      <section className="calendar-nav-views">
+        <Button size="mini" content="<" secondary onClick={prevView} />
+        <Button size="mini" content="Jour" secondary onClick={dayView} />
+        <Button size="mini" content="Semaine" secondary onClick={weekView} />
+        <Button size="mini" content="Mois" secondary onClick={monthView} />
+        <Button size="mini" content=">" secondary onClick={nextView} />
+        <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
+      </section>
 
       <TUICalendar
         ref={cal}
