@@ -13,7 +13,25 @@ function AddTech ({tech, onDelete}) {
   console.log("tech", tech);
 
   const [error, setError] = useState("");
-  const [addTechForm, setAddTech] = useState({ lastname: "Martin", firstname: "Jean-Eudes", phone_number: "0606060606", role: "tech", email: "jem@gmail.com", password: "micdrop", status: "", birth_date: "1980-11-29", birth_city: "Reims", birth_department: "51", ssn: "1801151105278", intermittent_registration: "", legal_entity: "", siret: "", emergency_contact: "Obama", emergency_phone_number: "0707070707", comments:"Ras", address_id:null});
+  const [addTechForm, setAddTech] = useState({ 
+    lastname: "Martin", 
+    firstname: "Jean-Eudes", 
+    phone_number: "0606060606", 
+    role: "tech", 
+    email: "jem@gmail.com", 
+    password: "micdrop", 
+    status: "", 
+    birth_date: "1980-11-29", 
+    birth_city: "Reims", 
+    birth_department: "51", 
+    ssn: "1801151105278", 
+    intermittent_registration: "", 
+    legal_entity: "", 
+    siret: "", 
+    emergency_contact: "Obama", 
+    emergency_phone_number: "0707070707", 
+    comments:"Ras", 
+    address_id:null});
   const [addJob, setAddJob] = useState({1: false, 2: false, 3: false, 4: false});
   const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
 
@@ -86,6 +104,8 @@ function AddTech ({tech, onDelete}) {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
       addTechForm.address_id = addressResponse.data.id;
+      console.log("réponse du fetch address : ",addressResponse);
+      console.log("valeur de l'address_id : ",addressResponse.data.id);
       console.log("handlesubmit", addTechForm);
       const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
@@ -119,7 +139,7 @@ function AddTech ({tech, onDelete}) {
 
     return(
         <div className='CreateTech'>
-        <h1 className='title'>Ajouter un technicien</h1>
+        <h1 className='title'>Fiche technicien</h1>
                             
             <Form onSubmit={handleSubmit}> 
               <Form.Group>

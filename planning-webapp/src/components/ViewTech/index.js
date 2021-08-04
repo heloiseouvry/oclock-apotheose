@@ -113,22 +113,7 @@ const ViewTech = function () {
           
           setTechDeleted(false);
 
-          /* Yann
-          let techsSelection = [];
-          for (const value of data.value) {
-            const techFound = data.options.find((tech) => tech.value === value);
-            techsSelection.push({
-              id: techFound.value,
-              name: techFound.text,
-            });
-          }
           
-          
-          let newTechsSelected = JSON.parse(JSON.stringify(techsSelected));
-          newTechsSelected[type] = techsSelection;
-          // console.log("newTechsSelected", newTechsSelected);
-          setTechsSelected(newTechsSelected);
-          */
         }}
       />
     </Form.Field>
@@ -146,4 +131,4 @@ const ViewTech = function () {
   )
 };
 
-export default ViewTech
+export default ViewTech;
