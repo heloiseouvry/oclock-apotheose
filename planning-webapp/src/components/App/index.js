@@ -49,7 +49,7 @@ const App = () => {
         <Route path="/contact">
           <Header />
           <ContactForm />
-          {/* <Footer /> */}
+          <Footer />
         </Route>
 
         <ProtectedRoute path="/calendar">
