@@ -14,27 +14,27 @@ function AddTech ({tech, onDelete}) {
 
   const [error, setError] = useState("");
   const [addTechForm, setAddTech] = useState({ 
-    lastname: "Martin", 
-    firstname: "Jean-Eudes", 
-    phone_number: "0606060606", 
+    lastname: "", 
+    firstname: "", 
+    phone_number: "", 
     role: "tech", 
-    email: "jem@gmail.com", 
-    password: "micdrop", 
+    email: "", 
+    password: "", 
     status: "", 
-    birth_date: "1980-11-29", 
-    birth_city: "Reims", 
-    birth_department: "51", 
-    ssn: "1801151105278", 
+    birth_date: "", 
+    birth_city: "", 
+    birth_department: "", 
+    ssn: "", 
     intermittent_registration: "", 
     legal_entity: "", 
     siret: "", 
-    emergency_contact: "Obama", 
-    emergency_phone_number: "0707070707", 
-    comments:"Ras", 
+    emergency_contact: "", 
+    emergency_phone_number: "", 
+    comments:"", 
     address_id:null});
   const [addJob, setAddJob] = useState({1: false, 2: false, 3: false, 4: false});
-  const [addAddress, setAddAddress] = useState({main: "12 rue de la soif", additional: "", zip_code: "51100", city: "Reims"})
-
+  const [addAddress, setAddAddress] = useState({main: "", additional: "", zip_code: "", city: ""})
+  console.log("addtechform : ", addTechForm);
   // google research : load data in use state by props react
   // https://stackoverflow.com/questions/54865764/react-usestate-does-not-reload-state-from-props
 
@@ -132,7 +132,7 @@ function AddTech ({tech, onDelete}) {
     }
   };
   
-  const [interChecked, setInterChecked] = useState(true)
+  const [interChecked, setInterChecked] = useState(false)
   const [prestaChecked, setPrestaChecked] = useState(false)
   
   

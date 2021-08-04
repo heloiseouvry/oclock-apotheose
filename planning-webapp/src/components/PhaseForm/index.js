@@ -32,6 +32,7 @@ function PhaseForm({
     other: [],
   };
   for (const user of users) {
+    // TODO ajouter une boucle pour les type (job)
     usersFormatDropdown[user.type].push({
       key: user.id,
       text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,

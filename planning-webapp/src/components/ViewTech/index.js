@@ -22,13 +22,13 @@ const ViewTech = function () {
   const [usersWithJob, setUsersWithJob] = useState([]);
   const [techSelected, setTechSelected] = useState(null);
   const [techDeleted, setTechDeleted] = useState(false);
-
+  
   const getAllUsersWithJob = async () => {
     const response = await axios.get(`${base_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
     console.log("response=", response);
-  
+    
     const filteredUserWithJob = response.data.filter(element => element.role === "tech");
     console.log("filteredUserWithJob", filteredUserWithJob);
 
