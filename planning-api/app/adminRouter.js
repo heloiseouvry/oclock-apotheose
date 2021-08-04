@@ -24,6 +24,7 @@ router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
 
 router.get('/users', userController.getAllUsers);
 router.get('/usersjob', userController.getAllUsersWithJob);
+router.get('/usersjob/:id(\\d+)', userController.getUsersWithJob);
 router.get('/userssalary', userController.getAllUsersSalary);
 router.post('/users', validateBody(userSchema), userController.addUser);
 router.get('/users/:id(\\d+)', userController.getOneUser);

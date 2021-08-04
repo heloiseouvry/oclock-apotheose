@@ -42,7 +42,7 @@ class User extends CoreModel {
 
         try {
             const preparedQuery = {
-                text: `SELECT * FROM "user" WHERE email=$1;`,
+                text: `SELECT (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user" WHERE email=$1;`,
                 values: [email]
             };
             const { rows } = await db.query(preparedQuery);
@@ -67,8 +67,8 @@ class User extends CoreModel {
             
             try {
                 const preparedQuery = {
-                    text:`UPDATE "user" SET (lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments)=($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) WHERE id = $18`,
-                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.password, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments, this.id]
+                    text:`UPDATE "user" SET (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id)=($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $18) WHERE id = $17`,
+                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments, this.id, this.address_id]
                 }
                 const { rows } = await db.query(preparedQuery);
                  
@@ -80,8 +80,8 @@ class User extends CoreModel {
         } else {
             try {
                 const preparedQuery = {
-                    text: 'INSERT INTO "user"(lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING id',
-                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.password, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments]
+                    text: 'INSERT INTO "user"(lastname, firstname, phone_number, role, email, password, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING id',
+                    values: [this.lastname, this.firstname, this.phone_number, this.role, this.email, this.password, this.status, this.birth_date, this.birth_city, this.birth_department, this.ssn, this.intermittent_registration, this.legal_entity, this.siret, this.emergency_contact, this.emergency_phone_number, this.comments, this.address_id]
                 }
                 const { rows } = await db.query(preparedQuery);
                 this.id = rows[0].id;
@@ -97,15 +97,27 @@ class User extends CoreModel {
      * @returns {Array<User>} an array of all users (object) in database
      */
     static async findAll() {
-        const data = await CoreModel.fetch('SELECT * FROM "user";');
+        const data = await CoreModel.fetch('SELECT (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user";');
         return data.map(d => new User(d));
     }
 
     static async findAllWithJob() {
         const data = await CoreModel.fetch(`
-            SELECT "user".*, job.type FROM "user"
+            SELECT "user".lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user"
             JOIN user_has_job ON user_has_job.user_id = "user".id
-            JOIN job ON user_has_job.job_id = job.id;`);
+            JOIN job ON user_has_job.job_id = job.id
+            GROUP BY "user".id,lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id;`);
+        return data.map(d => new User(d));
+    }
+
+    static async findOneWithJob(id) {
+        const data = await CoreModel.fetch(`
+            SELECT lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user" 
+            JOIN user_has_job ON user_has_job.user_id = "user".id
+            JOIN job ON user_has_job.job_id = job.id
+            WHERE "user".id=$1
+            GROUP BY lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id;`,[id]);
+            console.log(data);
         return data.map(d => new User(d));
     }
 
