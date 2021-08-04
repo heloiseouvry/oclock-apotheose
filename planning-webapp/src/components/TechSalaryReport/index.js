@@ -5,10 +5,9 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const host = "localhost";
-const port = "4000";
+import base_base_url from "../../../config/dbConf";
 const router = "v1";
-const base_url = `http://${host}:${port}/${router}`;
+const base_url = `${base_base_url}/${router}`;
 
 const TechSalaryReport = () => {
   const currentMonth = new Date().getMonth();

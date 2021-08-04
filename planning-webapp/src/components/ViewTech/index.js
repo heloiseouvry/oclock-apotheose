@@ -10,13 +10,10 @@ import PhaseForm from "../PhaseForm"
 
 import './styles.scss';
 
-const host = "100.25.136.194";
-const port = "4000";
+import base_base_url from "../../../config/dbConf";
 const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
-const base_url_delete = `http://${host}:${port}`;
-
-
+const base_url = `${base_base_url}/${router}`;
+const base_url_delete = base_base_url;
 
 const ViewTech = function () {
   const [usersWithJob, setUsersWithJob] = useState([]);

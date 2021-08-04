@@ -4,10 +4,9 @@ import axios from "axios";
 
 import './styles.scss';
 
-const host = "100.25.136.194";
-const port = "4000";
+import base_base_url from "../../../config/dbConf";
 const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
+const base_url = `${base_base_url}/${router}`;
 
 function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
   // console.log("eventInfo", eventInfo);

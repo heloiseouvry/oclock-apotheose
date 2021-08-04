@@ -4,15 +4,17 @@ import axios from "axios";
 
 import './styles.scss';
 
-const host = "100.25.136.194";
-const port = "4000";
+import base_base_url from "../../../config/dbConf";
 const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
+const base_url = `${base_base_url}/${router}`;
+
+const verifiedUserFields = ["lastname", "firstname", "phone_number", "email", "password", "birth_date", "birth_city", "birth_department", "ssn", "emergency_contact", "emergency_phone_number"];
+const verifiedAddressFields = ["main", "zip_code","city"];
 
 function AddTech ({tech, onDelete}) {
-  console.log("tech", tech);
+  //console.log("tech", tech);
 
-  const [error, setError] = useState("");
+  const [displayText, setDisplayText] = useState("");
   const [addTechForm, setAddTech] = useState({ 
     lastname: "", 
     firstname: "", 
@@ -41,6 +43,7 @@ function AddTech ({tech, onDelete}) {
   useEffect(()=>{
     console.log("AddTech::use Effect");
     if(tech) {
+      console.log("brith_date", tech.birth_date, typeof tech.birth_date);
       setAddTech({
         lastname: tech.lastname,
         firstname: tech.firstname,
@@ -49,7 +52,7 @@ function AddTech ({tech, onDelete}) {
         email: tech.email,
         password: tech.password,
         status: tech.status,
-        birth_date: tech.birth_date,
+        birth_date: tech.birth_date.substring(0,10),
         birth_city: tech.birth_city,
         birth_department: tech.birth_department,
         ssn: tech.ssn,
@@ -61,8 +64,10 @@ function AddTech ({tech, onDelete}) {
         comments: tech.comments,
         address_id: tech.address_id
       });
+      console.log("après setAddTech");
       initAddJob(tech);
-      setAddAddress(tech);
+      console.log("après initAddJob");
+      initAddAddress(tech);
     }
   },[tech]);
 
@@ -76,7 +81,7 @@ function AddTech ({tech, onDelete}) {
       });
     } catch (error) {
     console.error(error);
-    setError("Les informations sont incorrectes !");
+    setDisplayText("Les informations sont incorrectes !");
     }
     */
     setAddJob({1: false, 2: false, 3: false, 4: false});
@@ -90,22 +95,45 @@ function AddTech ({tech, onDelete}) {
       });
     } catch (error) {
     console.error(error);
-    setError("Les informations sont incorrectes !");
+    setDisplayText("Les informations sont incorrectes !");
     }
-
 
     setAddAddress({main: " ", additional: " ", zip_code: " ", city: " "});
   };
 
+  const checkFields = (obj, fields) => {
+    for (const el of fields) {
+      if (!obj[el]) return false;
+    }
+    return true;
+  };
+
+  const checkJobs = () => {
+    for (const [key, value] of Object.entries(addJob)) {
+      if(value) return true;
+    }
+    return false;
+  };
+
   const handleSubmit = async (event) => {
+    console.log("handleSubmit");
     event.preventDefault();
+    if(!checkFields(addTechForm, verifiedUserFields)){
+      setDisplayText("Merci de renseigner les champs obligatoires du technicien");
+      return;
+    } else if(!checkFields(addAddress, verifiedAddressFields)){
+      setDisplayText("Merci de renseigner les champs obligatoires de l'adresse du technicien");
+      return;
+    } else if(!checkJobs()){
+      setDisplayText("Merci de sélectionner au moins 1 métier");
+      return;
+    }
+
     try {
       const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
       addTechForm.address_id = addressResponse.data.id;
-      console.log("réponse du fetch address : ",addressResponse);
-      console.log("valeur de l'address_id : ",addressResponse.data.id);
       console.log("handlesubmit", addTechForm);
       const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
@@ -115,6 +143,7 @@ function AddTech ({tech, onDelete}) {
 
       let finalJobs = [];
 
+      // If value === true (checkbox checked) it push the key in the array finalJobs
       for (const [key, value] of Object.entries(addJob)) {
         if (value === true)
           finalJobs.push(key);
@@ -125,11 +154,14 @@ function AddTech ({tech, onDelete}) {
       });
 
       console.log(userHasJobResponse)
+
+      setDisplayText("Le technicien a bien été enregistré");
       
     } catch (error) {
     console.error(error);
-    setError("Les informations sont incorrectes !");
+    setDisplayText("Les informations sont incorrectes !");
     }
+
   };
   
   const [interChecked, setInterChecked] = useState(false)
@@ -137,9 +169,10 @@ function AddTech ({tech, onDelete}) {
   
   
 
+
     return(
         <div className='CreateTech'>
-        <h1 className='title'>Fiche technicien</h1>
+        <h1 className='title'>Ajouter un technicien</h1>
                             
             <Form onSubmit={handleSubmit}> 
               <Form.Group>
@@ -161,7 +194,7 @@ function AddTech ({tech, onDelete}) {
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="password">Mot de passe</label>
-                  <input id="password" type='text' value={addTechForm.password} onChange={(event) => setAddTech({ ...addTechForm, password: event.target.value })}/>               
+                  <input id="password" disabled={tech? true : false} type={tech? "password" : "text"} value={addTechForm.password} onChange={(event) => setAddTech({ ...addTechForm, password: event.target.value })}/>               
                 </Form.Field>
                 <Form.Field required>
                   <label htmlFor="ssn">N° de sécurité sociale</label>
@@ -200,7 +233,7 @@ function AddTech ({tech, onDelete}) {
               <Form.Group >
                 <Form.Field required>
                   <label htmlFor="main">Adresse principale</label>
-                  <input id="main" type='text' value={addAddress.main} onChange={(event) => setAddAddress({ ...addAddress, main: event.target.value })}/>               
+                  <input id="main" type='text' value={addAddress.main} onChange={(event) => setAddAddress({ ...addAddress, main: event.target.value })}/>          
                 </Form.Field>
                 <Form.Field >
                   <label htmlFor="additional">Complément d'adresse</label>
@@ -262,12 +295,12 @@ function AddTech ({tech, onDelete}) {
               </Form.Group>
               <Form.Group inline>
                 <label><h3>Métier :</h3></label>
-                  <Form.Field>
+                <Form.Field>
                   <Checkbox label='Son' value='1' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Lumière' value='2' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Vidéo' value='3' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Autre' value='4' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
-                  </Form.Field>
+                </Form.Field>
               </Form.Group>
               <Form.Group >
                 <Form.Field>
@@ -277,12 +310,11 @@ function AddTech ({tech, onDelete}) {
                   placeholder= 'Inscrivez vos commentaires'  
                   id="comments" value={addTechForm.comments} onChange={(event) => setAddTech({ ...addTechForm, comments: event.target.value })}/> 
                              
-                </Form.Group>
-                
-            
-                <div className='Submit-Tech' >
-                  <Button type='submit' className='button' content='Valider' primary />
-                </div>
+              </Form.Group>
+              <div className='Submit-Tech' >
+                <Button type='submit' className='button' content='Valider' primary />
+                <p style={displayText ? {} : {display: "none"} }>{displayText}</p>
+              </div>
             </Form>
             <div>
               <Button className='button' content='Supprimer' 

@@ -2,10 +2,9 @@ import React, {useEffect} from 'react';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import axios from "axios";
 
-const host = "100.25.136.194";
-const port = "4000";
+import base_base_url from "../../../config/dbConf";
 const router = "v1";
-const base_url = `http://${host}:${port}/${router}`;
+const base_url = `${base_base_url}/${router}`;
 
 const Form = ({ onSubmit, techList, currentPhase}) => {
   
