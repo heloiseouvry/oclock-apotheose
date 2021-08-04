@@ -21,6 +21,12 @@ const userController = {
     res.json(await User.findAllWithJob());
   },
 
+  getUsersWithJob : async (req, res) => {
+    console.log("dans le controller");
+    res.json(await User.findOneWithJob(req.params.id));
+
+},
+
   getAllUsersSalary: async (req, res) => {
     try {
       const { start_date, end_date } = req.query;
@@ -35,6 +41,16 @@ const userController = {
     try {
       const userById = await User.findById(req.params.id);
       res.status(201).json(userById);
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  getOneUserSalary: async (req, res) => {
+    try {
+      const { start_date, end_date } = req.query;
+      const userSalary = await User.getOneUserSalary(start_date, end_date, req.user.userID);
+      res.status(200).json(userSalary);
     } catch (error) {
       res.status(500).json(error.message);
     }

@@ -111,6 +111,7 @@ router.delete('/phases/:id(\\d+)', phaseController.deletePhase);
  */
 router.get('/users', userController.getAllUsers);
 router.get('/usersjob', userController.getAllUsersWithJob);
+router.get('/usersjob/:id', userController.getUsersWithJob);
 router.get('/userssalary', userController.getAllUsersSalary);
 router.get('/useronesalary', authMW, userController.getOneUserSalary);
 

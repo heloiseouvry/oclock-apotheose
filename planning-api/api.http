@@ -76,7 +76,8 @@ Content-Type: application/json
   "siret": null,
   "emergency_contact": "Pierre Dupont",
   "emergency_phone_number": "0612121212",
-  "comments": "ne s'entend pas avec Jean-Jacques"
+  "comments": "ne s'entend pas avec Jean-Jacques",
+  "address_id":8
 }
 
 ### Get all users
@@ -86,6 +87,10 @@ GET {{baseUrl}}/users
 ### Get all users with job
 
 GET {{baseUrl}}/usersjob
+
+### Get one user with job
+
+GET {{baseUrl}}/usersjob/22
 
 ### Get all users' salary
 
