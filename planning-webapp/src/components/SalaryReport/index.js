@@ -5,9 +5,7 @@ import axios from "axios";
 
 import "./styles.scss";
 
-import base_base_url from "../../../config/dbConf";
-const router = "admin";
-const base_url = `${base_base_url}/${router}`;
+import {admin_url} from "../../../config/dbConf";
 
 const SalaryReport = () => {
   const currentMonth = new Date().getMonth();
@@ -79,7 +77,7 @@ const SalaryReport = () => {
     event.preventDefault();
     try {
       const response = await axios.get(
-        `${base_url}/userssalary/?start_date=${startDate}&end_date=${endDate}`,
+        `${admin_url}/userssalary/?start_date=${startDate}&end_date=${endDate}`,
         {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         }

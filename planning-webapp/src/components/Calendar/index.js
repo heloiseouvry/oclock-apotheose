@@ -12,41 +12,7 @@ import "tui-calendar/dist/tui-calendar.css";
 
 import "./styles.scss";
 
-import base_base_url from "../../../config/dbConf";
-const router = "admin";
-const base_url = `${base_base_url}/${router}`;
-
-const myTheme = {
-  // Theme object to extends default dark theme.
-};
-
-// Style for the modal
-const customStyles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.75)",
-  },
-  content: {
-    position: "absolute",
-    top: "40px",
-    left: "40px",
-    right: "40px",
-    bottom: "40px",
-    border: "1px solid #ccc",
-    background: "#fff",
-    overflow: "auto",
-    WebkitOverflowScrolling: "touch",
-    borderRadius: "4px",
-    outline: "none",
-    padding: "20px",
-  },
-};
-
-// Modal.setAppElement("#root");
+import {admin_url} from "../../../config/dbConf";
 
 const MyCalendar = () => {
   const [choiceOpen, setChoiceOpen] = useState(false);
@@ -109,7 +75,7 @@ const MyCalendar = () => {
   const getAllEvents = async () => {
     try {
       // get all events from the API
-      const response = await axios.get(`${base_url}/events`, {
+      const response = await axios.get(`${admin_url}/events`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
       let eventsToAdd = [];
@@ -135,13 +101,13 @@ const MyCalendar = () => {
 
   const getAllPhases = async () => {
     try {
-      const response = await axios.get(`${base_url}/phases`, {
+      const response = await axios.get(`${admin_url}/phases`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
       let phasesToAdd = [];
       for (const phaseBack of response.data) {
         const techInfoResponse = await axios.get(
-          `${base_url}/phases/${phaseBack.id}/techsinfo`,
+          `${admin_url}/phases/${phaseBack.id}/techsinfo`,
           {
             headers: {
               Authorization: `bearer ${localStorage.getItem("token")}`,
@@ -209,7 +175,7 @@ const MyCalendar = () => {
   };
 
   const getAllUsersWithJob = async () => {
-    const response = await axios.get(`${base_url}/usersjob`, {
+    const response = await axios.get(`${admin_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
     setUsersWithJob(response.data);
@@ -304,7 +270,7 @@ const MyCalendar = () => {
 
     const { id, calendarId } = event.schedule;
     try {
-      await axios.delete(`${base_url}/phases/${id}`, {
+      await axios.delete(`${admin_url}/phases/${id}`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
     } catch (error) {
@@ -387,8 +353,6 @@ const MyCalendar = () => {
       return getTimeTemplate(schedule, false);
     },
     popupDetailDate: function (isAllDay, start, end) {
-      //console.log("start", start);
-      //console.log("end", end);
       const start_date = `${("0" + start.getDate()).slice(-2)}/${(
         "0" +
         (start.getMonth() + 1)
@@ -405,13 +369,7 @@ const MyCalendar = () => {
         "0" + end.getMinutes()
       ).slice(-2)}`;
 
-      //console.log("start_date", start_date);
-      //console.log("start_time", start_time);
-      //console.log("end_date", end_date);
-      //console.log("end_time", end_time);
-
       var isSameDate = start_date === end_date ? true : false;
-      //console.log("isSameDate", isSameDate);
 
       if (isAllDay) {
         return start_date + (isSameDate ? "" : " - " + end_date);

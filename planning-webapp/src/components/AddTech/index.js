@@ -4,9 +4,7 @@ import axios from "axios";
 
 import './styles.scss';
 
-import base_base_url from "../../../config/dbConf";
-const router = "admin";
-const base_url = `${base_base_url}/${router}`;
+import {admin_url} from "../../../config/dbConf";
 
 const verifiedUserFields = ["lastname", "firstname", "phone_number", "email", "password", "birth_date", "birth_city", "birth_department", "ssn", "emergency_contact", "emergency_phone_number"];
 const verifiedAddressFields = ["main", "zip_code","city"];
@@ -76,7 +74,7 @@ function AddTech ({tech, onDelete}) {
     // TODO récupérer les jobs du user et les set
     /*
     try {
-      const addressResponse = await axios.get(`${base_url}/METTRE LA ROUTE DES JOBS`, addAddress,{
+      const addressResponse = await axios.get(`${admin_url}/METTRE LA ROUTE DES JOBS`, addAddress,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
     } catch (error) {
@@ -90,7 +88,7 @@ function AddTech ({tech, onDelete}) {
   const initAddAddress = async (tech) => {
     // TODO récupérer l'adresse du user et les set
     try {
-      const addressResponse = await axios.get(`${base_url}/address/${tech.address_id}`,{
+      const addressResponse = await axios.get(`${admin_url}/address/${tech.address_id}`,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
     } catch (error) {
@@ -132,13 +130,13 @@ function AddTech ({tech, onDelete}) {
     try {
       if (!tech) {
         console.log("submit create");
-        const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
+        const addressResponse = await axios.post(`${admin_url}/address`, addAddress,{
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
         });
         addTechForm.address_id = addressResponse.data.id;
         console.log("handlesubmit", addTechForm);
 
-        const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
+        const userResponse = await axios.post(`${admin_url}/users`, addTechForm,{
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
         });
         const user_id = userResponse.data.id;
@@ -151,14 +149,14 @@ function AddTech ({tech, onDelete}) {
             finalJobs.push(key);
         }
 
-        const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, finalJobs,{
+        const userHasJobResponse = await axios.post(`${admin_url}/userhasjob/${user_id}`, finalJobs,{
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
         });
         console.log(userHasJobResponse);
       } else {
         console.log("submit update");
         // Trying to update address and user blindly (no id from db)
-        const addressResponse = await axios.patch(`${base_url}/address/${addTechForm.address_id}`, addAddress,{
+        const addressResponse = await axios.patch(`${admin_url}/address/${addTechForm.address_id}`, addAddress,{
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
         });
         console.log("addressResponse", addressResponse);
@@ -167,7 +165,7 @@ function AddTech ({tech, onDelete}) {
         let userToEdit = {...addTechForm};
         delete userToEdit.password;
 
-        const userResponse = await axios.patch(`${base_url}/users/${userToEdit.id}`, addTechForm,{
+        const userResponse = await axios.patch(`${admin_url}/users/${userToEdit.id}`, addTechForm,{
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
         });
         console.log("userResponse", userResponse);

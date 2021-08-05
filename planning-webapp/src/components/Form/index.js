@@ -2,9 +2,7 @@ import React, {useEffect} from 'react';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import axios from "axios";
 
-import base_base_url from "../../../config/dbConf";
-const router = "v1";
-const base_url = `${base_base_url}/${router}`;
+import {router_url} from "../../../config/dbConf";
 
 const Form = ({ onSubmit, techList, currentPhase}) => {
   
@@ -12,7 +10,7 @@ const Form = ({ onSubmit, techList, currentPhase}) => {
   useEffect(() => {
     const getAllUsers = async () => {
       try {
-        const response = await axios.get(`${base_url}/users`, {
+        const response = await axios.get(`${router_url}/users`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         console.log(response);

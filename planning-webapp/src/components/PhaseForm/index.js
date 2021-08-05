@@ -5,9 +5,7 @@ import PhaseFormTechField from "../PhaseFormTechField";
 
 import "./styles.scss";
 
-import base_base_url from "../../../config/dbConf";
-const router = "admin";
-const base_url = `${base_base_url}/${router}`;
+import {admin_url} from "../../../config/dbConf";
 
 const phaseTypes = [
   { key: 1, text: "Montage", value: "montage" },
@@ -151,7 +149,7 @@ function PhaseForm({
 
       if (phaseEdit) {
         const phaseResponse = await axios.patch(
-          `${base_url}/phases/${phaseBody.id}`,
+          `${admin_url}/phases/${phaseBody.id}`,
           phaseBody,
           {
             headers: {
@@ -159,7 +157,7 @@ function PhaseForm({
             },
           }
         );
-        await axios.delete(`${base_url}/phases/${phaseBody.id}/unassign`, {
+        await axios.delete(`${admin_url}/phases/${phaseBody.id}/unassign`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         for (const type in techsSelected) {
@@ -167,7 +165,7 @@ function PhaseForm({
           for (const tech of techsByType) {
             let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
             await axios.post(
-              `${base_url}/phases/${phaseResponse.data.id}/assign`,
+              `${admin_url}/phases/${phaseResponse.data.id}/assign`,
               salaryBody,
               {
                 headers: {
@@ -180,7 +178,7 @@ function PhaseForm({
         setPhaseEdit(false);
       } else {
         const phaseResponse = await axios.post(
-          `${base_url}/phases`,
+          `${admin_url}/phases`,
           phaseBody,
           {
             headers: {
@@ -193,7 +191,7 @@ function PhaseForm({
           for (const tech of techsByType) {
             let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
             await axios.post(
-              `${base_url}/phases/${phaseResponse.data.id}/assign`,
+              `${admin_url}/phases/${phaseResponse.data.id}/assign`,
               salaryBody,
               {
                 headers: {
