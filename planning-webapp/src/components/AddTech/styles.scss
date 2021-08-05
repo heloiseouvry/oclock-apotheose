@@ -1,4 +1,4 @@
-.CreateTech{
+.CreateTech {
     font-family: "Source Sans Pro", sans-serif;
     color: rgb(0, 0, 0);
     font-size: 1.25rem;
@@ -12,26 +12,34 @@
     box-shadow: 0 2px 5px #ccc;
 }
 
-.submitTech{
+.submitTech {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-.statut{
+.statut {
     border: 1px solid rgba(44, 41, 41, 0.2);
     background-color: rgba(44, 41, 41, 0.2);
     border-radius: 3px;
     color: #757580;
 }
 
-.datePicker{
+.datePicker {
     border: 1px solid rgba(44, 41, 41, 0.2);
     background-color: rgba(44, 41, 41, 0.2);
     border-radius: 3px;
     color: #757580;
 }
 
-.Submit-Tech{
+.Submit-Tech {
   display : inline-block;
+}
+
+#label-metier:after {
+  color: #db2828;
+  content: "*";
+  margin: -.2em 0 0 .2em;
+  display: inline-block;
+  vertical-align: top;
 }

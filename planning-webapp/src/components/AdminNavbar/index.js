@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { slide as Menu } from 'react-burger-menu'
+import { slide as Menu } from "react-burger-menu";
 
-import './styles.scss';
+import "./styles.scss";
 
 var styles = {
   bmBurgerButton: {
@@ -27,31 +27,31 @@ var styles = {
     
   },
   
-  
-
 }
 
-class  AdminNavbar extends React.Component { 
-  
-  showSettings (event) {
+class AdminNavbar extends React.Component {
+  showSettings(event) {
     event.preventDefault();
     
     
   } render () {
     return (
       <nav className="admin-navbar">
-        <nav className='nav-desktop'>
-          <Link to ="/calendar">
-            <Button className='calendar' content="Planning" />
+        <nav className="nav-desktop">
+          <Link to="/calendar">
+            <Button content="Planning" />
           </Link>
-          <Link to ="/addtech">
-            <Button className='addtech' content="Ajouter un technicien" />
+          <Link to="/addtech">
+            <Button content="Ajouter un technicien" />
           </Link>
-          <Link to ="/viewtech">
-            <Button className='viewtech' content="Consulter le profil d'un technicien" />
+          <Link to="/viewtech">
+            <Button content="Consulter le profil d'un technicien" />
           </Link>
-          <Link to ="/salaryreport">
-            <Button className='salaryreport' content="Synthèse des salaires" />
+          <Link to="/techlist">
+            <Button content="Gestion des techniciens" />
+          </Link>
+          <Link to="/salaryreport">
+            <Button content="Synthèse des salaires" />
           </Link>
         </nav>
 
@@ -74,6 +74,6 @@ class  AdminNavbar extends React.Component {
       </nav>
     );
   }
-};
+}
 
 export default AdminNavbar;

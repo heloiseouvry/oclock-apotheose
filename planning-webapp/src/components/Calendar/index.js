@@ -12,7 +12,7 @@ import "tui-calendar/dist/tui-calendar.css";
 
 import "./styles.scss";
 
-import {admin_url} from "../../../config/dbConf";
+import { admin_url } from "../../../config/dbConf";
 
 const darkTheme = {
   "common.border": "1px solid #B5B5B5",
@@ -337,6 +337,11 @@ const MyCalendar = () => {
       await axios.delete(`${admin_url}/phases/${id}`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
+      if (schedule.type.raw === "event") {
+        await axios.delete(`${admin_url}/events/${calendarId}`, {
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -439,9 +444,9 @@ const MyCalendar = () => {
         return start_date + (isSameDate ? "" : " - " + end_date);
       }
 
-      return (
-        `<p><strong>${start_time} - ${end_time}</strong> (${start_date + (isSameDate ? "" : " - " + end_date)})</p>`
-      );
+      return `<p><strong>${start_time} - ${end_time}</strong> (${
+        start_date + (isSameDate ? "" : " - " + end_date)
+      })</p>`;
     },
     popupDetailUser: (data) => {
       var ret = "<ul>";
@@ -468,6 +473,7 @@ const MyCalendar = () => {
   return (
     <div className="calendar">
       <Modal
+        closeIcon
         onClose={closeChoiceModal}
         onOpen={openChoiceModal}
         open={choiceOpen}
@@ -480,7 +486,12 @@ const MyCalendar = () => {
         </Modal.Actions>
       </Modal>
 
-      <Modal onClose={closeEventModal} onOpen={openEventModal} open={eventOpen}>
+      <Modal
+        closeIcon
+        onClose={closeEventModal}
+        onOpen={openEventModal}
+        open={eventOpen}
+      >
         <Modal.Header>
           {eventEdit ? "Modifier un événement" : "Créer un événement"}
         </Modal.Header>
@@ -495,6 +506,7 @@ const MyCalendar = () => {
       </Modal>
 
       <Modal
+        closeIcon
         onClose={closePhaseModal}
         onOpen={openPhaseModal}
         open={phaseOpen}

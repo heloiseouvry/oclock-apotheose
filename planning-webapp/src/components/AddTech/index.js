@@ -20,7 +20,7 @@ function AddTech ({tech, onDelete}) {
     role: "tech", 
     email: "", 
     password: "", 
-    status: "", 
+    status: "intermittent",
     birth_date: "", 
     birth_city: "", 
     birth_department: "", 
@@ -182,7 +182,8 @@ function AddTech ({tech, onDelete}) {
 
   };
   
-  const [interChecked, setInterChecked] = useState(false);
+  //Please don't change the use state, one of the 2 below should be true, and we set the inter as the default value
+  const [interChecked, setInterChecked] = useState(true);
   const [prestaChecked, setPrestaChecked] = useState(false);
 
     return(
@@ -270,7 +271,7 @@ function AddTech ({tech, onDelete}) {
                     <Radio
                     id='intermittent' name='radioGroup' label= 'Intermittent' checked ={interChecked} onChange={(event) => {
                       setAddTech({ ...addTechForm, status: event.target.id });
-                      console.log(event.target.checked);
+                      //console.log(event.target.checked);
                       // setSwitchStatus({intermittent:true, prestataire:false});
                       // isChecked();
                       setInterChecked(true);
@@ -309,7 +310,7 @@ function AddTech ({tech, onDelete}) {
                 </Form.Field>
               </Form.Group>
               <Form.Group inline>
-                <label><h3>Métier :</h3></label>
+                <label><h3 id="label-metier">Métier :</h3></label>
                 <Form.Field>
                   <Checkbox label='Son' value='1' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
                   <Checkbox label='Lumière' value='2' onChange={(event, data)=>setAddJob({...addJob, [data.value]: data.checked})} />
@@ -324,7 +325,6 @@ function AddTech ({tech, onDelete}) {
                 <TextArea
                   placeholder= 'Inscrivez vos commentaires'  
                   id="comments" value={addTechForm.comments} onChange={(event) => setAddTech({ ...addTechForm, comments: event.target.value })}/> 
-                             
               </Form.Group>
               <div className='Submit-Tech' >
                 <Button type='submit' className='button' content='Valider' primary />
