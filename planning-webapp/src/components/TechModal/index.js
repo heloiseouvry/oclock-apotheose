@@ -173,20 +173,20 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
     event.preventDefault();
     if (!checkFields(addTechForm, requiredUserFields)) {
       console.log("addTechForm", addTechForm);
-      openInfoModal({ error: true });
       setDisplayText(
         "Merci de renseigner les champs obligatoires du technicien"
       );
+      openInfoModal({ error: true });
       return;
     } else if (!checkFields(addAddress, verifiedAddressFields)) {
-      openInfoModal({ error: true });
       setDisplayText(
         "Merci de renseigner les champs obligatoires de l'adresse du technicien"
       );
+      openInfoModal({ error: true });
       return;
     } else if (!checkJobs()) {
-      openInfoModal({ error: true });
       setDisplayText("Merci de sélectionner au moins 1 métier");
+      openInfoModal({ error: true });
       return;
     }
 
@@ -237,8 +237,8 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
           }
         );
         console.log("userHasJobResponse", userHasJobResponse);
-        openInfoModal();
         setDisplayText("Le technicien a bien été enregistré");
+        openInfoModal();
       } else {
         console.log("submit update");
         // Trying to update address and user blindly (no id from db)
@@ -264,16 +264,37 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
             },
           }
         );
+
+        const jobResponse = await axios.delete(
+          `${admin_url}/userhasjob/${userToEdit.id}`,
+          {
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log("jobResponse", jobResponse);
+
+        const userHasJobResponse = await axios.post(
+          `${admin_url}/userhasjob/${userToEdit.id}`,
+          finalJobs,
+          {
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log("userHasJobResponse", userHasJobResponse);
         //TODO update jobs when route is existing
-        openInfoModal();
         setDisplayText("Les modifications ont bien été prises en comptes");
+        openInfoModal();
         setEditTech(null);
       }
       // closeTechModal();
     } catch (error) {
       console.error(error);
-      openInfoModal({ error: true });
       setDisplayText("Les informations sont incorrectes !");
+      openInfoModal({ error: true });
     }
   };
 
@@ -369,9 +390,6 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
               }
             />
           </Form.Field>
-        </Form.Group>
-
-        <Form.Group>
           <Form.Field required>
             <label htmlFor="birth_date">Date de naissance</label>
             <input
@@ -564,46 +582,44 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
             />
           </Form.Field>
         </Form.Group>
-        <Form.Group inline>
+        <Form.Group>
           <div>Métier</div>
-          <Form.Field>
-            <Checkbox
-              label="Son"
-              key="1"
-              value="1"
-              // checked={addJob[1]}
-              onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.key]: data.checked })
-              }
-            />
-            <Checkbox
-              label="Lumière"
-              key="2"
-              value="2"
-              // checked={addJob[2]}
-              onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.key]: data.checked })
-              }
-            />
-            <Checkbox
-              label="Vidéo"
-              key="3"
-              value="3"
-              // checked={addJob[3]}
-              onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.key]: data.checked })
-              }
-            />
-            <Checkbox
-              label="Autre"
-              key="4"
-              value="4"
-              // checked={addJob[4]}
-              onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.key]: data.checked })
-              }
-            />
-          </Form.Field>
+          <Checkbox
+            label="Son"
+            key="1"
+            value="1"
+            checked={addJob[1]}
+            onChange={(_, data) =>
+              setAddJob({ ...addJob, [data.value]: data.checked })
+            }
+          />
+          <Checkbox
+            label="Lumière"
+            key="2"
+            value="2"
+            checked={addJob[2]}
+            onChange={(_, data) =>
+              setAddJob({ ...addJob, [data.value]: data.checked })
+            }
+          />
+          <Checkbox
+            label="Vidéo"
+            key="3"
+            value="3"
+            checked={addJob[3]}
+            onChange={(_, data) =>
+              setAddJob({ ...addJob, [data.value]: data.checked })
+            }
+          />
+          <Checkbox
+            label="Autre"
+            key="4"
+            value="4"
+            checked={addJob[4]}
+            onChange={(_, data) =>
+              setAddJob({ ...addJob, [data.value]: data.checked })
+            }
+          />
         </Form.Group>
         <Form.Group>
           <Form.Field>
