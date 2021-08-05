@@ -94,33 +94,43 @@ function TechModal({ tech, onDelete }) {
     }
   }, [tech]);
 
-  // TODO
   const initAddJob = async (tech) => {
-    // TODO récupérer les jobs du user et les set
-    /*
-    try {
-      const addressResponse = await axios.get(`${admin_url}/METTRE LA ROUTE DES JOBS`, addAddress,{
-        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
-      });
-    } catch (error) {
-    console.error(error);
-    setDisplayText("Les informations sont incorrectes !");
+    let jobs = {
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+    };
+    for (const job of tech.job) {
+      switch (job) {
+        case "sound":
+          jobs = { ...jobs, 1: true };
+          break;
+        case "light":
+          jobs = { ...jobs, 2: true };
+          break;
+        case "video":
+          jobs = { ...jobs, 3: true };
+          break;
+        case "other":
+          jobs = { ...jobs, 4: true };
+          break;
+      }
     }
-    */
-    setAddJob({ 1: false, 2: false, 3: false, 4: false });
+    setAddJob(jobs);
   };
 
   const initAddAddress = async (tech) => {
-    // TODO récupérer l'adresse du user et les set
     try {
-      if(tech.address_id) {
+      if (tech.address_id) {
         const addressResponse = await axios.get(
           `${admin_url}/address/${tech.address_id}`,
           {
-            headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
-        console.log("addressResponse", addressResponse);
         setAddAddress({
           main: addressResponse.data.main,
           additional: addressResponse.data.additional,
@@ -133,9 +143,8 @@ function TechModal({ tech, onDelete }) {
           additional: "",
           zip_code: "",
           city: "",
-        })
+        });
       }
-      
     } catch (error) {
       console.error(error);
       setDisplayText("Les informations sont incorrectes !");
@@ -211,7 +220,7 @@ function TechModal({ tech, onDelete }) {
         console.log("finalJobs", finalJobs);
 
         const userHasJobResponse = await axios.post(
-          `${admin_url}/userhasjob/${user_id}`, 
+          `${admin_url}/userhasjob/${user_id}`,
           finalJobs,
           {
             headers: {
@@ -538,30 +547,38 @@ function TechModal({ tech, onDelete }) {
           <Form.Field>
             <Checkbox
               label="Son"
+              key="1"
               value="1"
+              checked={addJob[1]}
               onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.value]: data.checked })
+                setAddJob({ ...addJob, [data.key]: data.checked })
               }
             />
             <Checkbox
               label="Lumière"
+              key="2"
               value="2"
+              checked={addJob[2]}
               onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.value]: data.checked })
+                setAddJob({ ...addJob, [data.key]: data.checked })
               }
             />
             <Checkbox
               label="Vidéo"
+              key="3"
               value="3"
+              checked={addJob[3]}
               onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.value]: data.checked })
+                setAddJob({ ...addJob, [data.key]: data.checked })
               }
             />
             <Checkbox
               label="Autre"
+              key="4"
               value="4"
+              checked={addJob[4]}
               onChange={(_, data) =>
-                setAddJob({ ...addJob, [data.value]: data.checked })
+                setAddJob({ ...addJob, [data.key]: data.checked })
               }
             />
           </Form.Field>
