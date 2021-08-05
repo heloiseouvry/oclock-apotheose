@@ -12,22 +12,22 @@ import "./styles.scss";
 import {router_url} from "../../../config/dbConf";
 
 const darkTheme = {
-  "common.border": "1px solid #03DAC6",
-  "common.backgroundColor": "#121212",
+  "common.border": "1px solid #B5B5B5",
+  "common.backgroundColor": "#27292A",
   "common.saturday.color": "#fff",
   "common.holiday.color": "#fff",
   "common.dayname.color": "#fff",
-  "common.today.color": "#03DAC6",
+  "common.today.color": "#B5B5B5",
   // creation guide style
-  "common.creationGuide.backgroundColor": "rgba(3, 218, 198, 0.05)",
-  "common.creationGuide.border": "1px solid #03DAC6",
+  "common.creationGuide.backgroundColor": "#B5B5B5",
+  "common.creationGuide.border": "1px solid #B5B5B5",
   // week header 'dayname'
   "week.dayname.height": "42px",
   "week.dayname.borderTop": "1px solid #e5e5e5",
   "week.dayname.borderBottom": "1px solid #e5e5e5",
   "week.dayname.borderLeft": "inherit",
   "week.dayname.textAlign": "center",
-  "week.today.color": "#03DAC6",
+  "week.today.color": "#B5B5B5",
   // week vertical panel 'vpanel'
   "week.vpanelSplitter.border": "1px solid #fff",
   "week.vpanelSplitter.height": "3px",
@@ -46,23 +46,23 @@ const darkTheme = {
   "week.timegridSchedule.borderRadius": "5px",
   "week.timegridSchedule.paddingLeft": "2px",
 
-  "week.currentTime.color": "#03DAC6",
+  "week.currentTime.color": "#B5B5B5",
   "week.currentTime.fontSize": "16px",
   "week.currentTime.fontWeight": "bold",
 
-  "week.pastTime.color": "rgba(3, 218, 198, 0.95)",
+  "week.pastTime.color": "#B5B5B5",
   "week.pastTime.fontWeight": "normal",
 
-  "week.futureTime.color": "rgba(3, 218, 198, 0.5)",
+  "week.futureTime.color": "#B5B5B5",
   "week.futureTime.fontWeight": "normal",
 
-  "week.currentTimeLinePast.border": "1px dashed #03DAC6",
-  "week.currentTimeLineBullet.backgroundColor": "#03DAC6",
-  "week.currentTimeLineToday.border": "1px solid #03DAC6",
-  "week.currentTimeLineFuture.border": "1px dashed rgba(3, 218, 198, 0.5)",
+  "week.currentTimeLinePast.border": "1px dashed #B5B5B5",
+  "week.currentTimeLineBullet.backgroundColor": "#B5B5B5",
+  "week.currentTimeLineToday.border": "1px solid #B5B5B5",
+  "week.currentTimeLineFuture.border": "1px dashed #B5B5B5",
 
   // week creation guide style
-  "week.creationGuide.color": "#03DAC6",
+  "week.creationGuide.color": "#B5B5B5",
   "week.creationGuide.fontSize": "14px",
   "week.creationGuide.fontWeight": "bold",
 
