@@ -56,11 +56,19 @@ class  AdminNavbar extends React.Component {
         </nav>
 
         <nav className='nav-mobile'>
-          <Menu right styles={ styles } disableAutoFocus>
+          <Menu onClick={ this.showSettings } right styles={ styles } disableAutoFocus>
+            <Link to ="/calendar">
             <a id="calendar" className="menu-item" href="/calendar">Planning</a>
+            </Link>
+            <Link to ="/addtech">
             <a id="addtech" className="menu-item" href="/addtech">Ajouter un technicien</a>
+            </Link>
+            <Link to ="/viewtech">
             <a id="viewtech" className="menu-item" href="/viewtech">Consulter le profil d'un technicien</a>
-            <a onClick={ this.showSettings } id="viewtech" className="menu-item--small" href="/salaryreport">Synthèse des salaires</a>
+            </Link>
+            <Link to ="/salaryreport">
+            <a  id="viewtech" className="menu-item" href="/salaryreport">Synthèse des salaires</a>
+            </Link>
           </Menu>
         </nav>
       </nav>
