@@ -142,6 +142,16 @@ const userController = {
       res.status(500).json(error.message);
     }
   },
+
+  removeUserJob: async (req, res) => {
+    try {
+      const user = await User.findById(parseInt(req.params.id));
+      await user.removeAllJobsToTech();
+      res.status(200).json({ message: "Job - Suppression effectué avec succès." });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
 };
 
 module.exports = userController;

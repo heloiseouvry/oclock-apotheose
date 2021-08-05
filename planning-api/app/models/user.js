@@ -272,6 +272,19 @@ class User extends CoreModel {
             throw new Error(error.detail);
         }
     }
+
+    async jobToTech(){
+        try {
+            const preparedQuery = {
+                text: 'DELETE FROM user_has_job WHERE user_id = $1;',
+                values: [this.id]
+            };
+            await db.query(preparedQuery);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.detail);
+        }
+    }
 }
 
 module.exports = User;
