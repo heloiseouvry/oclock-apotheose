@@ -96,7 +96,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpY
 ### Get one user with job
 
 GET {{baseUrl}}/usersjob/40
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjE1LCJpYXQiOjE2MjgwODU2MzQsImV4cCI6MTYyODExNDQzNH0.5vvXy8FTNVR9efg6OjxHK3QaZrJe5jYDyjB3f1hdEHM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNjM0ODYsImV4cCI6MTYyODE5MjI4Nn0.6Uf9Te18dKq_SE0KcKKU2b8b05yqR37fPIWUgRb2XEo
 
 
 ### Get all users' salary
@@ -111,7 +111,9 @@ Content-Type: application/json
 
 ### Get an user by his id
 
-GET {{baseUrl}}/users/15
+GET {{baseUrl}}/users/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNjM0ODYsImV4cCI6MTYyODE5MjI4Nn0.6Uf9Te18dKq_SE0KcKKU2b8b05yqR37fPIWUgRb2XEo
+
 
 ### Delete an user by his id
 
@@ -119,27 +121,32 @@ DELETE {{baseUrl}}/users/14
 
 ### Update an user
 
-PATCH {{baseUrl}}/users/15
+PATCH {{baseUrl}}/users/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNjM0ODYsImV4cCI6MTYyODE5MjI4Nn0.6Uf9Te18dKq_SE0KcKKU2b8b05yqR37fPIWUgRb2XEo
 Content-Type: application/json
 
 {
-  "lastname": "Obama",
-  "firstname": "Michele",
-  "phone_number": "0674965896",
-  "role": "tech",
-  "email": "bo@gmail.com",
-  "password": "micdrop",
+  "lastname": "Cormier",
+  "firstname": "Capucine",
+  "phone_number": "01.92.73.82.78",
+  "role": "cdp",
+  "email": "cormier_capucine@gmail.com",
   "status": "intermittent",
-  "birth_date": "1962-12-02",
-  "birth_city": "Auxerre",
-  "birth_department": "89",
-  "ssn": "2 62 12 89 449 491 84",
-  "intermittent_registration": "1012",
+  "birth_date": "1980-11-29T00:00:00.000Z",
+  "birth_city": "Reims",
+  "birth_department": "51",
+  "ssn": "180115110527815",
+  "intermittent_registration": "5494+",
   "legal_entity": null,
   "siret": null,
-  "emergency_contact": "Pierre Dupont",
-  "emergency_phone_number": "0612121212",
-  "comments": "ne s'entend pas avec Jean-Jacques ni michel d'ailleurs, mais bosse super bien avec Jean Eudes !"
+  "emergency_contact": "Obama",
+  "emergency_phone_number": "0707070707",
+  "comments": "Ras",
+  "address_id": 21,
+  "job": [
+      "other",
+      "light"
+    ]
 }
 
 ### Get a user's planning
