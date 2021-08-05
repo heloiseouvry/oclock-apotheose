@@ -11,14 +11,23 @@ var styles = {
     width: '36px',
     height: '30px',
     left: '10px',
-    top: '80px'
+    top: '100px'
   },
   bmBurgerBars: {
-    background: 'white'
+    background: '#b5b5b5'
   },
-  bmBurgerBarsHover: {
-    background: '#a90000'
+  bmMenuWrap: {
+    
+    height: '100%'
   },
+  bmMenu: {
+    background: '#333333',
+    padding: '1.5rem',
+    fontSize: '1.2rem',
+    
+  },
+  
+  
 
 }
 
@@ -26,7 +35,6 @@ class  AdminNavbar extends React.Component {
   
   showSettings (event) {
     event.preventDefault();
-    
     
     
   } render () {
@@ -48,11 +56,11 @@ class  AdminNavbar extends React.Component {
         </nav>
 
         <nav className='nav-mobile'>
-          <Menu onClick={ this.showSettings } styles={ styles }>
-            <a id="calendar" className="menu-item" href="/calendar">Calendar</a>
-            <a id="addtech" className="menu-item" href="/addtech">Add technicien</a>
-            <a id="viewtech" className="menu-item" href="/viewtech">Profile</a>
-            <a id="viewtech" className="menu-item--small" href="/salaryreport">Salaires</a>
+          <Menu right styles={ styles } disableAutoFocus>
+            <a id="calendar" className="menu-item" href="/calendar">Planning</a>
+            <a id="addtech" className="menu-item" href="/addtech">Ajouter un technicien</a>
+            <a id="viewtech" className="menu-item" href="/viewtech">Consulter le profil d'un technicien</a>
+            <a onClick={ this.showSettings } id="viewtech" className="menu-item--small" href="/salaryreport">Synthèse des salaires</a>
           </Menu>
         </nav>
       </nav>
