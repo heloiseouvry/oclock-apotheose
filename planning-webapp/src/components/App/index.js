@@ -19,8 +19,6 @@ import ProtectedRoute from "../ProtectedRoute";
 import ViewTech from "../ViewTech";
 import SalaryReport from "../SalaryReport";
 import TechSalaryReport from "../TechSalaryReport";
-import DelTech from "../DelTech";
-import FileTech from "../FileTech";
 
 const App = () => {
   return (
