@@ -281,7 +281,7 @@ const TechCalendar = () => {
       <section className="tech-tui-calendar">
         <TUICalendar
           ref={cal}
-          height="650px"
+          height="770px"
           view="week"
           week={{
             startDayOfWeek: 1,
