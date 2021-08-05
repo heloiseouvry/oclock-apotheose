@@ -19,6 +19,8 @@ import ProtectedRoute from "../ProtectedRoute";
 import ViewTech from "../ViewTech";
 import SalaryReport from "../SalaryReport";
 import TechSalaryReport from "../TechSalaryReport";
+import TechRecord from "../TechRecord";
+import TechModal from "../TechModal";
 
 const App = () => {
   return (
@@ -69,6 +71,18 @@ const App = () => {
           <ProtectedRoute path="/viewtech">
             <ConnectedHeader />
             <ViewTech />
+            <ConnectedFooter />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/techrecord">
+            <ConnectedHeader />
+            <TechRecord />
+            <ConnectedFooter />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/techmodal">
+            <ConnectedHeader />
+            <TechModal />
             <ConnectedFooter />
           </ProtectedRoute>
 

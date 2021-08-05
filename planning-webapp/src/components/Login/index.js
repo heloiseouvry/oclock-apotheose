@@ -81,7 +81,7 @@ function Login() {
         </a>
       </form>
 
-      <hr className="divider" />
+      <hr className="login-divider" />
 
       <div className="demo">
         <p>Voulez-vous essayer notre application?</p>
