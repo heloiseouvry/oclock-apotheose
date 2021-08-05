@@ -21,11 +21,13 @@ const userController = {
     res.json(await User.findAllWithJob());
   },
 
-  getUsersWithJob : async (req, res) => {
-    console.log("dans le controller");
+  getUsersWithJob: async (req, res) => {
     res.json(await User.findOneWithJob(req.params.id));
+  },
 
-},
+  getAllUsersWithFullInfo: async (req, res) => {
+    res.json(await User.findAllWithFullInfo());
+  },
 
   getAllUsersSalary: async (req, res) => {
     try {
