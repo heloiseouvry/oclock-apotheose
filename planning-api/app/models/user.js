@@ -97,7 +97,7 @@ class User extends CoreModel {
      * @returns {Array<User>} an array of all users (object) in database
      */
     static async findAll() {
-        const data = await CoreModel.fetch('SELECT (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user";');
+        const data = await CoreModel.fetch('SELECT (id,lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user";');
         console.log("findall : ",data);
         return data.map(d => new User(d));
     }
