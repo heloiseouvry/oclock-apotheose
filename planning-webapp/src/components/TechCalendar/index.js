@@ -9,10 +9,7 @@ import "tui-calendar/dist/tui-calendar.css";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "v1";
-const base_url = `http://${host}:${port}/${router}`;
+import {router_url} from "../../../config/dbConf";
 
 const darkTheme = {
   "common.border": "1px solid #03DAC6",
@@ -85,7 +82,7 @@ const TechCalendar = () => {
     const getAllEvents = async () => {
       try {
         // get all events from the API
-        const response = await axios.get(`${base_url}/events`, {
+        const response = await axios.get(`${router_url}/events`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         let eventsToAdd = [];
@@ -111,13 +108,13 @@ const TechCalendar = () => {
 
     const getAllPhases = async () => {
       try {
-        const response = await axios.get(`${base_url}/users/planning`, {
+        const response = await axios.get(`${router_url}/users/planning`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         let phasesToAdd = [];
         for (const phaseBack of response.data) {
           const techInfoResponse = await axios.get(
-            `${base_url}/phases/${phaseBack.id}/techsinfo`,
+            `${router_url}/phases/${phaseBack.id}/techsinfo`,
             {
               headers: {
                 Authorization: `bearer ${localStorage.getItem("token")}`,

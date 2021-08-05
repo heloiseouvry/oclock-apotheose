@@ -6,7 +6,6 @@ import TechNavbar from "../TechNavbar";
 
 import "./styles.scss";
 
-
 const ConnectedHeader = () => {
   const isAdmin = (localStorage.getItem("role") === "cdp") ? true : false;
   const history = useHistory();

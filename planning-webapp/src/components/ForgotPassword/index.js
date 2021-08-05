@@ -6,8 +6,6 @@ import emailjs from "emailjs-com";
 
 import "./styles.scss";
 
-
-
 const ForgotPassword = () => {
     function handleSubmit(e) {
         e.preventDefault();

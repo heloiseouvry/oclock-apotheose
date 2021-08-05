@@ -4,10 +4,7 @@ import axios from "axios";
 
 import './styles.scss';
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
+import {admin_url} from "../../../config/dbConf";
 
 function AddTech () {
 
@@ -36,13 +33,13 @@ function AddTech () {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
+      const addressResponse = await axios.post(`${admin_url}/address`, addAddress,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
       console.log("réponse du fetch address : ",addressResponse);
       addTechForm.address_id = addressResponse.data.id;
       console.log("handlesubmit", addTechForm);
-      const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
+      const userResponse = await axios.post(`${admin_url}/users`, addTechForm,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
       const user_id = userResponse.data.id;
@@ -55,7 +52,7 @@ function AddTech () {
           finalJobs.push(key);
       }
 
-      const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, finalJobs,{
+      const userHasJobResponse = await axios.post(`${admin_url}/userhasjob/${user_id}`, finalJobs,{
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
       });
 

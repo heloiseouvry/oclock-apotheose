@@ -4,10 +4,7 @@ import axios from "axios";
 
 import './styles.scss';
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
+import {admin_url} from "../../../config/dbConf";
 
 function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
   // console.log("eventInfo", eventInfo);
@@ -37,11 +34,11 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
       // console.log("eventBody", eventBody);
       // console.log("eventEdit", eventEdit);
       if(eventEdit){
-        await axios.patch(`${base_url}/address/${addressBody.id}`, addressBody, {
+        await axios.patch(`${admin_url}/address/${addressBody.id}`, addressBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         eventBody.address_id = addressBody.id;
-        const eventResponse = await axios.patch(`${base_url}/events/${eventBody.calendarId}`, eventBody, {
+        const eventResponse = await axios.patch(`${admin_url}/events/${eventBody.calendarId}`, eventBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         const phaseBody = {...eventBody, 
@@ -50,16 +47,16 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
           number_fee: '0',
           user_id: eventResponse.data.user_id
         };
-        await axios.patch(`${base_url}/phases/${eventResponse.data.id}`, phaseBody, {
+        await axios.patch(`${admin_url}/phases/${eventResponse.data.id}`, phaseBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         setEventEdit(false);
       } else {
-        const addressResponse = await axios.post(`${base_url}/address`, addressBody, {
+        const addressResponse = await axios.post(`${admin_url}/address`, addressBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         eventBody.address_id = addressResponse.data.id;
-        const eventResponse = await axios.post(`${base_url}/events`, eventBody, {
+        const eventResponse = await axios.post(`${admin_url}/events`, eventBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
 
@@ -69,7 +66,7 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
           number_fee: '0',
           user_id: eventResponse.data.user_id
         };
-        await axios.post(`${base_url}/phases`, phaseBody, {
+        await axios.post(`${admin_url}/phases`, phaseBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
       }

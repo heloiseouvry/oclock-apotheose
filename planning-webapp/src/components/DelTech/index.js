@@ -7,13 +7,6 @@ import PhaseFormTechField from "../PhaseFormTechField";
 
 import './styles.scss';
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
-
-
-
 const DelTech = function () {
   
   return(

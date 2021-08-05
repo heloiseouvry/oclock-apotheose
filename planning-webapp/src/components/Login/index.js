@@ -7,10 +7,7 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "v1";
-const base_url = `http://${host}:${port}/${router}`;
+import {router_url} from "../../../config/dbConf";
 
 function Login() {
   const [error, setError] = useState("");
@@ -25,7 +22,7 @@ function Login() {
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${base_url}/login`, details);
+      const response = await axios.post(`${router_url}/login`, details);
       // localStorage.setItem permit to stock pair key / value
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);

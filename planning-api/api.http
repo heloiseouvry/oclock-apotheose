@@ -1,7 +1,7 @@
 @protocol=http://
 @host=100.25.136.194
 @port=:4000
-@prefix=/v1
+@prefix=/admin
 @baseUrl={{protocol}}{{host}}{{port}}{{prefix}}
 
 ### Get all events
@@ -57,6 +57,7 @@ Content-Type: application/json
 ### Creation of an user
 
 POST {{baseUrl}}/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjE1LCJpYXQiOjE2MjgwODU2MzQsImV4cCI6MTYyODExNDQzNH0.5vvXy8FTNVR9efg6OjxHK3QaZrJe5jYDyjB3f1hdEHM
 Content-Type: application/json
 
 {
@@ -83,14 +84,19 @@ Content-Type: application/json
 ### Get all users
 
 GET {{baseUrl}}/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjE1LCJpYXQiOjE2MjgwODU2MzQsImV4cCI6MTYyODExNDQzNH0.5vvXy8FTNVR9efg6OjxHK3QaZrJe5jYDyjB3f1hdEHM
 
 ### Get all users with job
 
 GET {{baseUrl}}/usersjob
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjE1LCJpYXQiOjE2MjgwODU2MzQsImV4cCI6MTYyODExNDQzNH0.5vvXy8FTNVR9efg6OjxHK3QaZrJe5jYDyjB3f1hdEHM
+
 
 ### Get one user with job
 
-GET {{baseUrl}}/usersjob/22
+GET {{baseUrl}}/usersjob/40
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjE1LCJpYXQiOjE2MjgwODU2MzQsImV4cCI6MTYyODExNDQzNH0.5vvXy8FTNVR9efg6OjxHK3QaZrJe5jYDyjB3f1hdEHM
+
 
 ### Get all users' salary
 

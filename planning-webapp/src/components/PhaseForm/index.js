@@ -5,10 +5,7 @@ import PhaseFormTechField from "../PhaseFormTechField";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
+import {admin_url} from "../../../config/dbConf";
 
 const phaseTypes = [
   { key: 1, text: "Montage", value: "montage" },
@@ -32,11 +29,19 @@ function PhaseForm({
     other: [],
   };
   for (const user of users) {
-    usersFormatDropdown[user.type].push({
-      key: user.id,
-      text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-      value: user.id,
-    });
+    // TODO ajouter une boucle pour les type (job)
+    //console.log("user, usersFormatDropdown", user, usersFormatDropdown);
+    for (const job of user.job) {
+      // if à supprimer à terme
+      // attention user.type était undifined, il faut utiliser user.job
+      if (job) {
+        usersFormatDropdown[job].push({
+          key: user.id,
+          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+          value: user.id,
+        });
+      }
+    }
   }
 
   let eventsFormatted = [];
@@ -73,7 +78,7 @@ function PhaseForm({
   let salaryAssigned = {};
   if (phaseInfo.raw.techInfo) {
     for (const info of phaseInfo.raw.techInfo) {
-      console.log("info", info);
+      //console.log("info", info);
       techsAssigned[info.type].push({
         id: info.id,
         name: `${info.firstname} ${info.lastname[0]}. (${info.phone_number})`,
@@ -118,6 +123,7 @@ function PhaseForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("handleSubmit");
     console.log("phaseForm", phaseForm);
     console.log("salaryForm", salaryForm);
     console.log("techsSelected", techsSelected);
@@ -143,7 +149,7 @@ function PhaseForm({
 
       if (phaseEdit) {
         const phaseResponse = await axios.patch(
-          `${base_url}/phases/${phaseBody.id}`,
+          `${admin_url}/phases/${phaseBody.id}`,
           phaseBody,
           {
             headers: {
@@ -151,7 +157,7 @@ function PhaseForm({
             },
           }
         );
-        await axios.delete(`${base_url}/phases/${phaseBody.id}/unassign`, {
+        await axios.delete(`${admin_url}/phases/${phaseBody.id}/unassign`, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
         });
         for (const type in techsSelected) {
@@ -159,7 +165,7 @@ function PhaseForm({
           for (const tech of techsByType) {
             let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
             await axios.post(
-              `${base_url}/phases/${phaseResponse.data.id}/assign`,
+              `${admin_url}/phases/${phaseResponse.data.id}/assign`,
               salaryBody,
               {
                 headers: {
@@ -172,7 +178,7 @@ function PhaseForm({
         setPhaseEdit(false);
       } else {
         const phaseResponse = await axios.post(
-          `${base_url}/phases`,
+          `${admin_url}/phases`,
           phaseBody,
           {
             headers: {
@@ -185,7 +191,7 @@ function PhaseForm({
           for (const tech of techsByType) {
             let salaryBody = { tech_id: tech.id, salary: salaryForm[tech.id] };
             await axios.post(
-              `${base_url}/phases/${phaseResponse.data.id}/assign`,
+              `${admin_url}/phases/${phaseResponse.data.id}/assign`,
               salaryBody,
               {
                 headers: {

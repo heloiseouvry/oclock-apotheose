@@ -12,42 +12,7 @@ import "tui-calendar/dist/tui-calendar.css";
 
 import "./styles.scss";
 
-const host = "100.25.136.194";
-const port = "4000";
-const router = "admin";
-const base_url = `http://${host}:${port}/${router}`;
-
-const myTheme = {
-  // Theme object to extends default dark theme.
-};
-
-// Style for the modal
-const customStyles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.75)",
-  },
-  content: {
-    position: "absolute",
-    top: "40px",
-    left: "40px",
-    right: "40px",
-    bottom: "40px",
-    border: "1px solid #ccc",
-    background: "#fff",
-    overflow: "auto",
-    WebkitOverflowScrolling: "touch",
-    borderRadius: "4px",
-    outline: "none",
-    padding: "20px",
-  },
-};
-
-// Modal.setAppElement("#root");
+import {admin_url} from "../../../config/dbConf";
 
 const MyCalendar = () => {
   const [choiceOpen, setChoiceOpen] = useState(false);
@@ -110,7 +75,7 @@ const MyCalendar = () => {
   const getAllEvents = async () => {
     try {
       // get all events from the API
-      const response = await axios.get(`${base_url}/events`, {
+      const response = await axios.get(`${admin_url}/events`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
       let eventsToAdd = [];
@@ -136,13 +101,13 @@ const MyCalendar = () => {
 
   const getAllPhases = async () => {
     try {
-      const response = await axios.get(`${base_url}/phases`, {
+      const response = await axios.get(`${admin_url}/phases`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
       let phasesToAdd = [];
       for (const phaseBack of response.data) {
         const techInfoResponse = await axios.get(
-          `${base_url}/phases/${phaseBack.id}/techsinfo`,
+          `${admin_url}/phases/${phaseBack.id}/techsinfo`,
           {
             headers: {
               Authorization: `bearer ${localStorage.getItem("token")}`,
@@ -210,7 +175,7 @@ const MyCalendar = () => {
   };
 
   const getAllUsersWithJob = async () => {
-    const response = await axios.get(`${base_url}/usersjob`, {
+    const response = await axios.get(`${admin_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
     setUsersWithJob(response.data);
@@ -281,7 +246,7 @@ const MyCalendar = () => {
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
 
-    console.log("onClickSchedule", e, el.getBoundingClientRect());
+    //console.log("onClickSchedule", e, el.getBoundingClientRect());
   }, []);
 
   const onBeforeCreateSchedule = useCallback((event) => {
@@ -305,7 +270,7 @@ const MyCalendar = () => {
 
     const { id, calendarId } = event.schedule;
     try {
-      await axios.delete(`${base_url}/phases/${id}`, {
+      await axios.delete(`${admin_url}/phases/${id}`, {
         headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
       });
     } catch (error) {
@@ -326,19 +291,22 @@ const MyCalendar = () => {
     if (!changes) {
       newStartDate = schedule.start.toDate();
       newEndDate = schedule.end.toDate();
-    }
-    else {
-      newStartDate = changes.start ? changes.start.toDate() : schedule.start.toDate();
+    } else {
+      newStartDate = changes.start
+        ? changes.start.toDate()
+        : schedule.start.toDate();
       newEndDate = changes.end ? changes.end.toDate() : schedule.end.toDate();
     }
 
     if (schedule.raw.type === "event") {
-      setEventInfo({...schedule,
+      setEventInfo({
+        ...schedule,
         start_date: newStartDate,
         end_date: newEndDate,
       });
     } else {
-      setPhaseInfo({...schedule,
+      setPhaseInfo({
+        ...schedule,
         start_date: newStartDate,
         end_date: newEndDate,
       });
@@ -382,18 +350,55 @@ const MyCalendar = () => {
   // Le template sert à rendre la vue de la phase, j'y place toutes les infos que je reçois du form via la fonction popupDetailBody(phaseDetails)
   const templates = {
     time: function (schedule) {
-      // console.log("time", schedule);
       return getTimeTemplate(schedule, false);
     },
+    popupDetailDate: function (isAllDay, start, end) {
+      const start_date = `${("0" + start.getDate()).slice(-2)}/${(
+        "0" +
+        (start.getMonth() + 1)
+      ).slice(-2)}/${start.getFullYear()}`;
+      const start_time = `${("0" + start.getHours()).slice(-2)}h${(
+        "0" + start.getMinutes()
+      ).slice(-2)}`;
+
+      const end_date = `${("0" + end.getDate()).slice(-2)}/${(
+        "0" +
+        (end.getMonth() + 1)
+      ).slice(-2)}/${end.getFullYear()}`;
+      const end_time = `${("0" + end.getHours()).slice(-2)}h${(
+        "0" + end.getMinutes()
+      ).slice(-2)}`;
+
+      var isSameDate = start_date === end_date ? true : false;
+
+      if (isAllDay) {
+        return start_date + (isSameDate ? "" : " - " + end_date);
+      }
+
+      return (
+        `<p><strong>${start_time} - ${end_time}</strong> (${start_date + (isSameDate ? "" : " - " + end_date)})</p>`
+      );
+    },
+    popupDetailUser: (data) => {
+      var ret = "<ul>";
+      for (const [index, attendee] of data.attendees.entries()) {
+        ret += "<li>" + attendee + "</li>";
+        if (index > 3) {
+          ret += "<li>...</li>";
+          break;
+        }
+      }
+      ret += "</ul>";
+      return ret;
+    },
     popupDetailBody: (phaseDetails) => {
-      // console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
       ret += "<p><strong>" + phaseDetails.raw?.type + "</strong></p>";
       ret += "<ul>";
       ret += "</ul>";
       ret += "</div>";
       return ret;
-    }
+    },
   };
 
   return (
@@ -452,7 +457,12 @@ const MyCalendar = () => {
         <Button size="mini" content="Semaine" secondary onClick={weekView} />
         <Button size="mini" content="Mois" secondary onClick={monthView} />
         <Button size="mini" content=">" secondary onClick={nextView} />
-        <Button size="mini" content="Aujourd'hui" secondary onClick={todayView} />
+        <Button
+          size="mini"
+          content="Aujourd'hui"
+          secondary
+          onClick={todayView}
+        />
       </section>
 
       <TUICalendar

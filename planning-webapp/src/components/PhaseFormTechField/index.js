@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Dropdown,
-  Form,
-  FormField,
-  Input,
-  Checkbox,
-  Label,
-  TextArea,
-  Divider,
-} from "semantic-ui-react";
+import { Dropdown, Form, Label } from "semantic-ui-react";
 
 import "./styles.scss";
 
@@ -21,7 +11,6 @@ function PhaseFormTechField({
   techsSelected,
   setTechsSelected,
 }) {
-
   return (
     <Form.Field>
       <Label>Technicien {typeFR}</Label>

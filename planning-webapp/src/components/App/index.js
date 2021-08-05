@@ -62,35 +62,36 @@ const App = () => {
             <ConnectedFooter />
           </ProtectedRoute>
 
-          <Route path="/addtech">
+          <ProtectedRoute path="/addtech">
             <ConnectedHeader />
             <AddTech />
             <ConnectedFooter />
-          </Route>
+          </ProtectedRoute>
 
-          <Route path="/viewtech">
+          <ProtectedRoute path="/viewtech">
             <ConnectedHeader />
             <ViewTech />
             <ConnectedFooter />
-          </Route>
+          </ProtectedRoute>
 
-          <Route path="/salaryreport">
+          <ProtectedRoute path="/salaryreport">
             <ConnectedHeader />
             <SalaryReport />
             <ConnectedFooter />
-          </Route>
+          </ProtectedRoute>
 
-          <Route path="/tech/salaryreport">
+          <ProtectedRoute path="/tech/salaryreport">
             <ConnectedHeader />
             <TechSalaryReport />
             <ConnectedFooter />
-          </Route>
+          </ProtectedRoute>
 
           <Route path="*">
             <Header />
             <PageNotFound />
             <Footer />
           </Route>
+          
         </Switch>
       </div>
     </BrowserRouter>

@@ -42,7 +42,7 @@ class User extends CoreModel {
 
         try {
             const preparedQuery = {
-                text: `SELECT (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user" WHERE email=$1;`,
+                text: `SELECT (lastname, firstname, phone_number, role, email, status, birth_date, password, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user" WHERE email=$1;`,
                 values: [email]
             };
             const { rows } = await db.query(preparedQuery);
@@ -98,15 +98,17 @@ class User extends CoreModel {
      */
     static async findAll() {
         const data = await CoreModel.fetch('SELECT (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user";');
+        console.log("findall : ",data);
         return data.map(d => new User(d));
     }
 
     static async findAllWithJob() {
         const data = await CoreModel.fetch(`
-            SELECT "user".lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user"
-            JOIN user_has_job ON user_has_job.user_id = "user".id
-            JOIN job ON user_has_job.job_id = job.id
+            SELECT "user".id, lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user"
+            FULL OUTER JOIN user_has_job ON user_has_job.user_id = "user".id
+            FULL OUTER JOIN job ON user_has_job.job_id = job.id
             GROUP BY "user".id,lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id;`);
+            console.log("findall with jobs : ", data);
         return data.map(d => new User(d));
     }
 
