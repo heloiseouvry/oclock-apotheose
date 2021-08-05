@@ -24,6 +24,7 @@ const TechSalaryReport = () => {
       height: "15px",
       borderRadius: "15px",
       backgroundColor,
+      color : "white",
     };
   };
 
@@ -90,7 +91,7 @@ const TechSalaryReport = () => {
 
   return (
     <div>
-      <h1>Synthèse de mon salaire</h1>
+      <h1>Synthèse des salaires</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Field inline required>
@@ -124,7 +125,7 @@ const TechSalaryReport = () => {
       </Form>
 
       {selectedDates.length ?
-      <Grid textAlign="center" columns="equal" celled="internally">
+      <Grid id="salary-grid" textAlign="center" columns="equal" celled="internally">
         <Grid.Row>
           <Grid.Column width={1}>Technicien</Grid.Column>
           {selectedDates.map((date) => (

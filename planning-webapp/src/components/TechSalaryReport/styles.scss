@@ -1,0 +1,21 @@
+.ui[class*="center aligned"].grid {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: white;
+}
+
+h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child {
+  margin-bottom: 0;
+  color: white;
+}
+
+h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child {
+  margin-top: 0;
+  color: white;
+}
+
+.ui.form .inline.field>:first-child, .ui.form .inline.fields .field>:first-child {
+  margin: 0 .85714286em 0 0;
+  color: white;
+}
