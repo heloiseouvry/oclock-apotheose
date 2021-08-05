@@ -388,7 +388,7 @@ function PhaseForm({
           setTechsSelected={setTechsSelected}
         />
       </Form.Group>
-      <Form.Group>
+      <Form.Group className='salary-container'>
         {techsSelected.sound?.map((tech, index) => (
           <Form.Input
             icon="euro"
