@@ -543,7 +543,7 @@ const MyCalendar = () => {
 
       <TUICalendar
         ref={cal}
-        height="770px"
+        height="600px"
         view="week"
         week={{
           startDayOfWeek: 1,

@@ -8,8 +8,8 @@ import "./styles.scss";
 import {router_url} from "../../../config/dbConf";
 
 const TechSalaryReport = () => {
-  const currentMonth = new Date().getMonth();
-  const nextMonth = new Date().getMonth() + 1;
+  const currentMonth = new Date().getMonth() + 1;
+  const nextMonth = new Date().getMonth() + 2;
   const [startDate, setStartDate] = useState(`${new Date().getFullYear()}-${("0" + currentMonth).slice(-2)}-01`);
   const [endDate, setEndDate] = useState(`${new Date().getFullYear()}-${("0" + nextMonth).slice(-2)}-01`);
   const [salaryData, setSalaryData] = useState([]);
