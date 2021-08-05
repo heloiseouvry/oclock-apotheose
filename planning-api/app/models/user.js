@@ -273,7 +273,7 @@ class User extends CoreModel {
         }
     }
 
-    async jobToTech(){
+    async removeAllJobsToTech(){
         try {
             const preparedQuery = {
                 text: 'DELETE FROM user_has_job WHERE user_id = $1;',
