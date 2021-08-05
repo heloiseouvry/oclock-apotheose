@@ -3,7 +3,8 @@ import {
   Button,
   Checkbox,
   Form,
-  FormGroup,
+  Icon,
+  Modal,
   Radio,
   TextArea,
 } from "semantic-ui-react";
@@ -13,7 +14,7 @@ import "./styles.scss";
 
 import { admin_url } from "../../../config/dbConf";
 
-const verifiedUserFields = [
+const requiredUserFields = [
   "lastname",
   "firstname",
   "phone_number",
@@ -28,7 +29,7 @@ const verifiedUserFields = [
 ];
 const verifiedAddressFields = ["main", "zip_code", "city"];
 
-function TechModal({ tech, onDelete }) {
+function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
   //console.log("tech", tech);
 
   const [displayText, setDisplayText] = useState("");
@@ -153,6 +154,9 @@ function TechModal({ tech, onDelete }) {
 
   const checkFields = (obj, fields) => {
     for (const el of fields) {
+      if (el === "password" && tech) {
+        continue;
+      }
       if (!obj[el]) return false;
     }
     return true;
@@ -167,17 +171,21 @@ function TechModal({ tech, onDelete }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!checkFields(addTechForm, verifiedUserFields)) {
+    if (!checkFields(addTechForm, requiredUserFields)) {
+      console.log("addTechForm", addTechForm);
+      openInfoModal({ error: true });
       setDisplayText(
         "Merci de renseigner les champs obligatoires du technicien"
       );
       return;
     } else if (!checkFields(addAddress, verifiedAddressFields)) {
+      openInfoModal({ error: true });
       setDisplayText(
         "Merci de renseigner les champs obligatoires de l'adresse du technicien"
       );
       return;
     } else if (!checkJobs()) {
+      openInfoModal({ error: true });
       setDisplayText("Merci de sélectionner au moins 1 métier");
       return;
     }
@@ -229,6 +237,8 @@ function TechModal({ tech, onDelete }) {
           }
         );
         console.log("userHasJobResponse", userHasJobResponse);
+        openInfoModal();
+        setDisplayText("Le technicien a bien été enregistré");
       } else {
         console.log("submit update");
         // Trying to update address and user blindly (no id from db)
@@ -241,10 +251,8 @@ function TechModal({ tech, onDelete }) {
             },
           }
         );
-        console.log("addressResponse", addressResponse);
-
         // copy user into a new var and deleting password
-        let userToEdit = { ...addTechForm };
+        let userToEdit = tech;
         delete userToEdit.password;
 
         const userResponse = await axios.patch(
@@ -256,27 +264,41 @@ function TechModal({ tech, onDelete }) {
             },
           }
         );
-        console.log("userResponse", userResponse);
-
         //TODO update jobs when route is existing
+        openInfoModal();
+        setDisplayText("Les modifications ont bien été prises en comptes");
+        setEditTech(null);
       }
-
-      setDisplayText("Le technicien a bien été enregistré");
+      // closeTechModal();
     } catch (error) {
       console.error(error);
+      openInfoModal({ error: true });
       setDisplayText("Les informations sont incorrectes !");
     }
   };
+
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [infoError, setInfoError] = useState(false);
+
+  function openInfoModal(options = {}) {
+    setInfoOpen(true);
+    if (options?.error) {
+      setInfoError(true);
+    }
+  }
+
+  function closeInfoModal() {
+    setInfoOpen(false);
+    if (!infoError) {
+      closeTechModal();
+    }
+  }
 
   const [interChecked, setInterChecked] = useState(false);
   const [prestaChecked, setPrestaChecked] = useState(false);
 
   return (
-    <div className="CreateTech">
-      <h1 className="title">
-        {tech ? "Modifier un technicien" : "Ajouter un technicien"}
-      </h1>
-
+    <div>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Field required>
@@ -549,7 +571,7 @@ function TechModal({ tech, onDelete }) {
               label="Son"
               key="1"
               value="1"
-              checked={addJob[1]}
+              // checked={addJob[1]}
               onChange={(_, data) =>
                 setAddJob({ ...addJob, [data.key]: data.checked })
               }
@@ -558,7 +580,7 @@ function TechModal({ tech, onDelete }) {
               label="Lumière"
               key="2"
               value="2"
-              checked={addJob[2]}
+              // checked={addJob[2]}
               onChange={(_, data) =>
                 setAddJob({ ...addJob, [data.key]: data.checked })
               }
@@ -567,7 +589,7 @@ function TechModal({ tech, onDelete }) {
               label="Vidéo"
               key="3"
               value="3"
-              checked={addJob[3]}
+              // checked={addJob[3]}
               onChange={(_, data) =>
                 setAddJob({ ...addJob, [data.key]: data.checked })
               }
@@ -576,7 +598,7 @@ function TechModal({ tech, onDelete }) {
               label="Autre"
               key="4"
               value="4"
-              checked={addJob[4]}
+              // checked={addJob[4]}
               onChange={(_, data) =>
                 setAddJob({ ...addJob, [data.key]: data.checked })
               }
@@ -596,18 +618,25 @@ function TechModal({ tech, onDelete }) {
             }
           />
         </Form.Group>
-        <div className="Submit-Tech">
-          <Button type="submit" content="Valider" primary />
-          <p style={displayText ? {} : { display: "none" }}>{displayText}</p>
-        </div>
+        <Button icon="check" type="submit" content="Valider" primary />
       </Form>
-      <div>
-        <Button
-          content="Supprimer"
-          style={!tech ? { display: "none" } : {}}
-          onClick={() => onDelete(tech)}
-        />
-      </div>
+
+      <Modal
+        closeIcon
+        onClose={closeInfoModal}
+        onOpen={openInfoModal}
+        open={infoOpen}
+        size="small"
+      >
+        <Modal.Content>
+          <Icon
+            name={infoError ? "times circle" : "check circle"}
+            color={infoError ? "red" : "green"}
+            size="big"
+          />
+          {displayText}
+        </Modal.Content>
+      </Modal>
     </div>
   );
 }

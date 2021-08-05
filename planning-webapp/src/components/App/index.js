@@ -19,6 +19,7 @@ import ProtectedRoute from "../ProtectedRoute";
 import ViewTech from "../ViewTech";
 import SalaryReport from "../SalaryReport";
 import TechSalaryReport from "../TechSalaryReport";
+import TechList from "../TechList";
 import TechRecord from "../TechRecord";
 import TechModal from "../TechModal";
 
@@ -71,6 +72,12 @@ const App = () => {
           <ProtectedRoute path="/viewtech">
             <ConnectedHeader />
             <ViewTech />
+            <ConnectedFooter />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/techlist">
+            <ConnectedHeader />
+            <TechList />
             <ConnectedFooter />
           </ProtectedRoute>
 
