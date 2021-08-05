@@ -280,7 +280,7 @@ const MyCalendar = () => {
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
 
-    console.log("onClickSchedule", e, el.getBoundingClientRect());
+    //console.log("onClickSchedule", e, el.getBoundingClientRect());
   }, []);
 
   const onBeforeCreateSchedule = useCallback((event) => {
@@ -387,8 +387,8 @@ const MyCalendar = () => {
       return getTimeTemplate(schedule, false);
     },
     popupDetailDate: function (isAllDay, start, end) {
-      console.log("start", start);
-      console.log("end", end);
+      //console.log("start", start);
+      //console.log("end", end);
       const start_date = `${("0" + start.getDate()).slice(-2)}/${(
         "0" +
         (start.getMonth() + 1)
@@ -405,13 +405,13 @@ const MyCalendar = () => {
         "0" + end.getMinutes()
       ).slice(-2)}`;
 
-      console.log("start_date", start_date);
-      console.log("start_time", start_time);
-      console.log("end_date", end_date);
-      console.log("end_time", end_time);
+      //console.log("start_date", start_date);
+      //console.log("start_time", start_time);
+      //console.log("end_date", end_date);
+      //console.log("end_time", end_time);
 
       var isSameDate = start_date === end_date ? true : false;
-      console.log("isSameDate", isSameDate);
+      //console.log("isSameDate", isSameDate);
 
       if (isAllDay) {
         return start_date + (isSameDate ? "" : " - " + end_date);

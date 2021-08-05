@@ -130,30 +130,50 @@ function AddTech ({tech, onDelete}) {
     }
 
     try {
-      const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
-        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
-      });
-      addTechForm.address_id = addressResponse.data.id;
-      console.log("handlesubmit", addTechForm);
-      const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
-        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
-      });
-      const user_id = userResponse.data.id;
-      console.log("addJob", addJob);
+      if (!tech) {
+        console.log("submit create");
+        const addressResponse = await axios.post(`${base_url}/address`, addAddress,{
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+        });
+        addTechForm.address_id = addressResponse.data.id;
+        console.log("handlesubmit", addTechForm);
 
-      let finalJobs = [];
+        const userResponse = await axios.post(`${base_url}/users`, addTechForm,{
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+        });
+        const user_id = userResponse.data.id;
 
-      // If value === true (checkbox checked) it push the key in the array finalJobs
-      for (const [key, value] of Object.entries(addJob)) {
-        if (value === true)
-          finalJobs.push(key);
+        console.log("addJob", addJob);
+        let finalJobs = [];
+        // If value === true (checkbox checked) it push the key in the array finalJobs
+        for (const [key, value] of Object.entries(addJob)) {
+          if (value === true)
+            finalJobs.push(key);
+        }
+
+        const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, finalJobs,{
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+        });
+        console.log(userHasJobResponse);
+      } else {
+        console.log("submit update");
+        // Trying to update address and user blindly (no id from db)
+        const addressResponse = await axios.patch(`${base_url}/address/${addTechForm.address_id}`, addAddress,{
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+        });
+        console.log("addressResponse", addressResponse);
+
+        // copy user into a new var and deleting password
+        let userToEdit = {...addTechForm};
+        delete userToEdit.password;
+
+        const userResponse = await axios.patch(`${base_url}/users/${userToEdit.id}`, addTechForm,{
+          headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
+        });
+        console.log("userResponse", userResponse);
+
+        //TODO update jobs when route is existing
       }
-
-      const userHasJobResponse = await axios.post(`${base_url}/userhasjob/${user_id}`, finalJobs,{
-        headers: { Authorization: `bearer ${localStorage.getItem("token")}` }
-      });
-
-      console.log(userHasJobResponse)
 
       setDisplayText("Le technicien a bien été enregistré");
       
@@ -164,11 +184,8 @@ function AddTech ({tech, onDelete}) {
 
   };
   
-  const [interChecked, setInterChecked] = useState(false)
-  const [prestaChecked, setPrestaChecked] = useState(false)
-  
-  
-
+  const [interChecked, setInterChecked] = useState(true);
+  const [prestaChecked, setPrestaChecked] = useState(false);
 
     return(
         <div className='CreateTech'>

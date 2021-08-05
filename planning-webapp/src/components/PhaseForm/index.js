@@ -32,11 +32,18 @@ function PhaseForm({
   };
   for (const user of users) {
     // TODO ajouter une boucle pour les type (job)
-    usersFormatDropdown[user.type].push({
-      key: user.id,
-      text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
-      value: user.id,
-    });
+    //console.log("user, usersFormatDropdown", user, usersFormatDropdown);
+    for (const job of user.job) {
+      // if à supprimer à terme
+      // attention user.type était undifined, il faut utiliser user.job
+      if (job) {
+        usersFormatDropdown[job].push({
+          key: user.id,
+          text: `${user.firstname} ${user.lastname[0]}. (${user.phone_number})`,
+          value: user.id,
+        });
+      }
+    }
   }
 
   let eventsFormatted = [];
@@ -73,7 +80,7 @@ function PhaseForm({
   let salaryAssigned = {};
   if (phaseInfo.raw.techInfo) {
     for (const info of phaseInfo.raw.techInfo) {
-      console.log("info", info);
+      //console.log("info", info);
       techsAssigned[info.type].push({
         id: info.id,
         name: `${info.firstname} ${info.lastname[0]}. (${info.phone_number})`,
@@ -118,6 +125,7 @@ function PhaseForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("handleSubmit");
     console.log("phaseForm", phaseForm);
     console.log("salaryForm", salaryForm);
     console.log("techsSelected", techsSelected);
