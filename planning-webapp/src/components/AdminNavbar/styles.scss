@@ -3,3 +3,16 @@
     align-items: center;
     justify-content: space-between;
 }
+.nav-mobile{
+    display: none;
+}
+
+@media all and (max-device-width: 550px){
+    
+    .nav-desktop{
+        display: none;
+    }
+    .nav-mobile{
+        display: block;
+    }
+}

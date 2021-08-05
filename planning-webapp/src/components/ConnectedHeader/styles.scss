@@ -1,5 +1,6 @@
 @use '../../styles/vars';
 
+
 .connected-header {
   display: flex;
   align-items: center;
@@ -39,4 +40,18 @@
   font-size: 3rem;
   font-weight: normal;
   margin-left: 1rem;
+}
+
+
+@media all and (max-device-width: 480px)
+{
+.connected-header {
+    display: flex;
+    flex-direction: column;
+    
+    justify-content: space-between;
+    background-color: vars.$bg-color;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  }  
+
 }
