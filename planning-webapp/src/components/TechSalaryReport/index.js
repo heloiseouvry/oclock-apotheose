@@ -90,7 +90,7 @@ const TechSalaryReport = () => {
 
   return (
     <div>
-      <h1>Salary Report</h1>
+      <h1>Synthèse de mon salaire</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Field inline required>

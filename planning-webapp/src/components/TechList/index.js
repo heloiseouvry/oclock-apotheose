@@ -80,8 +80,15 @@ const TechList = () => {
   }
 
   return (
-    <div>
-      <h1>Liste des techniciens</h1>
+    <div className="tech-list-page">
+      <h1>Gestion des techniciens</h1>
+      <Button
+        icon="add"
+        size="huge"
+        floated="right"
+        circular
+        onClick={openTechModal}
+      />
       <section className="tech-list-container">
         {techs.length ? (
           <Table basic="very" celled collapsing>
@@ -129,13 +136,7 @@ const TechList = () => {
           </Table>
         ) : null}
       </section>
-      <Button
-        icon="add"
-        size="massive"
-        floated="right"
-        circular
-        onClick={openTechModal}
-      />
+      
 
       <Modal
         closeIcon

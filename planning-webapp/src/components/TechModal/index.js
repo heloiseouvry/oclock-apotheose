@@ -27,12 +27,10 @@ const requiredUserFields = [
   "emergency_contact",
   "emergency_phone_number",
 ];
-const verifiedAddressFields = ["main", "zip_code", "city"];
+const requiredAddressFields = ["main", "zip_code", "city"];
 
-function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
-  //console.log("tech", tech);
-
-  const [displayText, setDisplayText] = useState("");
+function TechModal({ tech, setEditTech, closeTechModal }) {
+  const [infoText, setInfoText] = useState("");
   const [addTechForm, setAddTech] = useState({
     lastname: "",
     firstname: "",
@@ -40,7 +38,7 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
     role: "tech",
     email: "",
     password: "",
-    status: "",
+    status: "intermittent",
     birth_date: "",
     birth_city: "",
     birth_department: "",
@@ -67,9 +65,7 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
   });
 
   useEffect(() => {
-    console.log("TechRecord::use Effect");
     if (tech) {
-      console.log("tech", tech);
       setAddTech({
         lastname: tech.lastname,
         firstname: tech.firstname,
@@ -148,7 +144,7 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
       }
     } catch (error) {
       console.error(error);
-      setDisplayText("Les informations sont incorrectes !");
+      setInfoText("Les informations sont incorrectes !");
     }
   };
 
@@ -173,19 +169,19 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
     event.preventDefault();
     if (!checkFields(addTechForm, requiredUserFields)) {
       console.log("addTechForm", addTechForm);
-      setDisplayText(
+      setInfoText(
         "Merci de renseigner les champs obligatoires du technicien"
       );
       openInfoModal({ error: true });
       return;
-    } else if (!checkFields(addAddress, verifiedAddressFields)) {
-      setDisplayText(
+    } else if (!checkFields(addAddress, requiredAddressFields)) {
+      setInfoText(
         "Merci de renseigner les champs obligatoires de l'adresse du technicien"
       );
       openInfoModal({ error: true });
       return;
     } else if (!checkJobs()) {
-      setDisplayText("Merci de sélectionner au moins 1 métier");
+      setInfoText("Merci de sélectionner au moins 1 métier");
       openInfoModal({ error: true });
       return;
     }
@@ -237,7 +233,7 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
           }
         );
         console.log("userHasJobResponse", userHasJobResponse);
-        setDisplayText("Le technicien a bien été enregistré");
+        setInfoText("Le technicien a bien été enregistré");
         openInfoModal();
       } else {
         console.log("submit update");
@@ -286,14 +282,14 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
         );
         console.log("userHasJobResponse", userHasJobResponse);
         //TODO update jobs when route is existing
-        setDisplayText("Les modifications ont bien été prises en comptes");
+        setInfoText("Les modifications ont bien été prises en comptes");
         openInfoModal();
         setEditTech(null);
       }
       // closeTechModal();
     } catch (error) {
       console.error(error);
-      setDisplayText("Les informations sont incorrectes !");
+      setInfoText("Les informations sont incorrectes !");
       openInfoModal({ error: true });
     }
   };
@@ -315,7 +311,7 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
     }
   }
 
-  const [interChecked, setInterChecked] = useState(false);
+  const [interChecked, setInterChecked] = useState(true);
   const [prestaChecked, setPrestaChecked] = useState(false);
 
   return (
@@ -650,7 +646,7 @@ function TechModal({ tech, onDelete, setEditTech, closeTechModal }) {
             color={infoError ? "red" : "green"}
             size="big"
           />
-          {displayText}
+          {infoText}
         </Modal.Content>
       </Modal>
     </div>
