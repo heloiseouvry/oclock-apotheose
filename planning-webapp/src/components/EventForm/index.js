@@ -7,7 +7,6 @@ import './styles.scss';
 import {admin_url} from "../../../config/dbConf";
 
 function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
-  // console.log("eventInfo", eventInfo);
   const start_date = `${eventInfo.start_date.getFullYear()}-${("0" + (eventInfo.start_date.getMonth() + 1)).slice(-2)}-${("0" + eventInfo.start_date.getDate()).slice(-2)}`;
   const start_time = `${("0" + eventInfo.start_date.getHours()).slice(-2)}:${("0" + eventInfo.start_date.getMinutes()).slice(-2)}`;
 
@@ -16,7 +15,6 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
 
   const [error, setError] = useState("");
   const [eventForm, setEventForm] = useState({ ...eventInfo, start_date, end_date, start_time, end_time });
-  // console.log("eventForm", eventForm);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,8 +29,6 @@ function EventForm ({eventInfo, eventEdit, setEventEdit, closeEventModal}) {
 
       const addressBody = eventForm.raw.address;
 
-      // console.log("eventBody", eventBody);
-      // console.log("eventEdit", eventEdit);
       if(eventEdit){
         await axios.patch(`${admin_url}/address/${addressBody.id}`, addressBody, {
           headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
