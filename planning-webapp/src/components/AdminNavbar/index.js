@@ -27,7 +27,7 @@ var styles = {
     
   },
   
-  
+}
 
 class AdminNavbar extends React.Component {
   showSettings(event) {
