@@ -182,7 +182,8 @@ function AddTech ({tech, onDelete}) {
 
   };
   
-  const [interChecked, setInterChecked] = useState(false);
+  //Please don't change the use state, one of the 2 below should be true, and we set the inter as the default value
+  const [interChecked, setInterChecked] = useState(true);
   const [prestaChecked, setPrestaChecked] = useState(false);
 
     return(
