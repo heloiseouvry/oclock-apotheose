@@ -38,7 +38,8 @@ Content-Type: application/json
 
 ### Delete an event
 
-DELETE {{baseUrl}}/events/4
+DELETE {{baseUrl}}/events/6
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNzU4NjEsImV4cCI6MTYyODIwNDY2MX0.q_AslUd9lDDzEcxjO5MHSmKcujJ5xfnVYZf6VxYncWs
 
 ### Get an event by its id
 
@@ -84,12 +85,20 @@ Content-Type: application/json
 ### Get all users
 
 GET {{baseUrl}}/users
+<<<<<<< HEAD
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNjM0ODYsImV4cCI6MTYyODE5MjI4Nn0.6Uf9Te18dKq_SE0KcKKU2b8b05yqR37fPIWUgRb2XEo
+=======
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNzA2NDcsImV4cCI6MTYyODE5OTQ0N30.RNTHThlFI4321VqE_CClS02ezmi8Zo6bJr4ivE-CM0E
+>>>>>>> 8e9b42f2ad108682c743cd271846a1d6c5691345
 
 ### Get all users with job
 
 GET {{baseUrl}}/usersjob
+<<<<<<< HEAD
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNjM0ODYsImV4cCI6MTYyODE5MjI4Nn0.6Uf9Te18dKq_SE0KcKKU2b8b05yqR37fPIWUgRb2XEo
+=======
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI3LCJpYXQiOjE2MjgxNzA2NDcsImV4cCI6MTYyODE5OTQ0N30.RNTHThlFI4321VqE_CClS02ezmi8Zo6bJr4ivE-CM0E
+>>>>>>> 8e9b42f2ad108682c743cd271846a1d6c5691345
 
 
 ### Get one user with job
