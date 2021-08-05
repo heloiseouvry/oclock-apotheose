@@ -112,6 +112,26 @@ class User extends CoreModel {
         return data.map(d => new User(d));
     }
 
+    static async findAllWithFullInfo() {
+        const data = await CoreModel.fetch(`
+        SELECT "user".id, "user".lastname, "user".firstname, "user".phone_number, "user".role, "user".email, "user".status, "user".birth_date, "user".birth_city, 
+        "user".birth_department, "user".ssn, "user".intermittent_registration, "user".legal_entity, "user".siret, "user".emergency_contact, 
+        "user".emergency_phone_number, "user".comments, "user".address_id, array_agg(job.type) AS job, 
+        address.main, address.additional, address.zip_code, address.city
+        FROM "user"
+        FULL OUTER JOIN user_has_job ON user_has_job.user_id = "user".id
+        FULL OUTER JOIN job ON user_has_job.job_id = job.id
+        FULL OUTER JOIN address ON address.id = "user".address_id
+        JOIN phase_has_user ON phase_has_user.user_id = "user".id
+        JOIN phase ON phase_has_user.phase_id = phase.id
+        GROUP BY "user".id, "user".lastname, "user".firstname, "user".phone_number, "user".role, "user".email, "user".status, "user".birth_date, "user".birth_city, 
+        "user".birth_department, "user".ssn, "user".intermittent_registration, "user".legal_entity, "user".siret, "user".emergency_contact, 
+        "user".emergency_phone_number, "user".comments, "user".address_id,
+        address.main,  address.additional, address.zip_code, address.city;`);
+            console.log("findall with jobs : ", data);
+        return data.map(d => new User(d));
+    }
+
     static async findOneWithJob(id) {
         const data = await CoreModel.fetch(`
             SELECT lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user" 

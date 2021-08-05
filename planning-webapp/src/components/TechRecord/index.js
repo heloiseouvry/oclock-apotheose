@@ -2,22 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Form, Dropdown, Label } from "semantic-ui-react";
 import axios from "axios";
 
-import AddTech from "../AddTech";
+import TechModal from "../TechModal";
 
 import "./styles.scss";
 
 import { base_url, admin_url } from "../../../config/dbConf";
 
-const ViewTech = function () {
+const TechRecord = function () {
   const [usersWithJob, setUsersWithJob] = useState([]);
   const [techSelected, setTechSelected] = useState(null);
   const [techDeleted, setTechDeleted] = useState(false);
 
   const getAllUsersWithJob = async () => {
-    const response = await axios.get(`${admin_url}/usersjob`, {
+    const response = await axios.get(`${admin_url}/usersfull`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
     console.log("response=", response);
+
+    // const addressResponse = await axios.get(`${admin_url}/address/${response.data.address_id}`, {
+    //   headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
+    // });
+    // console.log("addressResponse=", addressResponse);
 
     const filteredUserWithJob = response.data.filter(
       (element) => element.role === "tech"
@@ -73,7 +78,7 @@ const ViewTech = function () {
   };
 
   useEffect(() => {
-    console.log("ViewTech::use Effect");
+    console.log("TechRecord::use Effect");
     getAllUsersWithJob();
   }, []);
   console.log(usersWithJob);
@@ -99,7 +104,7 @@ const ViewTech = function () {
       <div>
         {!techDeleted ? (
           <div style={techSelected ? {} : { display: "none" }}>
-            <AddTech tech={techSelected} onDelete={onDeleteTech} />
+            <TechModal tech={techSelected} onDelete={onDeleteTech} />
           </div>
         ) : (
           <p className="deleted-tech">Le technicien a bien été effacé</p>
@@ -109,4 +114,4 @@ const ViewTech = function () {
   );
 };
 
-export default ViewTech;
+export default TechRecord;
