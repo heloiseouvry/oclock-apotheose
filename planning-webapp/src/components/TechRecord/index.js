@@ -14,7 +14,7 @@ const TechRecord = function () {
   const [techDeleted, setTechDeleted] = useState(false);
 
   const getAllUsersWithJob = async () => {
-    const response = await axios.get(`${admin_url}/usersfull`, {
+    const response = await axios.get(`${admin_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
     console.log("response=", response);

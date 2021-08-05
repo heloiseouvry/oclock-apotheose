@@ -97,7 +97,7 @@ class User extends CoreModel {
      * @returns {Array<User>} an array of all users (object) in database
      */
     static async findAll() {
-        const data = await CoreModel.fetch('SELECT (lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user";');
+        const data = await CoreModel.fetch('SELECT (id, lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user";');
         console.log("findall : ",data);
         return data.map(d => new User(d));
     }
@@ -134,7 +134,7 @@ class User extends CoreModel {
 
     static async findOneWithJob(id) {
         const data = await CoreModel.fetch(`
-            SELECT lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user" 
+            SELECT "user".id, lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id, array_agg(job.type) AS job FROM "user" 
             JOIN user_has_job ON user_has_job.user_id = "user".id
             JOIN job ON user_has_job.job_id = job.id
             WHERE "user".id=$1
@@ -176,7 +176,7 @@ class User extends CoreModel {
      * @returns an object user who matches this id
      */
     static async findById(id){
-        return(new User(await CoreModel.fetchOne('SELECT lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id FROM "user" WHERE id = $1;', [id])));
+        return(new User(await CoreModel.fetchOne('SELECT "user".id, lastname, firstname, phone_number, role, email, status, birth_date, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id FROM "user" WHERE id = $1;', [id])));
     }
 
     static async findUsersByType(type) {
