@@ -42,7 +42,7 @@ class User extends CoreModel {
 
         try {
             const preparedQuery = {
-                text: `SELECT (lastname, firstname, phone_number, role, email, status, birth_date, password, birth_city, birth_department, ssn, intermittent_registration, legal_entity, siret, emergency_contact, emergency_phone_number, comments, address_id) FROM "user" WHERE email=$1;`,
+                text: `SELECT * FROM "user" WHERE email=$1;`,
                 values: [email]
             };
             const { rows } = await db.query(preparedQuery);
