@@ -22,7 +22,6 @@ import TechSalaryReport from "../TechSalaryReport";
 import TechRecord from "../TechRecord";
 import TechModal from "../TechModal";
 
-
 const App = () => {
   return (
     //We use the router method to switch from a component to another
