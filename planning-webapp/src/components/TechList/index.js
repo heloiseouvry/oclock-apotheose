@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Modal, Grid, Table, Header } from "semantic-ui-react";
+import { Button, Modal, Dropdown, Table, Header } from "semantic-ui-react";
 import axios from "axios";
 
 import TechModal from "../TechModal";
@@ -15,6 +15,7 @@ const TechList = () => {
   const [deleteTechModal, setDeleteTechModal] = useState(false);
   const [techToDelete, setTechToDelete] = useState(false);
   const [techSelected, setTechSelected] = useState(null);
+  const [techsDropdown, setTechsDropdown] = useState([]);
 
   const getAllUsersWithJob = async () => {
     const response = await axios.get(`${admin_url}/usersjob`, {
@@ -26,6 +27,18 @@ const TechList = () => {
     );
     console.log("filteredUserWithJob", filteredUserWithJob);
     setTechs(filteredUserWithJob);
+
+    const newDropDownTechList = filteredUserWithJob.map((element) => {
+      return {
+        key: element.id,
+        text: element.firstname + " " + element.lastname,
+        value: element.id,
+        ...element,
+      };
+    });
+    console.log("newDropDownTechList", newDropDownTechList);
+
+    setTechsDropdown(newDropDownTechList);
   };
 
   const deleteTech = async (techSelectedForDelete) => {
@@ -83,13 +96,28 @@ const TechList = () => {
   return (
     <div className="tech-list-page">
       <h1>Gestion des techniciens</h1>
-      <Button
-        icon="add"
-        size="huge"
-        floated="right"
-        circular
-        onClick={openTechModal}
-      />
+      <section className="tech-list-choice">
+        <Dropdown
+          search
+          options={techsDropdown}
+          placeholder="Sélectionner un technicien"
+          onChange={(_, data) => {
+            setEditTech(
+              data.options.find((element) => element.value === data.value)
+            );
+            openTechModal();
+          }}
+        />
+        <p>OU</p>
+        <Button
+        content="Ajouter un technicien"
+          icon="add"
+          size="small"
+          floated="right"
+          circular
+          onClick={openTechModal}
+        />
+      </section>
       <section className="tech-list-container">
         {techs.length ? (
           <Table basic="very" celled collapsing>
@@ -107,9 +135,19 @@ const TechList = () => {
                     <Header as="h4" image>
                       <Header.Content>
                         {tech.firstname} {tech.lastname}
-                        <Header.Subheader><em>
-                          {tech.job[0] === "sound" ? "Son" : tech.job[0] === "light" ? "Lumière" : tech.job[0] === "video" ? "Vidéo" : tech.job[0] === "other" ? "Autre" : tech.job[0]}
-                          </em></Header.Subheader>
+                        <Header.Subheader>
+                          <em>
+                            {tech.job[0] === "sound"
+                              ? "Son"
+                              : tech.job[0] === "light"
+                              ? "Lumière"
+                              : tech.job[0] === "video"
+                              ? "Vidéo"
+                              : tech.job[0] === "other"
+                              ? "Autre"
+                              : tech.job[0]}
+                          </em>
+                        </Header.Subheader>
                       </Header.Content>
                     </Header>
                   </Table.Cell>
@@ -139,7 +177,6 @@ const TechList = () => {
           </Table>
         ) : null}
       </section>
-      
 
       <Modal
         closeIcon
