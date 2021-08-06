@@ -30,7 +30,6 @@ function PhaseForm({
   };
   for (const user of users) {
     // TODO ajouter une boucle pour les type (job)
-    //console.log("user, usersFormatDropdown", user, usersFormatDropdown);
     for (const job of user.job) {
       // if à supprimer à terme
       // attention user.type était undifined, il faut utiliser user.job
@@ -78,7 +77,6 @@ function PhaseForm({
   let salaryAssigned = {};
   if (phaseInfo.raw.techInfo) {
     for (const info of phaseInfo.raw.techInfo) {
-      //console.log("info", info);
       techsAssigned[info.type].push({
         id: info.id,
         name: `${info.firstname} ${info.lastname[0]}. (${info.phone_number})`,
@@ -118,16 +116,8 @@ function PhaseForm({
   });
   const [salaryForm, setSalaryForm] = useState(phaseEdit ? salaryAssigned : {});
 
-  console.log("phaseForm", phaseForm);
-  // console.log("techs", techs);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("handleSubmit");
-    console.log("phaseForm", phaseForm);
-    console.log("salaryForm", salaryForm);
-    console.log("techsSelected", techsSelected);
-
     try {
       const startParsedDate = new Date(
         Date.parse(`${phaseForm.start_date}T${phaseForm.start_time}:00`)
