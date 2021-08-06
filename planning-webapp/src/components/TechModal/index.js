@@ -271,6 +271,13 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
         );
         console.log("jobResponse", jobResponse);
 
+        let finalJobs = [];
+        // If value === true (checkbox checked) it push the key in the array finalJobs
+        for (const [key, value] of Object.entries(addJob)) {
+          if (value === true) finalJobs.push(key);
+        }
+        console.log("finalJobs", finalJobs);
+
         const userHasJobResponse = await axios.post(
           `${admin_url}/userhasjob/${userToEdit.id}`,
           finalJobs,
