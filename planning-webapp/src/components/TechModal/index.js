@@ -636,44 +636,48 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
             </section>
             <section className="subpanel jobs">
               <div className="subpanel-title">Métier</div>
-              <Form.Group>
-                <Checkbox
-                  label="Son"
-                  key="1"
-                  value="1"
-                  checked={addJob[1]}
-                  onChange={(_, data) =>
-                    setAddJob({ ...addJob, [data.value]: data.checked })
-                  }
-                />
-                <Checkbox
-                  label="Lumière"
-                  key="2"
-                  value="2"
-                  checked={addJob[2]}
-                  onChange={(_, data) =>
-                    setAddJob({ ...addJob, [data.value]: data.checked })
-                  }
-                />
-                <Checkbox
-                  label="Vidéo"
-                  key="3"
-                  value="3"
-                  checked={addJob[3]}
-                  onChange={(_, data) =>
-                    setAddJob({ ...addJob, [data.value]: data.checked })
-                  }
-                />
-                <Checkbox
-                  label="Autre"
-                  key="4"
-                  value="4"
-                  checked={addJob[4]}
-                  onChange={(_, data) =>
-                    setAddJob({ ...addJob, [data.value]: data.checked })
-                  }
-                />
-              </Form.Group>
+                <section className="panel-container">
+                  <section className="panel">
+                    <Checkbox
+                      label="Son"
+                      key="1"
+                      value="1"
+                      checked={addJob[1]}
+                      onChange={(_, data) =>
+                        setAddJob({ ...addJob, [data.value]: data.checked })
+                      }
+                    />
+                    <Checkbox
+                      label="Lumière"
+                      key="2"
+                      value="2"
+                      checked={addJob[2]}
+                      onChange={(_, data) =>
+                        setAddJob({ ...addJob, [data.value]: data.checked })
+                      }
+                    />
+                  </section>
+                  <section className="panel">
+                    <Checkbox
+                      label="Vidéo"
+                      key="3"
+                      value="3"
+                      checked={addJob[3]}
+                      onChange={(_, data) =>
+                        setAddJob({ ...addJob, [data.value]: data.checked })
+                      }
+                    />
+                    <Checkbox
+                      label="Autre"
+                      key="4"
+                      value="4"
+                      checked={addJob[4]}
+                      onChange={(_, data) =>
+                        setAddJob({ ...addJob, [data.value]: data.checked })
+                      }
+                    />
+                  </section>
+                </section>
             </section>
           </section>
         </section>
