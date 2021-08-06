@@ -676,7 +676,7 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
             </section>
           </section>
         </section>
-        
+
         <section className="comments">
           <Form.Group>
             <Form.Field>
@@ -696,6 +696,7 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
       </Form>
 
       <Modal
+        centered
         closeIcon
         onClose={closeInfoModal}
         onOpen={openInfoModal}
