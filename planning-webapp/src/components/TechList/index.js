@@ -20,6 +20,7 @@ const TechList = () => {
     const response = await axios.get(`${admin_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
+    console.log(response);
     const filteredUserWithJob = response.data.filter(
       (element) => element.role === "tech"
     );
@@ -106,7 +107,9 @@ const TechList = () => {
                     <Header as="h4" image>
                       <Header.Content>
                         {tech.firstname} {tech.lastname}
-                        <Header.Subheader>{tech.job}</Header.Subheader>
+                        <Header.Subheader><em>
+                          {tech.job[0] === "sound" ? "Son" : tech.job[0] === "light" ? "Lumière" : tech.job[0] === "video" ? "Vidéo" : tech.job[0] === "other" ? "Autre" : tech.job[0]}
+                          </em></Header.Subheader>
                       </Header.Content>
                     </Header>
                   </Table.Cell>

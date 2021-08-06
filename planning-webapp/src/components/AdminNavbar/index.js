@@ -37,12 +37,6 @@ class AdminNavbar extends React.Component {
           <Link to="/calendar">
             <Button content="Planning" />
           </Link>
-          <Link to="/addtech">
-            <Button content="Ajouter un technicien" />
-          </Link>
-          <Link to="/viewtech">
-            <Button content="Consulter le profil d'un technicien" />
-          </Link>
           <Link to="/techlist">
             <Button content="Gestion des techniciens" />
           </Link>
@@ -63,14 +57,9 @@ class AdminNavbar extends React.Component {
                 Planning
               </div>
             </Link>
-            <Link to="/addtech">
-              <div id="addtech" className="menu-item" href="/addtech">
-                Ajouter un technicien
-              </div>
-            </Link>
-            <Link to="/viewtech">
-              <div id="viewtech" className="menu-item" href="/viewtech">
-                Consulter le profil d'un technicien
+            <Link to="/techlist">
+              <div id="techlist" className="menu-item" href="/techlist">
+                Gestion des techniciens
               </div>
             </Link>
             <Link to="/salaryreport">

@@ -11,12 +11,10 @@ import ContactForm from "../ContactForm";
 import Homepage from "../Homepage";
 import MyCalendar from "../Calendar";
 import TechCalendar from "../TechCalendar";
-import AddTech from "../AddTech";
 import Footer from "../Footer";
 import ConnectedFooter from "../ConnectedFooter";
 import PageNotFound from "../PageNotFound";
 import ProtectedRoute from "../ProtectedRoute";
-import ViewTech from "../ViewTech";
 import SalaryReport from "../SalaryReport";
 import TechSalaryReport from "../TechSalaryReport";
 import TechList from "../TechList";
@@ -60,18 +58,6 @@ const App = () => {
           <ProtectedRoute path="/tech/calendar">
             <ConnectedHeader />
             <TechCalendar />
-            <ConnectedFooter />
-          </ProtectedRoute>
-
-          <ProtectedRoute path="/addtech">
-            <ConnectedHeader />
-            <AddTech />
-            <ConnectedFooter />
-          </ProtectedRoute>
-
-          <ProtectedRoute path="/viewtech">
-            <ConnectedHeader />
-            <ViewTech />
             <ConnectedFooter />
           </ProtectedRoute>
 

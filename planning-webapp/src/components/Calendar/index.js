@@ -77,7 +77,6 @@ const darkTheme = {
   "week.dayGridSchedule.marginRight": "8px",
 };
 
-
 const MyCalendar = () => {
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [eventOpen, setEventOpen] = useState(false);
@@ -460,23 +459,29 @@ const MyCalendar = () => {
       })</p>`;
     },
     popupDetailUser: (data) => {
-      var ret = "<ul>";
+      console.log("data", data);
+      var ret = "";
       for (const [index, attendee] of data.attendees.entries()) {
-        ret += "<li>" + attendee + "</li>";
+        ret += index === 0 ? attendee + "<ul>": "<li>" + attendee + "</li>";
+        ret += "</ul>";
         if (index > 3) {
-          ret += "<li>...</li>";
+          ret += "[...]";
           break;
         }
       }
-      ret += "</ul>";
+      ret += "<div>Contact régisseur : " + (data.raw?.tech_manager_contact ? data.raw?.tech_manager_contact : "N/A") + "</div>" ;
+      ret += "<div>Contact sur place : " + (data.raw?.provider_contact ? data.raw?.provider_contact : "N/A") + "</div>" ;
+      ret += "<br/>";
+      ret += "<div><strong>Type : " + data.raw?.type.charAt(0).toUpperCase() + data.raw?.type.slice(1) + "</strong></div>";
+      return ret;
+    },
+    popupDetailLocation: (data) => {
+      var ret = `<em>${data.raw.address.main} - ${data.raw.address.zip_code} ${data.raw.address.city}</em>`;
+      ret += `<div><em>${data.location}</em></div>`;
       return ret;
     },
     popupDetailBody: (phaseDetails) => {
-      var ret = "<div>" + phaseDetails.body;
-      ret += "<p><strong>" + phaseDetails.raw?.type + "</strong></p>";
-      ret += "<ul>";
-      ret += "</ul>";
-      ret += "</div>";
+      var ret = "<div>Commentaires : " + phaseDetails.body + "</div>" ;
       return ret;
     },
   };

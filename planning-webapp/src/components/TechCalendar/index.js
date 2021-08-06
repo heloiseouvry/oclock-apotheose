@@ -262,13 +262,57 @@ const TechCalendar = () => {
 
       return hour + ' ' + meridiem;
     },
+    popupDetailDate: function (isAllDay, start, end) {
+      const start_date = `${("0" + start.getDate()).slice(-2)}/${(
+        "0" +
+        (start.getMonth() + 1)
+      ).slice(-2)}/${start.getFullYear()}`;
+      const start_time = `${("0" + start.getHours()).slice(-2)}h${(
+        "0" + start.getMinutes()
+      ).slice(-2)}`;
+
+      const end_date = `${("0" + end.getDate()).slice(-2)}/${(
+        "0" +
+        (end.getMonth() + 1)
+      ).slice(-2)}/${end.getFullYear()}`;
+      const end_time = `${("0" + end.getHours()).slice(-2)}h${(
+        "0" + end.getMinutes()
+      ).slice(-2)}`;
+
+      var isSameDate = start_date === end_date ? true : false;
+
+      if (isAllDay) {
+        return start_date + (isSameDate ? "" : " - " + end_date);
+      }
+
+      return `<p><strong>${start_time} - ${end_time}</strong> (${
+        start_date + (isSameDate ? "" : " - " + end_date)
+      })</p>`;
+    },
+    popupDetailUser: (data) => {
+      console.log("data", data);
+      var ret = "";
+      for (const [index, attendee] of data.attendees.entries()) {
+        ret += index === 0 ? attendee + "<ul>": "<li>" + attendee + "</li>";
+        ret += "</ul>";
+        if (index > 3) {
+          ret += "[...]";
+          break;
+        }
+      }
+      ret += "<div>Contact régisseur : " + (data.raw?.tech_manager_contact ? data.raw?.tech_manager_contact : "N/A") + "</div>" ;
+      ret += "<div>Contact sur place : " + (data.raw?.provider_contact ? data.raw?.provider_contact : "N/A") + "</div>" ;
+      ret += "<br/>";
+      ret += "<div><strong>Type : " + data.raw?.type.charAt(0).toUpperCase() + data.raw?.type.slice(1) + "</strong></div>";
+      return ret;
+    },
+    popupDetailLocation: (data) => {
+      var ret = `<em>${data.raw.address.main} - ${data.raw.address.zip_code} ${data.raw.address.city}</em>`;
+      ret += `<div><em>${data.location}</em></div>`;
+      return ret;
+    },
     popupDetailBody: (phaseDetails) => {
-      console.log(`popupDetailBody`, phaseDetails);
-      var ret = "<div>" + phaseDetails.body;
-      ret += "<p><strong>" + phaseDetails.raw?.type + "</strong></p>";
-      ret += "<ul>";
-      ret += "</ul>";
-      ret += "</div>";
+      var ret = "<div>Commentaires : " + phaseDetails.body + "</div>" ;
       return ret;
     },
   };
