@@ -20,6 +20,7 @@ const TechList = () => {
     const response = await axios.get(`${admin_url}/usersjob`, {
       headers: { Authorization: `bearer ${localStorage.getItem("token")}` },
     });
+    console.log(response);
     const filteredUserWithJob = response.data.filter(
       (element) => element.role === "tech"
     );
