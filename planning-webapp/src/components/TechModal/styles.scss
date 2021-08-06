@@ -63,3 +63,14 @@ section .fields {
 .tech-modal-form button[type=submit]{
   align-self: flex-end;
 }
+
+.panel-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 25px;
+}
+
+.jobs .panel {
+  gap: 10px;
+}
