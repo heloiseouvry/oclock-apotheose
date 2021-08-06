@@ -254,7 +254,7 @@ const TechCalendar = () => {
     timegridDisplayPrimayTime: function(time) {
       /* will be deprecated. use 'timegridDisplayPrimaryTime' */
       var hour = time.hour;
-      var meridiem = hour >= 24 ? 'H 00' : 'H 00';
+      var meridiem = hour >= 24 ? ': 00' : ': 00';
 
       if (hour > 24) {
         hour = hour - 24;
