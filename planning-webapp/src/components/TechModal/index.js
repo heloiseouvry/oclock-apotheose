@@ -169,9 +169,7 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
     event.preventDefault();
     if (!checkFields(addTechForm, requiredUserFields)) {
       console.log("addTechForm", addTechForm);
-      setInfoText(
-        "Merci de renseigner les champs obligatoires du technicien"
-      );
+      setInfoText("Merci de renseigner les champs obligatoires du technicien");
       openInfoModal({ error: true });
       return;
     } else if (!checkFields(addAddress, requiredAddressFields)) {
@@ -322,321 +320,378 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
   const [prestaChecked, setPrestaChecked] = useState(false);
 
   return (
-    <div>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group>
-          <Form.Field required>
-            <label htmlFor="lastname">Nom</label>
-            <input
-              id="lastname"
-              type="text"
-              value={addTechForm.lastname}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, lastname: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="firstname">Prénom</label>
-            <input
-              id="firstname"
-              type="text"
-              value={addTechForm.firstname}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, firstname: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="phone_number">N° de téléphone</label>
-            <input
-              id="phone_number"
-              type="tel"
-              value={addTechForm.phone_number}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, phone_number: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={addTechForm.email}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, email: event.target.value })
-              }
-            />
-          </Form.Field>
-          {tech ? null : (
-            <Form.Field required>
-              <label htmlFor="password">Mot de passe</label>
-              <input
-                id="password"
-                type="text"
-                value={addTechForm.password}
-                onChange={(event) =>
-                  setAddTech({ ...addTechForm, password: event.target.value })
-                }
-              />
+    <div className="tech-modal">
+      <Form onSubmit={handleSubmit} className="tech-modal-form">
+        <section className="tech-modal-form-content">
+          <section className="panel left">
+            <section className="subpanel main-info">
+              <div className="subpanel-title">Informations principales</div>
+              <Form.Group>
+                <Form.Field required>
+                  <label htmlFor="lastname">Nom</label>
+                  <input
+                    id="lastname"
+                    type="text"
+                    value={addTechForm.lastname}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        lastname: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="firstname">Prénom</label>
+                  <input
+                    id="firstname"
+                    type="text"
+                    value={addTechForm.firstname}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        firstname: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="phone_number">N° de téléphone</label>
+                  <input
+                    id="phone_number"
+                    type="tel"
+                    value={addTechForm.phone_number}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        phone_number: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={addTechForm.email}
+                    onChange={(event) =>
+                      setAddTech({ ...addTechForm, email: event.target.value })
+                    }
+                  />
+                </Form.Field>
+                {tech ? null : (
+                  <Form.Field required>
+                    <label htmlFor="password">Mot de passe</label>
+                    <input
+                      id="password"
+                      type="text"
+                      value={addTechForm.password}
+                      onChange={(event) =>
+                        setAddTech({
+                          ...addTechForm,
+                          password: event.target.value,
+                        })
+                      }
+                    />
+                  </Form.Field>
+                )}
+              </Form.Group>
+            </section>
+            <section className="subpanel administrative-info">
+              <div className="subpanel-title">Informations administratives</div>
+              <Form.Group>
+                <Form.Field required>
+                  <label htmlFor="ssn">N° de sécurité sociale</label>
+                  <input
+                    id="ssn"
+                    type="text"
+                    value={addTechForm.ssn}
+                    onChange={(event) =>
+                      setAddTech({ ...addTechForm, ssn: event.target.value })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="birth_date">Date de naissance</label>
+                  <input
+                    id="birth_date"
+                    type="date"
+                    value={addTechForm.birth_date}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        birth_date: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="birth_city">Ville de naissance</label>
+                  <input
+                    id="birth_city"
+                    type="text"
+                    value={addTechForm.birth_city}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        birth_city: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="birth_department">
+                    N° du département de naissance
+                  </label>
+                  <input
+                    id="birth_department"
+                    type="number"
+                    value={addTechForm.birth_department}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        birth_department: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+              </Form.Group>
+            </section>
+            <section className="subpanel address">
+              <div className="subpanel-title">Adresse</div>
+              <Form.Group>
+                <Form.Field required>
+                  <label htmlFor="main">Adresse principale</label>
+                  <input
+                    id="main"
+                    type="text"
+                    value={addAddress.main}
+                    onChange={(event) =>
+                      setAddAddress({ ...addAddress, main: event.target.value })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label htmlFor="additional">Complément d'adresse</label>
+                  <input
+                    id="additional"
+                    type="text"
+                    value={addAddress.additional}
+                    onChange={(event) =>
+                      setAddAddress({
+                        ...addAddress,
+                        additional: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="zip_code">Code postal</label>
+                  <input
+                    id="zip_code"
+                    type="text"
+                    value={addAddress.zip_code}
+                    onChange={(event) =>
+                      setAddAddress({
+                        ...addAddress,
+                        zip_code: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="city">Ville</label>
+                  <input
+                    id="city"
+                    type="text"
+                    value={addAddress.city}
+                    onChange={(event) =>
+                      setAddAddress({ ...addAddress, city: event.target.value })
+                    }
+                  />
+                </Form.Field>
+              </Form.Group>
+            </section>
+          </section>
+
+          <section className="panel right">
+            <section className="subpanel emergency-contact">
+              <div className="subpanel-title">Contact d'urgence</div>
+              <Form.Group>
+                <Form.Field required>
+                  <label htmlFor="emergency_contact">
+                    Nom du contact d'urgence
+                  </label>
+                  <input
+                    id="emergency_contact"
+                    type="text"
+                    value={addTechForm.emergency_contact}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        emergency_contact: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field required>
+                  <label htmlFor="emergency_phone_number">
+                    N° de téléphone du contact d'urgence
+                  </label>
+                  <input
+                    id="emergency_phone_number"
+                    type="tel"
+                    value={addTechForm.emergency_phone_number}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        emergency_phone_number: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+              </Form.Group>
+            </section>
+            <section className="subpanel status">
+              <div className="subpanel-title">Statut</div>
+              <Form.Group>
+                <Form.Field>
+                  <Radio
+                    id="intermittent"
+                    name="radioGroup"
+                    label="Intermittent"
+                    checked={interChecked}
+                    onChange={(event) => {
+                      setAddTech({ ...addTechForm, status: event.target.id });
+                      setInterChecked(true);
+                      setPrestaChecked(false);
+                    }}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Radio
+                    id="prestataire"
+                    name="radioGroup"
+                    label="Prestataire"
+                    checked={prestaChecked}
+                    onChange={(event) => {
+                      setAddTech({ ...addTechForm, status: event.target.id });
+                      setInterChecked(false);
+                      setPrestaChecked(true);
+                    }}
+                  />
+                </Form.Field>
+              </Form.Group>
+            </section>
+            <section className="subpanel business-info">
+              <div className="subpanel-title">Informations légales</div>
+              <Form.Group>
+                <Form.Field name="prestataire">
+                  <label htmlFor="legal_entity">Raison sociale</label>
+                  <input
+                    id="legal_entity"
+                    type="text"
+                    disabled={interChecked}
+                    value={addTechForm.legal_entity}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        legal_entity: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field name="prestataire">
+                  <label htmlFor="siret">N° SIRET</label>
+                  <input
+                    id="siret"
+                    type="text"
+                    value={addTechForm.siret}
+                    disabled={interChecked}
+                    onChange={(event) =>
+                      setAddTech({ ...addTechForm, siret: event.target.value })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field name="intermittent">
+                  <label htmlFor="intermittent_registration">
+                    N° de Congés Spectacles
+                  </label>
+                  <input
+                    id="intermittent_registration"
+                    type="text"
+                    value={addTechForm.intermittent_registration}
+                    disabled={prestaChecked}
+                    onChange={(event) =>
+                      setAddTech({
+                        ...addTechForm,
+                        intermittent_registration: event.target.value,
+                      })
+                    }
+                  />
+                </Form.Field>
+              </Form.Group>
+            </section>
+            <section className="subpanel jobs">
+              <div className="subpanel-title">Métier</div>
+              <Form.Group>
+                <Checkbox
+                  label="Son"
+                  key="1"
+                  value="1"
+                  checked={addJob[1]}
+                  onChange={(_, data) =>
+                    setAddJob({ ...addJob, [data.value]: data.checked })
+                  }
+                />
+                <Checkbox
+                  label="Lumière"
+                  key="2"
+                  value="2"
+                  checked={addJob[2]}
+                  onChange={(_, data) =>
+                    setAddJob({ ...addJob, [data.value]: data.checked })
+                  }
+                />
+                <Checkbox
+                  label="Vidéo"
+                  key="3"
+                  value="3"
+                  checked={addJob[3]}
+                  onChange={(_, data) =>
+                    setAddJob({ ...addJob, [data.value]: data.checked })
+                  }
+                />
+                <Checkbox
+                  label="Autre"
+                  key="4"
+                  value="4"
+                  checked={addJob[4]}
+                  onChange={(_, data) =>
+                    setAddJob({ ...addJob, [data.value]: data.checked })
+                  }
+                />
+              </Form.Group>
+            </section>
+          </section>
+        </section>
+        
+        <section className="comments">
+          <Form.Group>
+            <Form.Field>
+              <label>Commentaires / Remarques</label>
             </Form.Field>
-          )}
-          <Form.Field required>
-            <label htmlFor="ssn">N° de sécurité sociale</label>
-            <input
-              id="ssn"
-              type="text"
-              value={addTechForm.ssn}
+            <TextArea
+              placeholder="Inscrivez vos commentaires"
+              id="comments"
+              value={addTechForm.comments}
               onChange={(event) =>
-                setAddTech({ ...addTechForm, ssn: event.target.value })
+                setAddTech({ ...addTechForm, comments: event.target.value })
               }
             />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="birth_date">Date de naissance</label>
-            <input
-              id="birth_date"
-              type="date"
-              value={addTechForm.birth_date}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, birth_date: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="birth_city">Ville de naissance</label>
-            <input
-              id="birth_city"
-              type="text"
-              value={addTechForm.birth_city}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, birth_city: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="birth_department">
-              N° du département de naissance
-            </label>
-            <input
-              id="birth_department"
-              type="number"
-              value={addTechForm.birth_department}
-              onChange={(event) =>
-                setAddTech({
-                  ...addTechForm,
-                  birth_department: event.target.value,
-                })
-              }
-            />
-          </Form.Field>
-        </Form.Group>
-        <Form.Group>
-          <div>Contact d'urgence</div>
-          <Form.Field required>
-            <label htmlFor="emergency_contact">Nom du contact d'urgence</label>
-            <input
-              id="emergency_contact"
-              type="text"
-              value={addTechForm.emergency_contact}
-              onChange={(event) =>
-                setAddTech({
-                  ...addTechForm,
-                  emergency_contact: event.target.value,
-                })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="emergency_phone_number">
-              N° de téléphone du contact d'urgence
-            </label>
-            <input
-              id="emergency_phone_number"
-              type="tel"
-              value={addTechForm.emergency_phone_number}
-              onChange={(event) =>
-                setAddTech({
-                  ...addTechForm,
-                  emergency_phone_number: event.target.value,
-                })
-              }
-            />
-          </Form.Field>
-        </Form.Group>
-        <Form.Group>
-          <Form.Field required>
-            <label htmlFor="main">Adresse principale</label>
-            <input
-              id="main"
-              type="text"
-              value={addAddress.main}
-              onChange={(event) =>
-                setAddAddress({ ...addAddress, main: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="additional">Complément d'adresse</label>
-            <input
-              id="additional"
-              type="text"
-              value={addAddress.additional}
-              onChange={(event) =>
-                setAddAddress({ ...addAddress, additional: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="zip_code">Code postal</label>
-            <input
-              id="zip_code"
-              type="text"
-              value={addAddress.zip_code}
-              onChange={(event) =>
-                setAddAddress({ ...addAddress, zip_code: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field required>
-            <label htmlFor="city">Ville</label>
-            <input
-              id="city"
-              type="text"
-              value={addAddress.city}
-              onChange={(event) =>
-                setAddAddress({ ...addAddress, city: event.target.value })
-              }
-            />
-          </Form.Field>
-        </Form.Group>
-
-        <Form.Group>
-          <div>Statut</div>
-          <Form.Field>
-            <Radio
-              id="intermittent"
-              name="radioGroup"
-              label="Intermittent"
-              checked={interChecked}
-              onChange={(event) => {
-                setAddTech({ ...addTechForm, status: event.target.id });
-                setInterChecked(true);
-                setPrestaChecked(false);
-              }}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Radio
-              id="prestataire"
-              name="radioGroup"
-              label="Prestataire"
-              checked={prestaChecked}
-              onChange={(event) => {
-                setAddTech({ ...addTechForm, status: event.target.id });
-                setInterChecked(false);
-                setPrestaChecked(true);
-              }}
-            />
-          </Form.Field>
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Field name="prestataire">
-            <label htmlFor="legal_entity">Raison sociale</label>
-            <input
-              id="legal_entity"
-              type="text"
-              disabled={interChecked}
-              value={addTechForm.legal_entity}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, legal_entity: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field name="prestataire">
-            <label htmlFor="siret">N° SIRET</label>
-            <input
-              id="siret"
-              type="text"
-              value={addTechForm.siret}
-              disabled={interChecked}
-              onChange={(event) =>
-                setAddTech({ ...addTechForm, siret: event.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field name="intermittent">
-            <label htmlFor="intermittent_registration">
-              N° de Congés Spectacles
-            </label>
-            <input
-              id="intermittent_registration"
-              type="text"
-              value={addTechForm.intermittent_registration}
-              disabled={prestaChecked}
-              onChange={(event) =>
-                setAddTech({
-                  ...addTechForm,
-                  intermittent_registration: event.target.value,
-                })
-              }
-            />
-          </Form.Field>
-        </Form.Group>
-        <Form.Group>
-          <div>Métier</div>
-          <Checkbox
-            label="Son"
-            key="1"
-            value="1"
-            checked={addJob[1]}
-            onChange={(_, data) =>
-              setAddJob({ ...addJob, [data.value]: data.checked })
-            }
-          />
-          <Checkbox
-            label="Lumière"
-            key="2"
-            value="2"
-            checked={addJob[2]}
-            onChange={(_, data) =>
-              setAddJob({ ...addJob, [data.value]: data.checked })
-            }
-          />
-          <Checkbox
-            label="Vidéo"
-            key="3"
-            value="3"
-            checked={addJob[3]}
-            onChange={(_, data) =>
-              setAddJob({ ...addJob, [data.value]: data.checked })
-            }
-          />
-          <Checkbox
-            label="Autre"
-            key="4"
-            value="4"
-            checked={addJob[4]}
-            onChange={(_, data) =>
-              setAddJob({ ...addJob, [data.value]: data.checked })
-            }
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Field>
-            <label>Commentaires / Remarques</label>
-          </Form.Field>
-          <TextArea
-            placeholder="Inscrivez vos commentaires"
-            id="comments"
-            value={addTechForm.comments}
-            onChange={(event) =>
-              setAddTech({ ...addTechForm, comments: event.target.value })
-            }
-          />
-        </Form.Group>
+          </Form.Group>
+        </section>
         <Button icon="check" type="submit" content="Valider" primary />
       </Form>
 

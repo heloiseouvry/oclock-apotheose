@@ -1,4 +1,65 @@
-.fields {
-  // width: 100px;
+.tech-modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.tech-modal-form-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
+}
+
+.subpanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.subpanel-title {
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 1px solid #8a8a8a;
+  width: 65%;
+  text-align: center;
+  padding-bottom: 5px;
+}
+
+.panel.left {
+  width: 55%;
+  border-right: 1px solid #8a8a8a;
+}
+
+.panel.right {
+  width: 40%;
+  justify-content: space-around;
+}
+
+section .fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.status .subpanel-title::after, .jobs .subpanel-title::after {
+  content: " *";
+  color: red;
+}
+
+.tech-modal-form label{
+  text-align: center;
+}
+
+.comments {
+  margin-top: 10px;
+}
+
+.tech-modal-form button[type=submit]{
+  align-self: flex-end;
 }
