@@ -6,3 +6,21 @@
   align-items: center;
   justify-content: space-between;
 }
+.technav-mobile{
+  display: none;
+}
+
+@media all and (max-device-width: 550px){
+    
+  .technav-desktop{
+      display: none;
+  }
+  .technav-mobile{
+      display: block;
+  }
+  .menu-item{
+      
+      color: #b5b5b5;
+      
+  }
+}
