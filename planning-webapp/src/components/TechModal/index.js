@@ -313,6 +313,7 @@ function TechModal({ tech, setEditTech, closeTechModal }) {
     setInfoOpen(false);
     if (!infoError) {
       closeTechModal();
+      location.reload();
     }
   }
 
