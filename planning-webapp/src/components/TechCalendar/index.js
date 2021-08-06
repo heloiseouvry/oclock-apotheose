@@ -251,6 +251,17 @@ const TechCalendar = () => {
     time: function (schedule) {
       return getTimeTemplate(schedule, false);
     },
+    timegridDisplayPrimayTime: function(time) {
+      /* will be deprecated. use 'timegridDisplayPrimaryTime' */
+      var hour = time.hour;
+      var meridiem = hour >= 24 ? 'H 00' : 'H 00';
+
+      if (hour > 24) {
+        hour = hour - 24;
+      }
+
+      return hour + ' ' + meridiem;
+    },
     popupDetailBody: (phaseDetails) => {
       console.log(`popupDetailBody`, phaseDetails);
       var ret = "<div>" + phaseDetails.body;
@@ -281,7 +292,7 @@ const TechCalendar = () => {
       <section className="tech-tui-calendar">
         <TUICalendar
           ref={cal}
-          height="770px"
+          height="600px"
           view="week"
           week={{
             startDayOfWeek: 1,

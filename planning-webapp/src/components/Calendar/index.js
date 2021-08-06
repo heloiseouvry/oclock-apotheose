@@ -421,6 +421,17 @@ const MyCalendar = () => {
     time: function (schedule) {
       return getTimeTemplate(schedule, false);
     },
+    timegridDisplayPrimayTime: function(time) {
+      /* will be deprecated. use 'timegridDisplayPrimaryTime' */
+      var hour = time.hour;
+      var meridiem = hour >= 24 ? 'H 00' : 'H 00';
+
+      if (hour > 24) {
+        hour = hour - 24;
+      }
+
+      return hour + ' ' + meridiem;
+    },
     popupDetailDate: function (isAllDay, start, end) {
       const start_date = `${("0" + start.getDate()).slice(-2)}/${(
         "0" +
